@@ -5,8 +5,8 @@ window.onerror = function(message, url, linenumber) {
 var app = {
   // Application Constructor
   initialize: function() {
-    this.localFileName =  'bluecarbon.mbtiles';
-    this.remoteFile =  'https://dl.dropbox.com/s/jllnjvlwvhfqys1/test.mbtiles';
+    this.localFileName =  'vector.mbtiles';
+    this.remoteFile =  'https://dl.dropbox.com/u/2324263/vector.mbtiles';
 
     this.bindEvents();
   },
@@ -50,7 +50,7 @@ var app = {
 
     this.map = new L.Map('map', {
       center: new L.LatLng(24.2870, 54.3274),
-        zoom: 9
+        zoom: 10
     });
 
     tileLayer = new L.TileLayer.MBTiles(db, {
