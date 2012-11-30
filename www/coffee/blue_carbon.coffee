@@ -1,36 +1,36 @@
 window.onerror = (message, url, linenumber) ->
-  alert "JavaScript error: #{message} on line #{linenumber} for #{url}"
+  #alert "JavaScript error: #{message} on line #{linenumber} for #{url}"
   console.log "JavaScript error: #{message} on line #{linenumber} for #{url}"
 
-window.BlueCarbon = {}
-window.BlueCarbon.Models = {}
-window.BlueCarbon.Controllers = {}
-window.BlueCarbon.Views = {}
-window.BlueCarbon.Routers = {}
+window.Wcmc ||= {}
+window.BlueCarbon ||= {}
+window.BlueCarbon.Models ||= {}
+window.BlueCarbon.Controllers ||= {}
+window.BlueCarbon.Views ||= {}
+window.BlueCarbon.Routers ||= {}
 
 class BlueCarbon.App
+  _.extend @::, Backbone.Events
+  
   # Application Constructor
   constructor: ->
-    @localFileName = "vector.mbtiles"
-    @remoteFile = "https://dl.dropbox.com/u/2324263/vector.mbtiles"
+    @localFileName = "bluecarbon.mbtiles"
+    @remoteFile = "https://dl.dropbox.com/u/2324263/bluecarbon.mbtiles"
     @bindEvents()
+    @on('mapReady', =>
+      @controller = new BlueCarbon.Controller(app:@)
+    )
   
   # Bind Event Listeners
   #
   # Bind any events that are required on startup. Common events are:
   # 'load', 'deviceready', 'offline', and 'online'.
   bindEvents: ->
-    console.log 'binding'
     document.addEventListener "deviceready", @onDeviceReady, false
   
-  # deviceready Event Handler
-  #
-  # The scope of 'this' is the event. In order to call the 'receivedEvent'
-  # function, we must explicity call 'app.receivedEvent(...);'
   onDeviceReady: =>
-    console.log 'ready'
     window.requestFileSystem LocalFileSystem.PERSISTENT, 0, (fileSystem) =>
-      fs = fileSystem
+      window.fs = fileSystem
       file = fs.root.getFile(@localFileName,
         create: false
       , @buildMap
@@ -55,3 +55,10 @@ class BlueCarbon.App
 
 #var polygonDraw = new L.Polygon.Draw(map, {});
 #polygonDraw.enable();
+
+class BlueCarbon.Controller extends Wcmc.Controller
+  constructor: (options)->
+    @app = options.app
+    sidePanel = new Backbone.ViewManager('#side-panel')
+    validationView = new BlueCarbon.Views.AddValidationView(map: @app.map)
+    sidePanel.showView(validationView)

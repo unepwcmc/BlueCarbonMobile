@@ -1,42 +1,53 @@
 (function() {
-  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+  var _base, _base2, _base3, _base4,
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    __hasProp = Object.prototype.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
 
   window.onerror = function(message, url, linenumber) {
-    alert("JavaScript error: " + message + " on line " + linenumber + " for " + url);
     return console.log("JavaScript error: " + message + " on line " + linenumber + " for " + url);
   };
 
-  window.BlueCarbon = {};
+  window.Wcmc || (window.Wcmc = {});
 
-  window.BlueCarbon.Models = {};
+  window.BlueCarbon || (window.BlueCarbon = {});
 
-  window.BlueCarbon.Controllers = {};
+  (_base = window.BlueCarbon).Models || (_base.Models = {});
 
-  window.BlueCarbon.Views = {};
+  (_base2 = window.BlueCarbon).Controllers || (_base2.Controllers = {});
 
-  window.BlueCarbon.Routers = {};
+  (_base3 = window.BlueCarbon).Views || (_base3.Views = {});
+
+  (_base4 = window.BlueCarbon).Routers || (_base4.Routers = {});
 
   BlueCarbon.App = (function() {
+
+    _.extend(App.prototype, Backbone.Events);
 
     function App() {
       this.buildMap = __bind(this.buildMap, this);
       this.downloadBaseLayer = __bind(this.downloadBaseLayer, this);
-      this.onDeviceReady = __bind(this.onDeviceReady, this);      this.localFileName = "vector.mbtiles";
-      this.remoteFile = "https://dl.dropbox.com/u/2324263/vector.mbtiles";
+      this.onDeviceReady = __bind(this.onDeviceReady, this);
+      var _this = this;
+      this.localFileName = "bluecarbon.mbtiles";
+      this.remoteFile = "https://dl.dropbox.com/u/2324263/bluecarbon.mbtiles";
       this.bindEvents();
+      this.on('mapReady', function() {
+        return _this.controller = new BlueCarbon.Controller({
+          app: _this
+        });
+      });
     }
 
     App.prototype.bindEvents = function() {
-      console.log('binding');
       return document.addEventListener("deviceready", this.onDeviceReady, false);
     };
 
     App.prototype.onDeviceReady = function() {
       var _this = this;
-      console.log('ready');
       return window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function(fileSystem) {
-        var file, fs;
-        fs = fileSystem;
+        var file;
+        window.fs = fileSystem;
         return file = fs.root.getFile(_this.localFileName, {
           create: false
         }, _this.buildMap, _this.downloadBaseLayer);
@@ -68,5 +79,23 @@
     return App;
 
   })();
+
+  BlueCarbon.Controller = (function(_super) {
+
+    __extends(Controller, _super);
+
+    function Controller(options) {
+      var sidePanel, validationView;
+      this.app = options.app;
+      sidePanel = new Backbone.ViewManager('#side-panel');
+      validationView = new BlueCarbon.Views.AddValidationView({
+        map: this.app.map
+      });
+      sidePanel.showView(validationView);
+    }
+
+    return Controller;
+
+  })(Wcmc.Controller);
 
 }).call(this);
