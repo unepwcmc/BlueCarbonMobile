@@ -1,5 +1,6 @@
 window.onerror = (message, url, linenumber) ->
   console.log "JavaScript error: #{message} on line #{linenumber} for #{url}"
+  alert "JavaScript error: #{message} on line #{linenumber} for #{url}"
 
 window.Wcmc ||= {}
 window.BlueCarbon ||= {}

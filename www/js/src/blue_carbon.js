@@ -5,7 +5,8 @@
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
 
   window.onerror = function(message, url, linenumber) {
-    return console.log("JavaScript error: " + message + " on line " + linenumber + " for " + url);
+    console.log("JavaScript error: " + message + " on line " + linenumber + " for " + url);
+    return alert("JavaScript error: " + message + " on line " + linenumber + " for " + url);
   };
 
   window.Wcmc || (window.Wcmc = {});

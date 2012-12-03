@@ -16,7 +16,33 @@
     }
 
     AddValidationView.prototype.initialize = function(options) {
-      return this.map = options.map;
+      var _this = this;
+      this.map = options.map;
+      this.polygonDraw = new L.Polygon.Draw(this.map, {});
+      this.polygonDraw.enable();
+      return this.map.on('draw:poly-created', function(e) {
+        var mapPolygon;
+        mapPolygon = e.poly;
+        return _this.createPolygon(mapPolygon);
+      });
+    };
+
+    AddValidationView.prototype.createPolygon = function(mapPolygon) {
+      var _this = this;
+      this.polygon.setGeomFromPoints(mapPolygon.getLatLngs());
+      return this.polygon.save({
+        success: function() {
+          _this.close();
+          if (typeof finishedCallback !== "undefined" && finishedCallback !== null) {
+            return _this.finishedCallback();
+          }
+        }
+      });
+    };
+
+    AddValidationView.prototype.close = function() {
+      this.polygonDraw.disable();
+      return Pica.config.map.off('draw:poly-created');
     };
 
     return AddValidationView;
