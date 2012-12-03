@@ -1,21 +1,24 @@
-# Extended controller that adds concept of action events bindings,
+# Controller that adds concept of action events bindings,
 # which are event bindings that are only valid for the duration
 # of an action
 window.Wcmc ||= {}
 class Wcmc.Controller
   _.extend @::, Backbone.Events
+
   # Add binding which is only valid for action duration.
-  transitionToActionOn: (event, action) ->
+  transitionToActionOn: (publisher, event, action) ->
     @actionEventBindings ||= []
-    @actionEventBindings.push(event: event, action: action)
-    Pica.vent.on(event, () =>
+    @actionEventBindings.push(publisher: publisher, event: event, action: action)
+    publisher.on(event, () =>
       @transitionToAction(action, arguments)
     )
 
+  # Clear event bindings for current action
   clearActionEventBindings: () ->
     _.each @actionEventBindings, (binding) ->
-      Pica.vent.off(binding.event, binding.action)
+      binding.publisher.off(binding.event, binding.action)
 
+  # Clean-up, and transition to the new action
   transitionToAction: (action, eventArguments) ->
     @clearActionEventBindings()
     action.apply(@, eventArguments)

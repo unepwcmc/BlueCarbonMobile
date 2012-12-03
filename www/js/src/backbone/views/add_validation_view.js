@@ -15,16 +15,24 @@
       AddValidationView.__super__.constructor.apply(this, arguments);
     }
 
+    AddValidationView.prototype.template = JST['area/add_polygon'];
+
     AddValidationView.prototype.initialize = function(options) {
       var _this = this;
       this.map = options.map;
-      this.polygonDraw = new L.Polygon.Draw(this.map, {});
-      this.polygonDraw.enable();
+      this.polygonDrawn = false;
       return this.map.on('draw:poly-created', function(e) {
         var mapPolygon;
         mapPolygon = e.poly;
-        return _this.createPolygon(mapPolygon);
+        return _this.polygonDrawn = false;
       });
+    };
+
+    AddValidationView.prototype.render = function() {
+      this.polygonDraw = new L.Polygon.Draw(this.map, {});
+      this.polygonDraw.enable();
+      this.$el.html(this.template());
+      return this;
     };
 
     AddValidationView.prototype.createPolygon = function(mapPolygon) {

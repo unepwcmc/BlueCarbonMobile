@@ -87,14 +87,22 @@
     __extends(Controller, _super);
 
     function Controller(options) {
-      var validationView;
+      this.addValidation = __bind(this.addValidation, this);
+      var areaEditView;
       this.app = options.app;
       this.sidePanel = new Backbone.ViewManager('#side-panel');
+      areaEditView = new BlueCarbon.Views.AreaEditView();
+      this.sidePanel.showView(areaEditView);
+      this.transitionToActionOn(areaEditView, 'addPolygon', this.addValidation);
+    }
+
+    Controller.prototype.addValidation = function(options) {
+      var validationView;
       validationView = new BlueCarbon.Views.AddValidationView({
         map: this.app.map
       });
-      this.sidePanel.showView(validationView);
-    }
+      return this.sidePanel.showView(validationView);
+    };
 
     return Controller;
 

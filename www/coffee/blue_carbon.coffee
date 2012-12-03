@@ -62,5 +62,11 @@ class BlueCarbon.Controller extends Wcmc.Controller
   constructor: (options)->
     @app = options.app
     @sidePanel = new Backbone.ViewManager('#side-panel')
+    areaEditView = new BlueCarbon.Views.AreaEditView()
+    @sidePanel.showView(areaEditView)
+
+    @transitionToActionOn(areaEditView, 'addPolygon', @addValidation)
+
+  addValidation: (options) =>
     validationView = new BlueCarbon.Views.AddValidationView(map: @app.map)
     @sidePanel.showView(validationView)

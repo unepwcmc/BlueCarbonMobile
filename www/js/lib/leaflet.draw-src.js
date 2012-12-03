@@ -309,9 +309,11 @@ L.Polyline.Draw = L.Handler.Draw.extend({
 		this._map.removeLayer(this._poly);
 		delete this._poly;
 
-		this._mouseMarker.off('click', this._onClick);
-		this._map.removeLayer(this._mouseMarker);
-		delete this._mouseMarker;
+                if (typeof this._mouseMarker !== 'undefined'){
+                  this._mouseMarker.off('click', this._onClick);
+                  this._map.removeLayer(this._mouseMarker);
+                  delete this._mouseMarker;
+                }
 
 		// clean up DOM
 		this._clearGuides();
