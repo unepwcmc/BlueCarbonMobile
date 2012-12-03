@@ -3,13 +3,15 @@ window.BlueCarbon.Views ||= {}
 
 class BlueCarbon.Views.AddValidationView extends Backbone.View
   template: JST['area/add_polygon']
+  events:
+    "touchstart #create-polygon": 'createPolygon'
   initialize: (options)->
     @map = options.map
 
-    @polygonDrawn =  false
+    @validation = new BlueCarbon.Models.Validation()
+
     @map.on 'draw:poly-created', (e) =>
-      mapPolygon = e.poly
-      @polygonDrawn =  false
+      @validation.setGeomFromPoints(e.poly.getLatLngs())
 
   render: () ->
     # Turn on Leaflet.draw polygon tool
@@ -19,14 +21,13 @@ class BlueCarbon.Views.AddValidationView extends Backbone.View
     @$el.html(@template())
     return @
 
-  createPolygon: (mapPolygon) ->
-    @polygon.setGeomFromPoints(mapPolygon.getLatLngs())
-    @polygon.save(success: () =>
-      @close()
-      @finishedCallback() if finishedCallback?
-    )
+  createPolygon: () =>
+    unless @validation.get('geometry')?
+      alert("You've not finished your polygon!")
+      return false
+    alert("Implement persistence plx")
 
   close: () ->
     @polygonDraw.disable()
-    Pica.config.map.off('draw:poly-created')
+    @map.off('draw:poly-created')
 

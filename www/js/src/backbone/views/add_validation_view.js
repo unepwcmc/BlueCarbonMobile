@@ -1,5 +1,6 @@
 (function() {
   var _base,
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
     __hasProp = Object.prototype.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
 
@@ -12,19 +13,22 @@
     __extends(AddValidationView, _super);
 
     function AddValidationView() {
+      this.createPolygon = __bind(this.createPolygon, this);
       AddValidationView.__super__.constructor.apply(this, arguments);
     }
 
     AddValidationView.prototype.template = JST['area/add_polygon'];
 
+    AddValidationView.prototype.events = {
+      "touchstart #create-polygon": 'createPolygon'
+    };
+
     AddValidationView.prototype.initialize = function(options) {
       var _this = this;
       this.map = options.map;
-      this.polygonDrawn = false;
+      this.validation = new BlueCarbon.Models.Validation();
       return this.map.on('draw:poly-created', function(e) {
-        var mapPolygon;
-        mapPolygon = e.poly;
-        return _this.polygonDrawn = false;
+        return _this.validation.setGeomFromPoints(e.poly.getLatLngs());
       });
     };
 
@@ -35,22 +39,17 @@
       return this;
     };
 
-    AddValidationView.prototype.createPolygon = function(mapPolygon) {
-      var _this = this;
-      this.polygon.setGeomFromPoints(mapPolygon.getLatLngs());
-      return this.polygon.save({
-        success: function() {
-          _this.close();
-          if (typeof finishedCallback !== "undefined" && finishedCallback !== null) {
-            return _this.finishedCallback();
-          }
-        }
-      });
+    AddValidationView.prototype.createPolygon = function() {
+      if (this.validation.get('geometry') == null) {
+        alert("You've not finished your polygon!");
+        return false;
+      }
+      return alert("Implement persistence plx");
     };
 
     AddValidationView.prototype.close = function() {
       this.polygonDraw.disable();
-      return Pica.config.map.off('draw:poly-created');
+      return this.map.off('draw:poly-created');
     };
 
     return AddValidationView;
