@@ -31,12 +31,12 @@
       var _this = this;
       this.localFileName = "bluecarbon.mbtiles";
       this.remoteFile = "https://dl.dropbox.com/u/2324263/bluecarbon.mbtiles";
-      this.bindEvents();
       this.on('mapReady', function() {
         return _this.controller = new BlueCarbon.Controller({
           app: _this
         });
       });
+      this.bindEvents();
     }
 
     App.prototype.bindEvents = function() {
@@ -71,9 +71,10 @@
         center: new L.LatLng(24.2870, 54.3274),
         zoom: 10
       });
-      return tileLayer = new L.TileLayer.MBTiles(db, {
+      tileLayer = new L.TileLayer.MBTiles(db, {
         tms: true
       }).addTo(this.map);
+      return this.trigger('mapReady');
     };
 
     return App;
@@ -85,13 +86,13 @@
     __extends(Controller, _super);
 
     function Controller(options) {
-      var sidePanel, validationView;
+      var validationView;
       this.app = options.app;
-      sidePanel = new Backbone.ViewManager('#side-panel');
+      this.sidePanel = new Backbone.ViewManager('#side-panel');
       validationView = new BlueCarbon.Views.AddValidationView({
         map: this.app.map
       });
-      sidePanel.showView(validationView);
+      this.sidePanel.showView(validationView);
     }
 
     return Controller;

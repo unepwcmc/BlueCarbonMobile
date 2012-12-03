@@ -1,5 +1,4 @@
 window.onerror = (message, url, linenumber) ->
-  #alert "JavaScript error: #{message} on line #{linenumber} for #{url}"
   console.log "JavaScript error: #{message} on line #{linenumber} for #{url}"
 
 window.Wcmc ||= {}
@@ -16,11 +15,11 @@ class BlueCarbon.App
   constructor: ->
     @localFileName = "bluecarbon.mbtiles"
     @remoteFile = "https://dl.dropbox.com/u/2324263/bluecarbon.mbtiles"
-    @bindEvents()
     @on('mapReady', =>
       @controller = new BlueCarbon.Controller(app:@)
     )
-  
+    @bindEvents()
+
   # Bind Event Listeners
   #
   # Bind any events that are required on startup. Common events are:
@@ -53,12 +52,14 @@ class BlueCarbon.App
       tms: true
     ).addTo(@map)
 
+    @trigger('mapReady')
+
 #var polygonDraw = new L.Polygon.Draw(map, {});
 #polygonDraw.enable();
 
 class BlueCarbon.Controller extends Wcmc.Controller
   constructor: (options)->
     @app = options.app
-    sidePanel = new Backbone.ViewManager('#side-panel')
+    @sidePanel = new Backbone.ViewManager('#side-panel')
     validationView = new BlueCarbon.Views.AddValidationView(map: @app.map)
-    sidePanel.showView(validationView)
+    @sidePanel.showView(validationView)

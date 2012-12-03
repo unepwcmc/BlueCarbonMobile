@@ -1,6 +1,4 @@
 (function() {
-  var __hasProp = Object.prototype.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
 
   Backbone.ViewManager = (function() {
 
@@ -23,40 +21,28 @@
 
   })();
 
-  Backbone.View = (function(_super) {
-
-    __extends(View, _super);
-
-    function View() {
-      View.__super__.constructor.apply(this, arguments);
-    }
-
-    View.prototype.bind = function(model, ev, callback) {
-      View.__super__.bind.apply(this, arguments);
+  _.extend(Backbone.View.prototype, {
+    bind: function(model, ev, callback) {
+      bind.__super__.constructor.apply(this, arguments);
       if (this.bindings == null) this.bindings = [];
       return this.bindings.push({
         model: model,
         ev: ev,
         callback: callback
       });
-    };
-
-    View.prototype.unbindFromAll = function() {
+    },
+    unbindFromAll: function() {
       _.each(this.bindings, function(binding) {
         return binding.model.unbind(binding.ev, binding.callback);
       });
       return this.bindings = [];
-    };
-
-    View.prototype.close = function() {
+    },
+    close: function() {
       this.unbindFromAll();
       this.unbind();
       this.remove();
       if (this.onClose) return this.onClose();
-    };
-
-    return View;
-
-  })(Backbone.View);
+    }
+  });
 
 }).call(this);

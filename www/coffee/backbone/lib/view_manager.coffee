@@ -22,7 +22,7 @@ class Backbone.ViewManager
 
 # Augment backbone view to add binding management and close method
 # Inspired by http://stackoverflow.com/questions/7567404/backbone-js-repopulate-or-recreate-the-view/7607853#7607853
-class Backbone.View extends Backbone.View
+_.extend(Backbone.View::,
 
   # Use instead of bind, creates a bind and stores the binding in @bindings
   bind: (model, ev, callback) ->
@@ -43,3 +43,4 @@ class Backbone.View extends Backbone.View
     @unbind()
     @remove()
     @onClose() if @onClose # Some views have specific things to clean up
+)

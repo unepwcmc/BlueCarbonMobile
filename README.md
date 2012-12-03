@@ -37,4 +37,5 @@ The error handling and debugging is frankly infuriating in the iOS simulator, bu
     catch err
       # Do some stuff with the error object
       console.log err.stack
+      alert "#{err.message} -> check the log for trace"
       window.err = err
