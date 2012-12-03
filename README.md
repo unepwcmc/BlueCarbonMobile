@@ -11,7 +11,10 @@ The JS is written in coffeescript, which can be compiled/watched with this scrip
 
 # Debugging
 
-Debugging phonegap is unfortunately still a bit of a pain in the ass. There's no native debugger, but you can use weinre (http://people.apache.org/~pmuellr/weinre/docs/latest/Home.html), the remote web inspector. To do so, install it from NPM:
+There's no easy way to say this. Debugging just sucks in phonegap. Here's some methods that make it less terrible.
+
+## Remote web inspector with weinre
+There's no native debugger, but you can use weinre (http://people.apache.org/~pmuellr/weinre/docs/latest/Home.html), the remote web inspector. To do so, install it from NPM:
 
     sudo npm -g install weinre
 
@@ -23,4 +26,15 @@ Point the phonegap app to the remote debugger
 
     <script src="http://localhost:8080/target/target-script-min.js"></script>
 
-Then simply hit http://localhost:8080/client/ to access the remote debugger
+Then simply hit http://localhost:8080/client/ to access the remote inspector.
+
+## Getting error stacks
+The error handling and debugging is frankly infuriating in the iOS simulator, but you can some useful error data by wrapping code in try and catch blocks and interacting with the error object, like thus:
+
+    try
+      # Some code that's crashing
+      5/0
+    catch err
+      # Do some stuff with the error object
+      console.log err.stack
+      window.err = err
