@@ -13,14 +13,14 @@
     __extends(AddValidationView, _super);
 
     function AddValidationView() {
-      this.createPolygon = __bind(this.createPolygon, this);
+      this.createAnalysis = __bind(this.createAnalysis, this);
       AddValidationView.__super__.constructor.apply(this, arguments);
     }
 
     AddValidationView.prototype.template = JST['area/add_polygon'];
 
     AddValidationView.prototype.events = {
-      "touchstart #create-polygon": 'createPolygon'
+      "touchstart #create-analysis": 'createAnalysis'
     };
 
     AddValidationView.prototype.initialize = function(options) {
@@ -39,12 +39,13 @@
       return this;
     };
 
-    AddValidationView.prototype.createPolygon = function() {
+    AddValidationView.prototype.createAnalysis = function() {
       if (this.validation.get('geometry') == null) {
         alert("You've not finished your polygon!");
         return false;
       }
-      return alert("Implement persistence plx");
+      this.validation.set($('form#validation-attributes').serializeObject());
+      return console.log(this.validation);
     };
 
     AddValidationView.prototype.close = function() {

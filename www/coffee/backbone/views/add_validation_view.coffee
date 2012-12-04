@@ -4,7 +4,8 @@ window.BlueCarbon.Views ||= {}
 class BlueCarbon.Views.AddValidationView extends Backbone.View
   template: JST['area/add_polygon']
   events:
-    "touchstart #create-polygon": 'createPolygon'
+    "touchstart #create-analysis": 'createAnalysis'
+
   initialize: (options)->
     @map = options.map
 
@@ -21,11 +22,13 @@ class BlueCarbon.Views.AddValidationView extends Backbone.View
     @$el.html(@template())
     return @
 
-  createPolygon: () =>
+  createAnalysis: () =>
     unless @validation.get('geometry')?
       alert("You've not finished your polygon!")
       return false
-    alert("Implement persistence plx")
+
+    @validation.set($('form#validation-attributes').serializeObject())
+    console.log @validation
 
   close: () ->
     @polygonDraw.disable()

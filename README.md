@@ -28,6 +28,18 @@ Point the phonegap app to the remote debugger
 
 Then simply hit http://localhost:8080/client/ to access the remote inspector.
 
+### Better remote console logging
+Console logging is static and crazy unpredictable in phonegap by default, so I added a weinre hook to wait for weinre to trigger the app start, thereby allowing better console logging.
+To use, start the blue carbon app (in index.html) with the 'waitForRemoteConsole' set to true:
+
+    window.blueCarbonApp = new BlueCarbon.App({waitForRemoteConsole: true});
+
+Then, connect your weinre console, and manually start the app from the console:
+
+    window.blueCarbonApp.onDeviceReady();
+
+Enjoy proper console.log-ing
+
 ## Getting error stacks
 The error handling and debugging is frankly infuriating in the iOS simulator, but you can some useful error data by wrapping code in try and catch blocks and interacting with the error object, like thus:
 

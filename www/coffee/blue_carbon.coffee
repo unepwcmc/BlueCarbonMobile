@@ -13,22 +13,31 @@ class BlueCarbon.App
   _.extend @::, Backbone.Events
   
   # Application Constructor
-  constructor: ->
+  constructor: (options)->
+    waitForRemoteConsole = options.waitForRemoteConsole
     @localFileName = "bluecarbon.mbtiles"
     @remoteFile = "https://dl.dropbox.com/u/2324263/bluecarbon.mbtiles"
     @on('mapReady', =>
       @controller = new BlueCarbon.Controller(app:@)
     )
-    @bindEvents()
 
-  # Bind Event Listeners
-  #
-  # Bind any events that are required on startup. Common events are:
-  # 'load', 'deviceready', 'offline', and 'online'.
-  bindEvents: ->
-    document.addEventListener "deviceready", @onDeviceReady, false
+    #document.addEventListener "deviceready", @onDeviceReady, false)
+    # This is for debugging in development, you can replace it with the above line for producion
+    @ready=false
+    if waitForRemoteConsole
+      alert('waiting for remote console, start app with window.blueCarbonApp.onDeviceReady();')
+      document.addEventListener "deviceready", (=> @ready = true), false
+    else
+      document.addEventListener "deviceready", (=>
+        @ready = true
+        @onDeviceReady()
+      ), false
   
   onDeviceReady: =>
+    unless @ready
+      alert('not ready yet!')
+      return false
+
     window.requestFileSystem LocalFileSystem.PERSISTENT, 0, (fileSystem) =>
       window.fs = fileSystem
       file = fs.root.getFile(@localFileName,

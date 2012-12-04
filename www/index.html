@@ -27,14 +27,15 @@
     <script type="text/javascript" src="js/lib/TileLayer.MBTiles.js"></script>
     <script type="text/javascript" src="js/lib/SQLitePlugin.js"></script>
     <script type="text/javascript" src="js/src/templates/jst.js"></script>
+    <script type="text/javascript" src="js/src/jquery_form_serialize.js"></script>
     <script type="text/javascript" src="js/src/backbone/lib/wcmc_controller.js"></script>
     <script type="text/javascript" src="js/src/blue_carbon.js"></script>
     <script type="text/javascript" src="js/src/backbone/lib/view_manager.js"></script>
-    <script type="text/javascript" src="js/src/backbone/models/polygon.js"></script>
+    <script type="text/javascript" src="js/src/backbone/models/analysis.js"></script>
     <script type="text/javascript" src="js/src/backbone/views/add_validation_view.js"></script>
     <script type="text/javascript" src="js/src/backbone/views/area_edit_view.js"></script>
     <script type="text/javascript">
-      window.blueCarbonApp = new BlueCarbon.App();
+      window.blueCarbonApp = new BlueCarbon.App({waitForRemoteConsole: true});
     </script>
   </body>
 </html>

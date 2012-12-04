@@ -25,11 +25,13 @@
 
     _.extend(App.prototype, Backbone.Events);
 
-    function App() {
+    function App(options) {
       this.buildMap = __bind(this.buildMap, this);
       this.downloadBaseLayer = __bind(this.downloadBaseLayer, this);
       this.onDeviceReady = __bind(this.onDeviceReady, this);
-      var _this = this;
+      var waitForRemoteConsole,
+        _this = this;
+      waitForRemoteConsole = options.waitForRemoteConsole;
       this.localFileName = "bluecarbon.mbtiles";
       this.remoteFile = "https://dl.dropbox.com/u/2324263/bluecarbon.mbtiles";
       this.on('mapReady', function() {
@@ -37,15 +39,26 @@
           app: _this
         });
       });
-      this.bindEvents();
+      this.ready = false;
+      if (waitForRemoteConsole) {
+        alert('waiting for remote console, start app with window.blueCarbonApp.onDeviceReady();');
+        document.addEventListener("deviceready", (function() {
+          return _this.ready = true;
+        }), false);
+      } else {
+        document.addEventListener("deviceready", (function() {
+          _this.ready = true;
+          return _this.onDeviceReady();
+        }), false);
+      }
     }
-
-    App.prototype.bindEvents = function() {
-      return document.addEventListener("deviceready", this.onDeviceReady, false);
-    };
 
     App.prototype.onDeviceReady = function() {
       var _this = this;
+      if (!this.ready) {
+        alert('not ready yet!');
+        return false;
+      }
       return window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function(fileSystem) {
         var file;
         window.fs = fileSystem;
