@@ -1,7 +1,7 @@
 window.BlueCarbon ||= {}
 window.BlueCarbon.Models ||= {}
 
-class BlueCarbon.Models.Validation extends Backbone.Model
+class BlueCarbon.Models.Validation extends Backbone.SyncableModel
   setGeomFromPoints: (points) ->
     points = for point in points
       [point.lng, point.lat]
