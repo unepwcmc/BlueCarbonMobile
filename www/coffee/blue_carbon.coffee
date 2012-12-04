@@ -2,6 +2,13 @@ window.onerror = (message, url, linenumber) ->
   console.log "JavaScript error: #{message} on line #{linenumber} for #{url}"
   alert "JavaScript error: #{message} on line #{linenumber} for #{url}"
 
+$.support.cors = true
+# Session persistence
+$.ajaxSetup(
+  xhrFields:
+    withCredentials: true
+)
+
 window.Wcmc ||= {}
 window.BlueCarbon ||= {}
 window.BlueCarbon.Models ||= {}
