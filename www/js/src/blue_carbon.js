@@ -41,7 +41,7 @@
       });
       this.ready = false;
       if (waitForRemoteConsole) {
-        alert('waiting for remote console, start app with window.blueCarbonApp.onDeviceReady();');
+        alert('Waiting for weinre to connect, start app with:\n\n blueCarbonApp.onDeviceReady(); \n\n Disable this behavior by setting waitForRemoteConsole option to false');
         document.addEventListener("deviceready", (function() {
           return _this.ready = true;
         }), false);

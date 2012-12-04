@@ -25,7 +25,7 @@ class BlueCarbon.App
     # This is for debugging in development, you can replace it with the above line for producion
     @ready=false
     if waitForRemoteConsole
-      alert('waiting for remote console, start app with window.blueCarbonApp.onDeviceReady();')
+      alert('Waiting for weinre to connect, start app with:\n\n blueCarbonApp.onDeviceReady(); \n\n Disable this behavior by setting waitForRemoteConsole option to false')
       document.addEventListener "deviceready", (=> @ready = true), false
     else
       document.addEventListener "deviceready", (=>
