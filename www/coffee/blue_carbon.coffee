@@ -21,23 +21,30 @@ class BlueCarbon.App
       @controller = new BlueCarbon.Controller(app:@)
     )
 
-    #document.addEventListener "deviceready", @onDeviceReady, false)
+    #document.addEventListener "deviceready", @start, false)
     # This is for debugging in development, you can replace it with the above line for producion
     @ready=false
     if waitForRemoteConsole
-      alert('Waiting for weinre to connect, start app with:\n\n blueCarbonApp.onDeviceReady(); \n\n Disable this behavior by setting waitForRemoteConsole option to false')
+      #alert('Waiting for weinre to connect, start app with:\n\n blueCarbonApp.start(); \n\n Disable this behavior by setting waitForRemoteConsole option to false')
       document.addEventListener "deviceready", (=> @ready = true), false
     else
       document.addEventListener "deviceready", (=>
         @ready = true
-        @onDeviceReady()
+        @start()
       ), false
   
-  onDeviceReady: =>
+  start: =>
     unless @ready
       alert('not ready yet!')
       return false
+    
+    @map = new L.Map("map",
+      center: new L.LatLng(24.2870, 54.3274)
+      zoom: 10
+    )
+    @addBaseLayer()
 
+  addBaseLayer: ->
     window.requestFileSystem LocalFileSystem.PERSISTENT, 0, (fileSystem) =>
       window.fs = fileSystem
       file = fs.root.getFile(@localFileName,
@@ -54,10 +61,6 @@ class BlueCarbon.App
 
   buildMap: =>
     db = window.sqlitePlugin.openDatabase(@localFileName, "1.0", "Tiles", 2000000)
-    @map = new L.Map("map",
-      center: new L.LatLng(24.2870, 54.3274)
-      zoom: 10
-    )
     tileLayer = new L.TileLayer.MBTiles(db,
       tms: true
     ).addTo(@map)
@@ -71,6 +74,18 @@ class BlueCarbon.Controller extends Wcmc.Controller
   constructor: (options)->
     @app = options.app
     @sidePanel = new Backbone.ViewManager('#side-panel')
+    @modal = new Backbone.ViewManager('#modal-container')
+
+    @areaEdit()
+
+  loginUser: =>
+    loginView = new BlueCarbon.Views.LoginView()
+    $('#modal-disabler').addClass('active')
+    @modal.showView(loginView)
+
+    @transitionToActionOn(loginView, 'user:loggedIn', @areaEdit)
+
+  areaEdit: =>
     areaEditView = new BlueCarbon.Views.AreaEditView()
     @sidePanel.showView(areaEditView)
 
@@ -79,3 +94,5 @@ class BlueCarbon.Controller extends Wcmc.Controller
   addValidation: (options) =>
     validationView = new BlueCarbon.Views.AddValidationView(map: @app.map)
     @sidePanel.showView(validationView)
+
+    @transitionToActionOn(validationView, 'polygon:created', @areaEdit)

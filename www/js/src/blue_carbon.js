@@ -28,7 +28,7 @@
     function App(options) {
       this.buildMap = __bind(this.buildMap, this);
       this.downloadBaseLayer = __bind(this.downloadBaseLayer, this);
-      this.onDeviceReady = __bind(this.onDeviceReady, this);
+      this.start = __bind(this.start, this);
       var waitForRemoteConsole,
         _this = this;
       waitForRemoteConsole = options.waitForRemoteConsole;
@@ -41,24 +41,31 @@
       });
       this.ready = false;
       if (waitForRemoteConsole) {
-        alert('Waiting for weinre to connect, start app with:\n\n blueCarbonApp.onDeviceReady(); \n\n Disable this behavior by setting waitForRemoteConsole option to false');
         document.addEventListener("deviceready", (function() {
           return _this.ready = true;
         }), false);
       } else {
         document.addEventListener("deviceready", (function() {
           _this.ready = true;
-          return _this.onDeviceReady();
+          return _this.start();
         }), false);
       }
     }
 
-    App.prototype.onDeviceReady = function() {
-      var _this = this;
+    App.prototype.start = function() {
       if (!this.ready) {
         alert('not ready yet!');
         return false;
       }
+      this.map = new L.Map("map", {
+        center: new L.LatLng(24.2870, 54.3274),
+        zoom: 10
+      });
+      return this.addBaseLayer();
+    };
+
+    App.prototype.addBaseLayer = function() {
+      var _this = this;
       return window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function(fileSystem) {
         var file;
         window.fs = fileSystem;
@@ -81,10 +88,6 @@
     App.prototype.buildMap = function() {
       var db, tileLayer;
       db = window.sqlitePlugin.openDatabase(this.localFileName, "1.0", "Tiles", 2000000);
-      this.map = new L.Map("map", {
-        center: new L.LatLng(24.2870, 54.3274),
-        zoom: 10
-      });
       tileLayer = new L.TileLayer.MBTiles(db, {
         tms: true
       }).addTo(this.map);
@@ -101,20 +104,35 @@
 
     function Controller(options) {
       this.addValidation = __bind(this.addValidation, this);
-      var areaEditView;
-      this.app = options.app;
+      this.areaEdit = __bind(this.areaEdit, this);
+      this.loginUser = __bind(this.loginUser, this);      this.app = options.app;
       this.sidePanel = new Backbone.ViewManager('#side-panel');
+      this.modal = new Backbone.ViewManager('#modal-container');
+      this.areaEdit();
+    }
+
+    Controller.prototype.loginUser = function() {
+      var loginView;
+      loginView = new BlueCarbon.Views.LoginView();
+      $('#modal-disabler').addClass('active');
+      this.modal.showView(loginView);
+      return this.transitionToActionOn(loginView, 'user:loggedIn', this.areaEdit);
+    };
+
+    Controller.prototype.areaEdit = function() {
+      var areaEditView;
       areaEditView = new BlueCarbon.Views.AreaEditView();
       this.sidePanel.showView(areaEditView);
-      this.transitionToActionOn(areaEditView, 'addPolygon', this.addValidation);
-    }
+      return this.transitionToActionOn(areaEditView, 'addPolygon', this.addValidation);
+    };
 
     Controller.prototype.addValidation = function(options) {
       var validationView;
       validationView = new BlueCarbon.Views.AddValidationView({
         map: this.app.map
       });
-      return this.sidePanel.showView(validationView);
+      this.sidePanel.showView(validationView);
+      return this.transitionToActionOn(validationView, 'polygon:created', this.areaEdit);
     };
 
     return Controller;

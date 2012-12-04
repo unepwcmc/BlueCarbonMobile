@@ -36,7 +36,7 @@ To use, start the blue carbon app (in index.html) with the 'waitForRemoteConsole
 
 Then, connect your weinre console, and manually start the app from the console:
 
-    window.blueCarbonApp.onDeviceReady();
+    window.blueCarbonApp.start();
 
 Enjoy proper console.log-ing
 

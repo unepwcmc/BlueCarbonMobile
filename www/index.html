@@ -16,6 +16,9 @@
       <div id="side-panel"></div>
       <div id="map"></div>
     </div>
+    <div id="modal-disabler">
+      <div id="modal-container"></div>
+    </div>
     <script src="http://localhost:8080/target/target-script-min.js"></script>
     <script type="text/javascript" src="cordova-2.2.0.js"></script>
     <script type="text/javascript" src="js/lib/json2.js"></script>
@@ -34,8 +37,9 @@
     <script type="text/javascript" src="js/src/backbone/models/analysis.js"></script>
     <script type="text/javascript" src="js/src/backbone/views/add_validation_view.js"></script>
     <script type="text/javascript" src="js/src/backbone/views/area_edit_view.js"></script>
+    <script type="text/javascript" src="js/src/backbone/views/login_view.js"></script>
     <script type="text/javascript">
-      window.blueCarbonApp = new BlueCarbon.App({waitForRemoteConsole: true});
+      window.blueCarbonApp = new BlueCarbon.App({waitForRemoteConsole: false});
     </script>
   </body>
 </html>

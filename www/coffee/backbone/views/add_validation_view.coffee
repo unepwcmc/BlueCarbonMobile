@@ -26,9 +26,9 @@ class BlueCarbon.Views.AddValidationView extends Backbone.View
     unless @validation.get('geometry')?
       alert("You've not finished your polygon!")
       return false
-
     @validation.set($('form#validation-attributes').serializeObject())
     console.log @validation
+
 
   close: () ->
     @polygonDraw.disable()

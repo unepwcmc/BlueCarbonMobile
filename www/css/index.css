@@ -11,10 +11,6 @@ body {
   margin-top: 0;
 }
 
-
-#main-container {
-
-}
 @media only screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:portrait) {
   /* For portrait layouts only */
   #main-container {
@@ -39,4 +35,42 @@ body {
 #side-panel {
   width: 20%;
   float:left;
+}
+
+#modal-disabler {
+  display:none;
+}
+#modal-container {
+  display:none;
+}
+
+#modal-disabler.active{
+  display:block;
+  position:absolute;
+  top: 0;
+  left: 0;
+  height: 748px;
+  width: 1024px;
+  background-color: rgba(50,50,50, 0.8);
+  z-index: 1000;
+}
+#modal-disabler.active #modal-container {
+  display:block;
+  background-color:white;
+  height: 200px;
+  width: 200px;
+  margin: auto;
+  position:absolute;
+  top:0;
+  bottom:0;
+  left:0;
+  right:0;
+}
+
+@media only screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:portrait) {
+  /* portrait */
+  #modal-disabler.active {
+    height: 1004px;
+    width: 768px;
+  }
 }
