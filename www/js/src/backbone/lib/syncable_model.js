@@ -48,7 +48,7 @@
             sql.push("\"" + val + "\", ");
           }
           sql.push(")");
-          sql.join(" ");
+          sql = sql.join(" ");
           break;
         case "update":
           sql = [];
@@ -56,7 +56,7 @@
             val = attrs[attr];
             sql.push("UPDATE " + model.constructor.name + "\nSET " + attr + "=" + val + "\nWHERE id=\"" + attrs['id'] + "\"");
           }
-          sql.join("; ");
+          sql = sql.join("; ");
           break;
         case "read":
           sql = "SELECT " + (Object.keys(attrs)) + "\nFROM " + model.constructor.name + "\nWHERE id=\"" + attrs['id'] + "\"";

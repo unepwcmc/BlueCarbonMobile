@@ -29,7 +29,6 @@ class BlueCarbon.Views.AddValidationView extends Backbone.View
     @validation.set($('form#validation-attributes').serializeObject())
     @validation.save()
 
-
   close: () ->
     @polygonDraw.disable()
     @map.off('draw:poly-created')

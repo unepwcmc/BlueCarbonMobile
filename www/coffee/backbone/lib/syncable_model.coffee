@@ -39,7 +39,7 @@ class Backbone.SyncableModel extends Backbone.Model
 
         sql.push(")")
 
-        sql.join(" ")
+        sql = sql.join(" ")
       when "update"
         sql = []
         for attr, val of attrs
@@ -50,7 +50,7 @@ class Backbone.SyncableModel extends Backbone.Model
               WHERE id="#{attrs['id']}"
             """
           )
-        sql.join("; ")
+        sql = sql.join("; ")
       when "read"
         sql =
           """
