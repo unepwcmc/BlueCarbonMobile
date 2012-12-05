@@ -56,6 +56,8 @@
 
     AreaView.prototype.template = JST['area/area'];
 
+    AreaView.prototype.tagName = 'li';
+
     AreaView.prototype.events = {
       "touchstart .start-trip": "startTrip"
     };

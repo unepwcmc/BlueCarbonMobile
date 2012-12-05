@@ -17,6 +17,7 @@ class BlueCarbon.Views.AreaIndexView extends Backbone.View
 
 class BlueCarbon.Views.AreaView extends Backbone.View
   template: JST['area/area']
+  tagName: 'li'
   events:
     "touchstart .start-trip": "startTrip"
   initialize: (options)->

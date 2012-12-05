@@ -27,16 +27,19 @@ h3 {
 
 .btn {
   border-radius: 5px;
-  border: 1px solid #ADADAD;
-  background: -webkit-linear-gradient(top, #ffffff 0%,#e6e6e6 100%);
+  border: 3px solid #303539;
+  background: -webkit-linear-gradient(top, #ebeced 0%,#d3d4d6 49%,#c8c9cb 50%,#bfc0c3 51%,#bfc1c4 100%); /* Chrome10+,Safari5.1+ */
   padding: 1px 5px;
-  color: #333;
+  color: #000;
+  font-weight: bold;
+}
+.btn.btn-small {
+  border: 1px solid #ADADAD;
 }
 .btn.primary {
   border: 1px solid #0062B8;
   background: -webkit-linear-gradient(top, #0085cc 0%,#0045cc 100%);
   color: white;
-  font-weight: bold;
 }
 
 #header-strip {
@@ -126,12 +129,15 @@ h3 {
 #area-list {
   list-style-type: none;
   padding: 5px;
+  margin: 0;
 }
 
 #area-list > li {
   border-bottom: 1px solid #DDD;
   margin-bottom: 10px;
   padding: 5px;
+  padding-top: 3px;
+  padding-bottom: 10px;
 }
 
 #area-list .headline {
@@ -139,10 +145,11 @@ h3 {
 }
 #area-list .headline h3 {
   float:left;
+  margin-top: 2px;
 }
 #area-list .headline a {
   float:right;
-  margin-top: 9px;
+  margin-top: 0;
 }
 
 #area-list ul.attributes {

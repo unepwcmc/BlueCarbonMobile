@@ -61,15 +61,13 @@ window.JST['area/area_index'] = _.template(
 )
 window.JST['area/area'] = _.template(
   """
-    <li>
-      <div class='headline'>
-        <h3><%= area.get('title') %></h3>
-        <a class="start-trip btn">Start trip</a>
-      </div>
-      <ul class='attributes'>
-        <li>Last updated:<span>11/12/2012</span></li>
-        <li>Data ready for trip:<span>√</span></li>
-      </ul>
-    </li>
+    <div class='headline'>
+      <h3><%= area.get('title') %></h3>
+      <a class="start-trip btn btn-small">Start trip</a>
+    </div>
+    <ul class='attributes'>
+      <li>Last updated:<span>11/12/2012</span></li>
+      <li>Data ready for trip:<span>√</span></li>
+    </ul>
   """
 )

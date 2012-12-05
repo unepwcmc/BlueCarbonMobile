@@ -10,6 +10,6 @@
 
   window.JST['area/area_index'] = _.template("<div class='ios-head'>\n  <h2>Areas</h2>\n</div>\n<ul id=\"area-list\">\n</ul>");
 
-  window.JST['area/area'] = _.template("<li>\n  <div class='headline'>\n    <h3><%= area.get('title') %></h3>\n    <a class=\"start-trip btn\">Start trip</a>\n  </div>\n  <ul class='attributes'>\n    <li>Last updated:<span>11/12/2012</span></li>\n    <li>Data ready for trip:<span>√</span></li>\n  </ul>\n</li>");
+  window.JST['area/area'] = _.template("<div class='headline'>\n  <h3><%= area.get('title') %></h3>\n  <a class=\"start-trip btn btn-small\">Start trip</a>\n</div>\n<ul class='attributes'>\n  <li>Last updated:<span>11/12/2012</span></li>\n  <li>Data ready for trip:<span>√</span></li>\n</ul>");
 
 }).call(this);
