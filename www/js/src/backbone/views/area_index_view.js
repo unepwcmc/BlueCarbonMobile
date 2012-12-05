@@ -28,13 +28,56 @@
     };
 
     AreaIndexView.prototype.render = function() {
+      var _this = this;
       this.$el.html(this.template({
         models: this.areaList.toJSON()
       }));
+      this.areaList.each(function(area) {
+        return $('#area-list').append(new BlueCarbon.Views.AreaView({
+          area: area
+        }).render().el);
+      });
       return this;
     };
 
     return AreaIndexView;
+
+  })(Backbone.View);
+
+  BlueCarbon.Views.AreaView = (function(_super) {
+
+    __extends(AreaView, _super);
+
+    function AreaView() {
+      this.startTrip = __bind(this.startTrip, this);
+      this.render = __bind(this.render, this);
+      AreaView.__super__.constructor.apply(this, arguments);
+    }
+
+    AreaView.prototype.template = JST['area/area'];
+
+    AreaView.prototype.events = {
+      "touchstart .start-trip": "startTrip"
+    };
+
+    AreaView.prototype.initialize = function(options) {
+      return this.area = options.area;
+    };
+
+    AreaView.prototype.render = function() {
+      this.$el.html(this.template({
+        area: this.area
+      }));
+      return this;
+    };
+
+    AreaView.prototype.startTrip = function() {
+      return BlueCarbon.bus.trigger('area:startTrip', {
+        area: this.area
+      });
+    };
+
+    return AreaView;
 
   })(Backbone.View);
 

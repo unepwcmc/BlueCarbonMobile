@@ -2,14 +2,14 @@ window.JST = {}
 
 window.JST['area/edit'] = _.template(
   """
-    <h3>Work Area #13</h3>
-    <input id="new-polygon" type="submit" value="Draw a Polygon"/>
+    <h3><%= area.get('title') %></h3>
+    <input id="new-validation" type="submit" value="Add a validation"/>
   """
 )
 
 window.JST['area/add_polygon'] = _.template(
   """
-    <h3>Work Area #13</h3>
+    <h3><%= area.get('title') %></h3>
     <form id="validation-attributes" onSubmit="return false;">
       <ul class="fields">
         <li>
@@ -48,21 +48,20 @@ window.JST['area/area_index'] = _.template(
   """
     <h2>Areas</h2>
     <ul id="area-list">
-      <%
-        var i, len;
-        for (i=0,len=models.length; i<len; i=i+1){
-      %>
-        <li>
-          <div class='headline'>
-            <h3><%= models[i].title %></h3>
-            <a class='btn'>Start trip</a>
-          </div>
-          <ul class='attributes'>
-            <li>Last updated:<span>11/12/2012</span></li>
-            <li>Data ready for trip:<span>√</span></li>
-          </ul>
-        </li>
-      <% } %>
     </ul>
+  """
+)
+window.JST['area/area'] = _.template(
+  """
+    <li>
+      <div class='headline'>
+        <h3><%= area.get('title') %></h3>
+        <a class="start-trip btn">Start trip</a>
+      </div>
+      <ul class='attributes'>
+        <li>Last updated:<span>11/12/2012</span></li>
+        <li>Data ready for trip:<span>√</span></li>
+      </ul>
+    </li>
   """
 )

@@ -7,6 +7,7 @@ class BlueCarbon.Views.AddValidationView extends Backbone.View
     "touchstart #create-analysis": 'createAnalysis'
 
   initialize: (options)->
+    @area = options.area
     @map = options.map
 
     @validation = new BlueCarbon.Models.Validation()
@@ -19,7 +20,7 @@ class BlueCarbon.Views.AddValidationView extends Backbone.View
     @polygonDraw = new L.Polygon.Draw(@map, {})
     @polygonDraw.enable()
 
-    @$el.html(@template())
+    @$el.html(@template(area: @area))
     return @
 
   createAnalysis: () =>
@@ -27,7 +28,15 @@ class BlueCarbon.Views.AddValidationView extends Backbone.View
       alert("You've not finished your polygon!")
       return false
     @validation.set($('form#validation-attributes').serializeObject())
-    @validation.save()
+    @validation.save(@validation.attributes,
+      success: =>
+        console.log 'successfully saved:'
+        console.log @validation
+        @trigger('validation:created', area: @area)
+      error: (a,b,c)=>
+        console.log 'error saving validation:'
+        console.log arguments
+    )
 
   close: () ->
     @polygonDraw.disable()

@@ -147,23 +147,26 @@
       var areaIndexView;
       areaIndexView = new BlueCarbon.Views.AreaIndexView();
       this.sidePanel.showView(areaIndexView);
-      return this.transitionToActionOn(areaIndexView, 'addPolygon', this.addValidation);
+      return this.transitionToActionOn(BlueCarbon.bus, 'area:startTrip', this.areaEdit);
     };
 
-    Controller.prototype.areaEdit = function() {
+    Controller.prototype.areaEdit = function(options) {
       var areaEditView;
-      areaEditView = new BlueCarbon.Views.AreaEditView();
+      areaEditView = new BlueCarbon.Views.AreaEditView({
+        area: options.area
+      });
       this.sidePanel.showView(areaEditView);
-      return this.transitionToActionOn(areaEditView, 'addPolygon', this.addValidation);
+      return this.transitionToActionOn(areaEditView, 'addValidation', this.addValidation);
     };
 
     Controller.prototype.addValidation = function(options) {
-      var validationView;
-      validationView = new BlueCarbon.Views.AddValidationView({
+      var addValidationView;
+      addValidationView = new BlueCarbon.Views.AddValidationView({
+        area: options.area,
         map: this.app.map
       });
-      this.sidePanel.showView(validationView);
-      return this.transitionToActionOn(validationView, 'polygon:created', this.areaEdit);
+      this.sidePanel.showView(addValidationView);
+      return this.transitionToActionOn(addValidationView, 'validation:created', this.areaEdit);
     };
 
     return Controller;
