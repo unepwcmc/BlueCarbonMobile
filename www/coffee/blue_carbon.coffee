@@ -3,6 +3,10 @@ window.onerror = (message, url, linenumber) ->
   alert "JavaScript error: #{message} on line #{linenumber} for #{url}"
 
 $.support.cors = true
+$.ajaxSetup(
+  data:
+    auth_token: ''
+)
 
 window.Wcmc ||= {}
 window.BlueCarbon ||= {}

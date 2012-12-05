@@ -11,6 +11,12 @@
 
   $.support.cors = true;
 
+  $.ajaxSetup({
+    data: {
+      auth_token: ''
+    }
+  });
+
   window.Wcmc || (window.Wcmc = {});
 
   window.BlueCarbon || (window.BlueCarbon = {});

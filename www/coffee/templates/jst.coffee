@@ -53,7 +53,7 @@ window.JST['area/area_index'] = _.template(
         for (i=0,len=models.length; i<len; i=i+1){
       %>
         <li>
-          <%= models[i].title %>
+          <h4><%= models[i].title %></h4>
         </li>
       <% } %>
     </ul>
