@@ -53,7 +53,10 @@ window.JST['area/area_index'] = _.template(
         for (i=0,len=models.length; i<len; i=i+1){
       %>
         <li>
-          <h4><%= models[i].title %></h4>
+          <div class='headline'>
+            <h3><%= models[i].title %></h3>
+            <a class='btn'>Start trip</a>
+          </div>
           <ul class='attributes'>
             <li>Last updated:<span>11/12/2012</span></li>
             <li>Data ready for trip:<span>√</span></li>

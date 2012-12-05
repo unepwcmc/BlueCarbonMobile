@@ -21,6 +21,24 @@ h1 {
 h2 {
   font-size: 31.5px;
 }
+h3 {
+  font-size: 24.5px;
+}
+
+.btn {
+  border-radius: 5px;
+  border: 1px solid #ADADAD;
+  background: -webkit-linear-gradient(top, #ffffff 0%,#e6e6e6 100%);
+  padding: 1px 5px;
+  color: #333;
+}
+.btn.primary {
+  border: 1px solid #0062B8;
+  background: -webkit-linear-gradient(top, #0085cc 0%,#0045cc 100%);
+  color: white;
+  font-weight: bold;
+}
+
 #header-strip {
   height: 70px;
   padding: 10px;
@@ -117,6 +135,18 @@ h2 {
 #area-list > li {
   border-bottom: 1px solid #DDD;
   margin-bottom: 10px;
+  padding: 5px;
+}
+
+#area-list .headline {
+  overflow:hidden;
+}
+#area-list .headline h3 {
+  float:left;
+}
+#area-list .headline a {
+  float:right;
+  margin-top: 9px;
 }
 
 #area-list ul.attributes {
