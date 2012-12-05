@@ -20,26 +20,22 @@ class Backbone.SyncableModel extends Backbone.Model
     sql = ""
     switch method
       when "create"
+        fields = []
         values = []
-        # Retrieve all values as an array to be inserted in DB
-
-        sql = []
-        sql.push(
-          """
-            INSERT INTO #{model.constructor.name}
-            VALUES (
-          """
-        )
 
         for attr, val of attrs
           if _.isArray(val) or _.isObject(val)
             val = JSON.stringify(val)
 
-          sql.push("\"#{val}\", ")
+          fields.push(attr)
+          values.push(val)
 
-        sql.push(")")
-
-        sql = sql.join(" ")
+        sql =
+          """
+            INSERT INTO #{model.constructor.name}
+            ( #{fields.join(", ")} )
+            VALUES ( #{values.join(", ")} )
+          """
       when "update"
         sql = []
         for attr, val of attrs
