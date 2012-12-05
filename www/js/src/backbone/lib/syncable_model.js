@@ -31,24 +31,23 @@
     };
 
     SyncableModel.prototype.sqliteSync = function(method, model, options) {
-      var attr, attrs, sql, val, values,
+      var attr, attrs, fields, sql, val, values,
         _this = this;
       attrs = model.toJSON();
       sql = "";
       switch (method) {
         case "create":
+          fields = [];
           values = [];
-          sql = [];
-          sql.push("INSERT INTO " + model.constructor.name + "\nVALUES (");
           for (attr in attrs) {
             val = attrs[attr];
             if (_.isArray(val) || _.isObject(val)) {
               val = JSON.stringify(val);
             }
-            sql.push("\"" + val + "\", ");
+            fields.push(attr);
+            values.push("\"" + val + "\"");
           }
-          sql.push(")");
-          sql = sql.join(" ");
+          sql = "INSERT INTO " + model.constructor.name + "\n( " + (fields.join(", ")) + " )\nVALUES ( " + (values.join(", ")) + " )";
           break;
         case "update":
           sql = [];
@@ -64,6 +63,7 @@
         case "delete":
           sql = "DELETE FROM " + model.constructor.name + "\nWHERE id=\"" + attrs['id'] + "\"";
       }
+      console.log(sql);
       return this.db.transaction(function(tx) {
         return tx.executeSql(sql, [], function(tx, results) {
           return options.success.apply(_this, arguments);

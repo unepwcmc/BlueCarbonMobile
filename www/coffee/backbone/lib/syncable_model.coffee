@@ -28,7 +28,7 @@ class Backbone.SyncableModel extends Backbone.Model
             val = JSON.stringify(val)
 
           fields.push(attr)
-          values.push(val)
+          values.push("\"#{val}\"")
 
         sql =
           """
@@ -61,6 +61,7 @@ class Backbone.SyncableModel extends Backbone.Model
             WHERE id="#{attrs['id']}"
           """
 
+    console.log sql
     @db.transaction(
       (tx) =>
         tx.executeSql(sql, [], (tx, results) =>
