@@ -65,6 +65,8 @@ class BlueCarbon.App
       , @buildMap
       , @downloadBaseLayer)
 
+    window.BlueCarbon.SQLiteDb = window.sqlitePlugin.openDatabase("BlueCarbon.db", "1.0", "Test", 10000000)
+
   downloadBaseLayer: =>
     console.log "Downloading file..."
     ft = new FileTransfer()
