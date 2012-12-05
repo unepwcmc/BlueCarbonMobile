@@ -27,7 +27,7 @@ window.JST['area/add_polygon'] = _.template(
 window.JST['area/login'] = _.template(
   """
     <h3>Please login</h3>
-    <form id="validation-attributes" onSubmit="return false;">
+    <form id="login-form" onSubmit="return false;">
       <ul class="fields">
         <li>
           <span>Username</span>
@@ -38,7 +38,7 @@ window.JST['area/login'] = _.template(
           <input name="Password" type="password"/>
         </li>
       </ul>
-      <input id="create-analysis" type="submit" value="Login">
+      <input id="login" type="submit" value="Login">
     </form>
   """
 )

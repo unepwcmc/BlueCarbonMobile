@@ -10,6 +10,14 @@
     return alert("JavaScript error: " + message + " on line " + linenumber + " for " + url);
   };
 
+  $.support.cors = true;
+
+  $.ajaxSetup({
+    xhrFields: {
+      withCredentials: true
+    }
+  });
+
   window.Wcmc || (window.Wcmc = {});
 
   window.BlueCarbon || (window.BlueCarbon = {});
