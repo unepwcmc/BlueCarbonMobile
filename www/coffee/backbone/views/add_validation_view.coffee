@@ -5,6 +5,7 @@ class BlueCarbon.Views.AddValidationView extends Backbone.View
   template: JST['area/add_polygon']
   events:
     "touchstart #create-analysis": 'createAnalysis'
+    "touchstart .ios-head .back" : "fireBack"
 
   initialize: (options)->
     @area = options.area
@@ -37,6 +38,9 @@ class BlueCarbon.Views.AddValidationView extends Backbone.View
         console.log 'error saving validation:'
         console.log arguments
     )
+
+  fireBack: ->
+    @trigger('back', area: @area)
 
   close: () ->
     @polygonDraw.disable()

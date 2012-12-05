@@ -18,7 +18,8 @@
     AreaEditView.prototype.template = JST['area/edit'];
 
     AreaEditView.prototype.events = {
-      "touchstart #new-validation": "fireAddValidation"
+      "touchstart #new-validation": "fireAddValidation",
+      "touchstart .ios-head .back": "fireBack"
     };
 
     AreaEditView.prototype.initialize = function(options) {
@@ -29,6 +30,10 @@
       return this.trigger('addValidation', {
         area: this.area
       });
+    };
+
+    AreaEditView.prototype.fireBack = function() {
+      return this.trigger('back');
     };
 
     AreaEditView.prototype.render = function() {

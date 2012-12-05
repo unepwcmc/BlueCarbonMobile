@@ -2,14 +2,20 @@ window.JST = {}
 
 window.JST['area/edit'] = _.template(
   """
-    <h3><%= area.get('title') %></h3>
+    <div class='ios-head'>
+      <a class='back'>Back</a>
+      <h2><%= area.get('title') %></h2>
+    </div>
     <input id="new-validation" type="submit" value="Add a validation"/>
   """
 )
 
 window.JST['area/add_polygon'] = _.template(
   """
-    <h3><%= area.get('title') %></h3>
+    <div class='ios-head'>
+      <a class='back'>Area</a>
+      <h2>Add Validation</h3>
+    </div>
     <form id="validation-attributes" onSubmit="return false;">
       <ul class="fields">
         <li>
@@ -46,7 +52,9 @@ window.JST['area/login'] = _.template(
 
 window.JST['area/area_index'] = _.template(
   """
-    <h2>Areas</h2>
+    <div class='ios-head'>
+      <h2>Areas</h2>
+    </div>
     <ul id="area-list">
     </ul>
   """

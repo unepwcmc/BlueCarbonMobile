@@ -20,7 +20,8 @@
     AddValidationView.prototype.template = JST['area/add_polygon'];
 
     AddValidationView.prototype.events = {
-      "touchstart #create-analysis": 'createAnalysis'
+      "touchstart #create-analysis": 'createAnalysis',
+      "touchstart .ios-head .back": "fireBack"
     };
 
     AddValidationView.prototype.initialize = function(options) {
@@ -61,6 +62,12 @@
           console.log('error saving validation:');
           return console.log(arguments);
         }
+      });
+    };
+
+    AddValidationView.prototype.fireBack = function() {
+      return this.trigger('back', {
+        area: this.area
       });
     };
 

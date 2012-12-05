@@ -118,9 +118,11 @@ class BlueCarbon.Controller extends Wcmc.Controller
     @sidePanel.showView(areaEditView)
 
     @transitionToActionOn(areaEditView, 'addValidation', @addValidation)
+    @transitionToActionOn(areaEditView, 'back', @areaIndex)
 
   addValidation: (options) =>
     addValidationView = new BlueCarbon.Views.AddValidationView(area: options.area, map: @app.map)
     @sidePanel.showView(addValidationView)
 
     @transitionToActionOn(addValidationView, 'validation:created', @areaEdit)
+    @transitionToActionOn(addValidationView, 'back', @areaEdit)

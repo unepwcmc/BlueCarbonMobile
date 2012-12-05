@@ -156,7 +156,8 @@
         area: options.area
       });
       this.sidePanel.showView(areaEditView);
-      return this.transitionToActionOn(areaEditView, 'addValidation', this.addValidation);
+      this.transitionToActionOn(areaEditView, 'addValidation', this.addValidation);
+      return this.transitionToActionOn(areaEditView, 'back', this.areaIndex);
     };
 
     Controller.prototype.addValidation = function(options) {
@@ -166,7 +167,8 @@
         map: this.app.map
       });
       this.sidePanel.showView(addValidationView);
-      return this.transitionToActionOn(addValidationView, 'validation:created', this.areaEdit);
+      this.transitionToActionOn(addValidationView, 'validation:created', this.areaEdit);
+      return this.transitionToActionOn(addValidationView, 'back', this.areaEdit);
     };
 
     return Controller;
