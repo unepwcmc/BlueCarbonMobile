@@ -3,14 +3,10 @@ window.onerror = (message, url, linenumber) ->
   alert "JavaScript error: #{message} on line #{linenumber} for #{url}"
 
 $.support.cors = true
-# Session persistence
-$.ajaxSetup(
-  xhrFields:
-    withCredentials: true
-)
 
 window.Wcmc ||= {}
 window.BlueCarbon ||= {}
+window.BlueCarbon.bus = _.extend({}, Backbone.Events)
 window.BlueCarbon.Models ||= {}
 window.BlueCarbon.Controllers ||= {}
 window.BlueCarbon.Views ||= {}
@@ -26,6 +22,16 @@ class BlueCarbon.App
     @remoteFile = "https://dl.dropbox.com/u/2324263/bluecarbon.mbtiles"
     @on('mapReady', =>
       @controller = new BlueCarbon.Controller(app:@)
+    )
+    
+    # Setup ajax calls to use auth tokens
+    BlueCarbon.bus.on('user:gotAuthToken', (token) ->
+      console.log("logged in, using token #{token}")
+      # Session persistence
+      $.ajaxSetup(
+        data:
+          auth_token: token
+      )
     )
 
     #document.addEventListener "deviceready", @start, false)
@@ -83,7 +89,7 @@ class BlueCarbon.Controller extends Wcmc.Controller
     @sidePanel = new Backbone.ViewManager('#side-panel')
     @modal = new Backbone.ViewManager('#modal-container')
 
-    @areaEdit()
+    @loginUser()
 
   loginUser: =>
     loginView = new BlueCarbon.Views.LoginView()

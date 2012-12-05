@@ -27,15 +27,16 @@ window.JST['area/add_polygon'] = _.template(
 window.JST['area/login'] = _.template(
   """
     <h3>Please login</h3>
+    <div class='error'></div>
     <form id="login-form" onSubmit="return false;">
       <ul class="fields">
         <li>
-          <span>Username</span>
-          <input name="username"/>
+          <span>Email</span>
+          <input name="email" value="decio.ferreira@unep-wcmc.org"/>
         </li>
         <li>
           <span>Password</span>
-          <input name="Password" type="password"/>
+          <input name="password" type="password" value="decioferreira"/>
         </li>
       </ul>
       <input id="login" type="submit" value="Login">

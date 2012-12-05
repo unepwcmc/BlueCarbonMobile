@@ -16,6 +16,7 @@
     }
 
     User.prototype.login = function(options) {
+      var _this = this;
       return $.ajax({
         type: 'GET',
         url: 'http://bluecarbon.unep-wcmc.org/admins/me.json',
@@ -26,14 +27,14 @@
               type: 'POST',
               url: 'http://bluecarbon.unep-wcmc.org/my/admins/sign_in.json',
               data: {
-                admin: {
-                  email: "decio.ferreira@unep-wcmc.org",
-                  password: "decioferreira",
-                  remember_me: 1
-                }
+                admin: _this.attributes
               },
-              dataType: "text",
-              success: options.success,
+              dataType: "json",
+              success: function(data) {
+                _this.set('auth_token', data.auth_token);
+                BlueCarbon.bus.trigger('user:gotAuthToken', data.auth_token);
+                return options.success(_this);
+              },
               error: options.error
             });
           } else {

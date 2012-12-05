@@ -11,15 +11,11 @@
 
   $.support.cors = true;
 
-  $.ajaxSetup({
-    xhrFields: {
-      withCredentials: true
-    }
-  });
-
   window.Wcmc || (window.Wcmc = {});
 
   window.BlueCarbon || (window.BlueCarbon = {});
+
+  window.BlueCarbon.bus = _.extend({}, Backbone.Events);
 
   (_base = window.BlueCarbon).Models || (_base.Models = {});
 
@@ -45,6 +41,14 @@
       this.on('mapReady', function() {
         return _this.controller = new BlueCarbon.Controller({
           app: _this
+        });
+      });
+      BlueCarbon.bus.on('user:gotAuthToken', function(token) {
+        console.log("logged in, using token " + token);
+        return $.ajaxSetup({
+          data: {
+            auth_token: token
+          }
         });
       });
       this.ready = false;
@@ -116,7 +120,7 @@
       this.loginUser = __bind(this.loginUser, this);      this.app = options.app;
       this.sidePanel = new Backbone.ViewManager('#side-panel');
       this.modal = new Backbone.ViewManager('#modal-container');
-      this.areaEdit();
+      this.loginUser();
     }
 
     Controller.prototype.loginUser = function() {

@@ -19,6 +19,8 @@
 
     LoginView.prototype.template = JST['area/login'];
 
+    LoginView.prototype.className = 'login';
+
     LoginView.prototype.events = {
       "click #login": "login"
     };
@@ -28,36 +30,14 @@
     };
 
     LoginView.prototype.login = function() {
+      var _this = this;
       this.user.set($('#login-form').serializeObject());
       return this.user.login({
         success: function(data) {
-          console.log('login success');
-          $.ajax({
-            type: 'POST',
-            url: 'http://bluecarbon.unep-wcmc.org/areas.json',
-            data: {
-              area: {
-                title: "Hi Decio 3"
-              }
-            },
-            dataType: "text",
-            beforeSend: function(xhr) {
-              return xhr.withCredentials = true;
-            },
-            success: (function(data) {
-              console.log("success:");
-              return console.log(data);
-            }),
-            error: (function(data) {
-              console.log("error:");
-              return console.log(data);
-            })
-          });
-          return console.log(data);
+          return _this.trigger('user:loggedIn', _this.user);
         },
         error: function(data) {
-          console.log('login fail');
-          return console.log(data);
+          return _this.showError('Unable to login');
         }
       });
     };
@@ -65,6 +45,11 @@
     LoginView.prototype.render = function() {
       this.$el.html(this.template());
       return this;
+    };
+
+    LoginView.prototype.showError = function(message) {
+      $('.error').text(message);
+      return $('.error').slideDown();
     };
 
     return LoginView;

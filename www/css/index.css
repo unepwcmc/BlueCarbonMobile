@@ -74,3 +74,11 @@ body {
     width: 768px;
   }
 }
+
+.error {
+  background-color: #F2DEDE;
+}
+
+.login.error{
+  display: none;
+}
