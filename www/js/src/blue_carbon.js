@@ -118,6 +118,7 @@
     function Controller(options) {
       this.addValidation = __bind(this.addValidation, this);
       this.areaEdit = __bind(this.areaEdit, this);
+      this.areaIndex = __bind(this.areaIndex, this);
       this.loginUser = __bind(this.loginUser, this);      this.app = options.app;
       this.sidePanel = new Backbone.ViewManager('#side-panel');
       this.modal = new Backbone.ViewManager('#modal-container');
@@ -132,8 +133,15 @@
       this.modal.showView(loginView);
       return this.transitionToActionOn(loginView, 'user:loggedIn', function() {
         $('#modal-disabler').removeClass('active');
-        return _this.areaEdit();
+        return _this.areaIndex();
       });
+    };
+
+    Controller.prototype.areaIndex = function() {
+      var areaIndexView;
+      areaIndexView = new BlueCarbon.Views.AreaIndexView();
+      this.sidePanel.showView(areaIndexView);
+      return this.transitionToActionOn(areaIndexView, 'addPolygon', this.addValidation);
     };
 
     Controller.prototype.areaEdit = function() {

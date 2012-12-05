@@ -43,3 +43,19 @@ window.JST['area/login'] = _.template(
     </form>
   """
 )
+
+window.JST['area/area_index'] = _.template(
+  """
+    <h3>Areas</h3>
+    <ul id="area-list">
+      <%
+        var i, len;
+        for (i=0,len=models.length; i<len; i=i+1){
+      %>
+        <li>
+          <%= models[i].title %>
+        </li>
+      <% } %>
+    </ul>
+  """
+)

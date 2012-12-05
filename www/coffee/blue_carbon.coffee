@@ -100,8 +100,14 @@ class BlueCarbon.Controller extends Wcmc.Controller
 
     @transitionToActionOn(loginView, 'user:loggedIn', =>
       $('#modal-disabler').removeClass('active')
-      @areaEdit()
+      @areaIndex()
     )
+
+  areaIndex: =>
+    areaIndexView = new BlueCarbon.Views.AreaIndexView()
+    @sidePanel.showView(areaIndexView)
+
+    @transitionToActionOn(areaIndexView, 'addPolygon', @addValidation)
 
   areaEdit: =>
     areaEditView = new BlueCarbon.Views.AreaEditView()
