@@ -19,6 +19,8 @@
 
     AreaIndexView.prototype.template = JST['area/area_index'];
 
+    AreaIndexView.prototype.className = 'area-index';
+
     AreaIndexView.prototype.initialize = function() {
       this.areaList = new BlueCarbon.Collections.Areas();
       this.areaList.on('reset', this.render);

@@ -46,7 +46,7 @@ window.JST['area/login'] = _.template(
 
 window.JST['area/area_index'] = _.template(
   """
-    <h3>Areas</h3>
+    <h2>Areas</h2>
     <ul id="area-list">
       <%
         var i, len;
@@ -54,6 +54,10 @@ window.JST['area/area_index'] = _.template(
       %>
         <li>
           <h4><%= models[i].title %></h4>
+          <ul class='attributes'>
+            <li>Last updated:<span>11/12/2012</span></li>
+            <li>Data ready for trip:<span>√</span></li>
+          </ul>
         </li>
       <% } %>
     </ul>

@@ -1,21 +1,42 @@
 body {
   padding: 0;
   margin: 0;
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+h1, h2, h3, h4, h5, h6 {
+  margin: 10px 0;
+  font-family: inherit;
+  font-weight: bold;
+  line-height: 20px;
+  color: inherit;
+  text-rendering: optimizelegibility;
+}
+h1 {
+  font-weight: bold;
+  line-height: 60px;
+  font-size: 56px;
+  letter-spacing: -1px;
+  margin-top: 0;
+}
+h2 {
+  font-size: 31.5px;
 }
 #header-strip {
   height: 70px;
   padding: 10px;
-  background-color: pink;
-}
-#header-strip h1 {
-  margin-top: 0;
+  color: white;
+  background-color: #8298C8;
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#4878a8), color-stop(100%,#406b96)); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, #4878a8 0%,#406b96 100%); /* Chrome10+,Safari5.1+ */
 }
 
+#main-container {
+  background: url('img/mottled.png');
+}
 @media only screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:portrait) {
   /* For portrait layouts only */
   #main-container {
     height: 914px;
-    background-color: green;
   }
 }
 
@@ -23,18 +44,18 @@ body {
   /* For landscape layouts only */
   #main-container {
     height: 658px;
-    background-color: purple;
   }
 }
 
+#side-panel {
+  width: 30%;
+  height: 100%;
+  float:left;
+  background: url('img/mottled.png');
+}
 #map {
   width: 70%;
   height: 100%;
-  float:left;
-}
-#side-panel {
-  padding: 0 10px;
-  width: 30%;
   float:left;
 }
 
@@ -82,4 +103,26 @@ body {
 
 .login.error{
   display: none;
+}
+
+.area-index {
+  padding: 10px;
+}
+
+#area-list {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+#area-list > li {
+  border-bottom: 1px solid #DDD;
+  margin-bottom: 10px;
+}
+
+#area-list ul.attributes {
+  list-style-type: none;
+  padding-left: 5px;
+}
+#area-list ul.attributes li span{
+  float:right;
 }
