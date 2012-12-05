@@ -47,23 +47,22 @@
             fields.push(attr);
             values.push("\"" + val + "\"");
           }
-          sql = "INSERT INTO " + model.constructor.name + "\n( " + (fields.join(", ")) + " )\nVALUES ( " + (values.join(", ")) + " )";
+          sql = "INSERT INTO " + model.constructor.name + "\n( " + (fields.join(", ")) + " )\nVALUES ( " + (values.join(", ")) + " );";
           break;
         case "update":
           sql = [];
           for (attr in attrs) {
             val = attrs[attr];
-            sql.push("UPDATE " + model.constructor.name + "\nSET " + attr + "=" + val + "\nWHERE id=\"" + attrs['id'] + "\"");
+            sql.push("UPDATE " + model.constructor.name + "\nSET " + attr + "=\"" + val + "\"\nWHERE id=\"" + attrs['id'] + "\"");
           }
           sql = sql.join("; ");
           break;
         case "read":
-          sql = "SELECT " + (Object.keys(attrs)) + "\nFROM " + model.constructor.name + "\nWHERE id=\"" + attrs['id'] + "\"";
+          sql = "SELECT " + (Object.keys(attrs)) + "\nFROM " + model.constructor.name + "\nWHERE id=\"" + attrs['id'] + "\";";
           break;
         case "delete":
-          sql = "DELETE FROM " + model.constructor.name + "\nWHERE id=\"" + attrs['id'] + "\"";
+          sql = "DELETE FROM " + model.constructor.name + "\nWHERE id=\"" + attrs['id'] + "\";";
       }
-      console.log(sql);
       return this.db.transaction(function(tx) {
         return tx.executeSql(sql, [], function(tx, results) {
           return options.success.apply(_this, arguments);

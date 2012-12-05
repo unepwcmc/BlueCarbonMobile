@@ -34,7 +34,7 @@ class Backbone.SyncableModel extends Backbone.Model
           """
             INSERT INTO #{model.constructor.name}
             ( #{fields.join(", ")} )
-            VALUES ( #{values.join(", ")} )
+            VALUES ( #{values.join(", ")} );
           """
       when "update"
         sql = []
@@ -42,7 +42,7 @@ class Backbone.SyncableModel extends Backbone.Model
           sql.push(
             """
               UPDATE #{model.constructor.name}
-              SET #{attr}=#{val}
+              SET #{attr}="#{val}"
               WHERE id="#{attrs['id']}"
             """
           )
@@ -52,16 +52,15 @@ class Backbone.SyncableModel extends Backbone.Model
           """
             SELECT #{Object.keys(attrs)}
             FROM #{model.constructor.name}
-            WHERE id="#{attrs['id']}"
+            WHERE id="#{attrs['id']}";
           """
       when "delete"
         sql =
           """
             DELETE FROM #{model.constructor.name}
-            WHERE id="#{attrs['id']}"
+            WHERE id="#{attrs['id']}";
           """
 
-    console.log sql
     @db.transaction(
       (tx) =>
         tx.executeSql(sql, [], (tx, results) =>
