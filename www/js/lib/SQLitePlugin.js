@@ -1,3 +1,4 @@
+// FROM https://github.com/brodyspark/PhoneGap-sqlitePlugin-iOS
 // SQLitePlugin.js: originally written in CoffeeScript,
 // Copyright (C) 2011 Joe Noon <joenoon@gmail.com>
 //
