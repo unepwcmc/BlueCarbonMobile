@@ -36,6 +36,27 @@ h2 {
   font-size: 31.5px;
     text-shadow: 1px 1px 0px #2e333b;
 }
+h3 {
+  font-size: 24.5px;
+}
+
+.btn {
+  border-radius: 5px;
+  border: 3px solid #303539;
+  background: -webkit-linear-gradient(top, #ebeced 0%,#d3d4d6 49%,#c8c9cb 50%,#bfc0c3 51%,#bfc1c4 100%); /* Chrome10+,Safari5.1+ */
+  padding: 1px 5px;
+  color: #000;
+  font-weight: bold;
+}
+.btn.btn-small {
+  border: 1px solid #ADADAD;
+}
+.btn.primary {
+  border: 1px solid #0062B8;
+  background: -webkit-linear-gradient(top, #0085cc 0%,#0045cc 100%);
+  color: white;
+}
+
 #header-strip {
   height: 70px;
   padding: 10px;
@@ -153,17 +174,22 @@ ul.fields li span{
   display: none;
 }
 
+<<<<<<< HEAD
 
 .area-index {
   padding: 0;
 }
 
+=======
+>>>>>>> d938f87f6ee91601ff641e0f7176f7a9f0e8a5b6
 #area-list {
   list-style-type: none;
-  padding-left: 0;
+  padding: 5px;
+  margin: 0;
 }
 
 #area-list > li {
+<<<<<<< HEAD
 border-top: 1px solid #5c6776;
   border-bottom: 1px solid #2e333b;
     padding: 10px;
@@ -176,6 +202,25 @@ border-top: 1px solid #5c6776;
 
 #area-list li:last-child{
     border-bottom: none;
+=======
+  border-bottom: 1px solid #DDD;
+  margin-bottom: 10px;
+  padding: 5px;
+  padding-top: 3px;
+  padding-bottom: 10px;
+}
+
+#area-list .headline {
+  overflow:hidden;
+}
+#area-list .headline h3 {
+  float:left;
+  margin-top: 2px;
+}
+#area-list .headline a {
+  float:right;
+  margin-top: 0;
+>>>>>>> d938f87f6ee91601ff641e0f7176f7a9f0e8a5b6
 }
 
 #area-list ul.attributes {
@@ -184,4 +229,91 @@ border-top: 1px solid #5c6776;
 }
 #area-list ul.attributes li span{
   float:right;
+}
+
+.ios-head {
+  position:relative;
+  background: -webkit-linear-gradient(top, #aebcc9 0%,#869db2 49%,#7994ad 51%,#6f8aa6 100%);
+  height: 40px;
+  text-align: center;
+}
+
+.ios-head h2 {
+  color: white;
+  position:relative;
+  margin: auto;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  line-height: 38px;
+  font-family : HelveticaNeue;
+  font-size: 25px;
+  text-shadow : 0px -1px 0px #000;
+}
+
+.back {
+    left:13px;
+    top:5px;
+    position:absolute;
+    background-repeat:repeat-x;
+    background-color: rgba(74,108,155,1);/*change this and the background color for the :before element*/
+    background-image : -webkit-linear-gradient(
+        bottom,
+        rgba(0,0,0,0) 0%,
+        rgba(0,0,0,0) 50%,
+        rgba(255,255,255,0.1) 50%,
+        rgba(255,255,255,0.3) 100%
+        );
+    height:30px;
+    padding: 0 10px 0 8px;
+    z-index : 1;
+    border-radius: 6px;
+    -webkit-border-top-left-radius : 10px 15px;
+    -webkit-border-bottom-left-radius : 10px 15px;
+    border-bottom: 1px solid rgba(255,255,255,0.3);
+    box-shadow :-1px -1px 0px rgba(0,0,0,0.2)inset,
+        0 1px 2px rgba(0,0,0,0.8)inset;
+    font-size : 11px;
+    display : block;
+    text-align:center;
+    color:#fff;
+    text-shadow : 0px -1px 0px #000;
+    line-height : 30px;
+    font-family : HelveticaNeue;
+    font-weight: 700;
+    -webkit-background-size : 30px;
+}
+ 
+.back:before {
+    position:absolute;
+    top:9.9%;
+    left:-5px;
+    -webkit-background-size : 22px 22px;
+    background-position :-2px -1.5px;
+    background-color: rgba(74,108,155,1);/*change to the same as the main element*/
+    background-image :
+        -webkit-gradient(linear, left bottom, right top,
+            from(rgba(0,0,0,0)),
+            color-stop(0.5, rgba(0,0,0,0)),
+            color-stop(0.5, rgba(255,255,255,0.1)),
+            to(rgba(255,255,255,0.3)));
+    height : 25px;
+    width: 25px;
+    -webkit-transform : rotate(-45deg) skew(-10deg, -10deg);
+    -webkit-border-top-right-radius : 100px 40px;
+    -webkit-border-top-left-radius : 30px 2px;
+    -webkit-border-bottom-right-radius : 2px 30px;
+    -webkit-border-bottom-left-radius : 40px 100px;
+    z-index : 1;
+    content : ' ';
+    border-left : 1.5px solid rgba(255,255,255,0.3);
+    box-shadow :  1px 1px 0 rgba(0,0,0,0.2) inset,
+        -1px 1px 1px rgba(0,0,0,0.5) inset;
+    -webkit-mask-image :
+        -webkit-gradient(linear, left top, right bottom,
+            from(#000000),
+            color-stop(0.33,#000000),
+            color-stop(0.5, transparent),
+            to(transparent));
 }

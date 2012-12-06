@@ -4,12 +4,18 @@ window.BlueCarbon.Views ||= {}
 class BlueCarbon.Views.AreaEditView extends Backbone.View
   template: JST['area/edit']
   events :
-    "touchstart #new-polygon" : "fireAddPolygon"
+    "touchstart #new-validation" : "fireAddValidation"
+    "touchstart .ios-head .back" : "fireBack"
+
+  initialize: (options) ->
+    @area = options.area
   
-  fireAddPolygon: ->
-    @trigger('addPolygon')
+  fireAddValidation: ->
+    @trigger('addValidation', area: @area)
+
+  fireBack: ->
+    @trigger('back')
 
   render: ->
-    console.log(@template())
-    @$el.html(@template())
+    @$el.html(@template(area: @area))
     return @

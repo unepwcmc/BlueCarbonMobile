@@ -2,14 +2,20 @@ window.JST = {}
 
 window.JST['area/edit'] = _.template(
   """
-    <h3>Work Area #13</h3>
-    <input id="new-polygon" type="submit" value="Draw a Polygon"/>
+    <div class='ios-head'>
+      <a class='back'>Back</a>
+      <h2><%= area.get('title') %></h2>
+    </div>
+    <input id="new-validation" type="submit" value="Add a validation"/>
   """
 )
 
 window.JST['area/add_polygon'] = _.template(
   """
-    <h3>Work Area #13</h3>
+    <div class='ios-head'>
+      <a class='back'>Area</a>
+      <h2>Add Validation</h3>
+    </div>
     <form id="validation-attributes" onSubmit="return false;">
       <ul class="fields">
         <li>
@@ -46,20 +52,22 @@ window.JST['area/login'] = _.template(
 
 window.JST['area/area_index'] = _.template(
   """
-    <h2>Areas</h2>
+    <div class='ios-head'>
+      <h2>Areas</h2>
+    </div>
     <ul id="area-list">
-      <%
-        var i, len;
-        for (i=0,len=models.length; i<len; i=i+1){
-      %>
-        <li>
-          <h4><%= models[i].title %></h4>
-          <ul class='attributes'>
-            <li>Last updated:<span>11/12/2012</span></li>
-            <li>Data ready for trip:<span>√</span></li>
-          </ul>
-        </li>
-      <% } %>
+    </ul>
+  """
+)
+window.JST['area/area'] = _.template(
+  """
+    <div class='headline'>
+      <h3><%= area.get('title') %></h3>
+      <a class="start-trip btn btn-small">Start trip</a>
+    </div>
+    <ul class='attributes'>
+      <li>Last updated:<span>11/12/2012</span></li>
+      <li>Data ready for trip:<span>√</span></li>
     </ul>
   """
 )

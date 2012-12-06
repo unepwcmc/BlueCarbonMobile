@@ -111,16 +111,18 @@ class BlueCarbon.Controller extends Wcmc.Controller
     areaIndexView = new BlueCarbon.Views.AreaIndexView()
     @sidePanel.showView(areaIndexView)
 
-    @transitionToActionOn(areaIndexView, 'addPolygon', @addValidation)
+    @transitionToActionOn(BlueCarbon.bus, 'area:startTrip', @areaEdit)
 
-  areaEdit: =>
-    areaEditView = new BlueCarbon.Views.AreaEditView()
+  areaEdit: (options) =>
+    areaEditView = new BlueCarbon.Views.AreaEditView(area: options.area)
     @sidePanel.showView(areaEditView)
 
-    @transitionToActionOn(areaEditView, 'addPolygon', @addValidation)
+    @transitionToActionOn(areaEditView, 'addValidation', @addValidation)
+    @transitionToActionOn(areaEditView, 'back', @areaIndex)
 
   addValidation: (options) =>
-    validationView = new BlueCarbon.Views.AddValidationView(map: @app.map)
-    @sidePanel.showView(validationView)
+    addValidationView = new BlueCarbon.Views.AddValidationView(area: options.area, map: @app.map)
+    @sidePanel.showView(addValidationView)
 
-    @transitionToActionOn(validationView, 'polygon:created', @areaEdit)
+    @transitionToActionOn(addValidationView, 'validation:created', @areaEdit)
+    @transitionToActionOn(addValidationView, 'back', @areaEdit)
