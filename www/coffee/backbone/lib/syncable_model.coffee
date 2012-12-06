@@ -1,8 +1,4 @@
 class Backbone.SyncableModel extends Backbone.Model
-  initialize: (options) ->
-    @db = window.BlueCarbon.SQLiteDb
-    super
-
   save: (key, value, options) ->
     this.sync = this.sqliteSync
     super
@@ -69,7 +65,7 @@ class Backbone.SyncableModel extends Backbone.Model
             WHERE id="#{attrs['id']}";
           """
 
-    @db.transaction(
+    BlueCarbon.SQLiteDb.transaction(
       (tx) =>
         tx.executeSql(sql, [], (tx, results) =>
           options.success.apply(@, arguments)
@@ -80,13 +76,17 @@ class Backbone.SyncableModel extends Backbone.Model
 
   createTableIfNotExist: (options) =>
     console.log "confirming existence of #{@constructor.name} table"
+    try
+      fail++
+    catch err
+      console.log(err.stack)
     
     unless @schema?
       alert("Model #{@constructor.name} must implement a this.schema() method, containing a SQLite comma separated string of 'name TYPE, name2 TYPE2...' so the DB can be init")
       return options.error()
 
-    sql = "CREATE TABLE IF NOT EXISTS validation (#{@schema()})"
-    @db.transaction(
+    sql = "CREATE TABLE IF NOT EXISTS #{@constructor.name} (#{@schema()})"
+    BlueCarbon.SQLiteDb.transaction(
       (tx) =>
         tx.executeSql(sql, [], (tx, results) =>
           options.success.apply(@, arguments)
