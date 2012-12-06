@@ -1,3 +1,16 @@
+/* GLOBAL RESETS */
+
+ul {
+    margin: 0;
+}
+
+ul li{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+
 body {
   padding: 0;
   margin: 0;
@@ -14,20 +27,20 @@ h1, h2, h3, h4, h5, h6 {
 h1 {
   font-weight: bold;
   line-height: 60px;
-  font-size: 56px;
+  font-size: 25px;
   letter-spacing: -1px;
   margin-top: 0;
+    text-shadow: 1px 1px 0px #14181e;
 }
 h2 {
   font-size: 31.5px;
+    text-shadow: 1px 1px 0px #2e333b;
 }
 #header-strip {
   height: 70px;
   padding: 10px;
-  color: white;
-  background-color: #8298C8;
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#4878a8), color-stop(100%,#406b96)); /* Chrome,Safari4+ */
-  background: -webkit-linear-gradient(top, #4878a8 0%,#406b96 100%); /* Chrome10+,Safari5.1+ */
+    color: #9a9da1;
+    background: #2e333b url('img/header_bg.png');
 }
 
 #main-container {
@@ -51,7 +64,8 @@ h2 {
   width: 30%;
   height: 100%;
   float:left;
-  background: url('img/mottled.png');
+    color: #9a9da1;
+    background: #384658 url('img/sidepanel_bg.png') top left repeat-x;
 }
 #map {
   width: 70%;
@@ -64,7 +78,38 @@ h2 {
 }
 #modal-container {
   display:none;
+    padding: 20px;
+    border-radius: 10px;
 }
+
+.login{
+    color: #95979b;
+}
+
+.login form{
+    padding:0;
+    margin: 0;
+}
+
+.fields input{
+    width: 300px;
+}
+
+ul.fields{
+    margin: 0 0 20px 0;
+    padding: 0;
+}
+
+
+ul.fields li{
+    margin: 0;
+    padding: 0;
+}
+
+ul.fields li span{
+    display: block;
+}
+
 
 #modal-disabler.active{
   display:block;
@@ -80,13 +125,16 @@ h2 {
   display:block;
   background-color:white;
   height: 200px;
-  width: 200px;
-  margin: auto;
+    width: 400px;
+    margin: auto;
   position:absolute;
   top:0;
   bottom:0;
   left:0;
   right:0;
+      background: #2e333b url('img/bg_tile.png');
+      border: 1px solid #50545a;
+
 }
 
 @media only screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:portrait) {
@@ -105,8 +153,9 @@ h2 {
   display: none;
 }
 
+
 .area-index {
-  padding: 10px;
+  padding: 0;
 }
 
 #area-list {
@@ -115,8 +164,18 @@ h2 {
 }
 
 #area-list > li {
-  border-bottom: 1px solid #DDD;
-  margin-bottom: 10px;
+border-top: 1px solid #5c6776;
+  border-bottom: 1px solid #2e333b;
+    padding: 10px;
+  margin-bottom: 0;
+}
+
+#area-list li:first-child{
+    border-top: none;
+}
+
+#area-list li:last-child{
+    border-bottom: none;
 }
 
 #area-list ul.attributes {
