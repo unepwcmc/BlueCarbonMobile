@@ -309,10 +309,16 @@ L.Polyline.Draw = L.Handler.Draw.extend({
 		this._map.removeLayer(this._poly);
 		delete this._poly;
 
-                if (typeof this._mouseMarker !== 'undefined'){
-                  this._mouseMarker.off('click', this._onClick);
-                  this._map.removeLayer(this._mouseMarker);
-                  delete this._mouseMarker;
+                if (!L.Browser.touch) {
+                  // unbind non touch events
+                  if (typeof this._mouseMarker !== 'undefined'){
+                    this._mouseMarker.off('click', this._onClick);
+                    this._map.removeLayer(this._mouseMarker);
+                    delete this._mouseMarker;
+                  }
+                } else {
+                  // unbind touch events
+                  this._map.off('click', this._onClick, this);
                 }
 
 		// clean up DOM
@@ -372,28 +378,28 @@ L.Polyline.Draw = L.Handler.Draw.extend({
 	},
 
 	_onClick: function (e) {
-                var latlng = (e.latlng ? e.latlng : e.target.getLatLng()),
-			markerCount = this._markers.length;
+          var latlng = (e.latlng ? e.latlng : e.target.getLatLng()),
+                  markerCount = this._markers.length;
 
-		if (markerCount > 0 && !this.options.allowIntersection && this._poly.newLatLngIntersects(latlng)) {
-			this._showErrorLabel();
-			return;
-		}
-		else if (this._errorShown) {
-			this._hideErrorLabel();
-		}
+          if (markerCount > 0 && !this.options.allowIntersection && this._poly.newLatLngIntersects(latlng)) {
+                  this._showErrorLabel();
+                  return;
+          }
+          else if (this._errorShown) {
+                  this._hideErrorLabel();
+          }
 
-		this._markers.push(this._createMarker(latlng));
+          this._markers.push(this._createMarker(latlng));
 
-		this._poly.addLatLng(latlng);
+          this._poly.addLatLng(latlng);
 
-		if (this._poly.getLatLngs().length === 2) {
-			this._map.addLayer(this._poly);
-		}
+          if (this._poly.getLatLngs().length === 2) {
+                  this._map.addLayer(this._poly);
+          }
 
-		this._updateMarkerHandler();
+          this._updateMarkerHandler();
 
-		this._vertexAdded(latlng);
+          this._vertexAdded(latlng);
 	},
 
 	_updateMarkerHandler: function () {

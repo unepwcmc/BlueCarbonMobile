@@ -41,15 +41,17 @@ h3 {
 }
 
 .btn {
-  border-radius: 5px;
-  border: 3px solid #303539;
+  border-radius: 4px;
+  border: 1px solid #858585;
   background: -webkit-linear-gradient(top, #ebeced 0%,#d3d4d6 49%,#c8c9cb 50%,#bfc0c3 51%,#bfc1c4 100%); /* Chrome10+,Safari5.1+ */
-  padding: 1px 5px;
+  padding: 7px 9px 9px 9px;
   color: #000;
   font-weight: bold;
+  height: 100%;
+  -webkit-box-sizing: border-box;
 }
 .btn.btn-small {
-  border: 1px solid #ADADAD;
+  padding: 1px 5px;
 }
 .btn.primary {
   border: 1px solid #0062B8;

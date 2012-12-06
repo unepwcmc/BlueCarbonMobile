@@ -15,6 +15,10 @@
       Validation.__super__.constructor.apply(this, arguments);
     }
 
+    Validation.prototype.schema = function() {
+      return "geometry TEXT, type TEXT, area_id INTEGER, user_id INTEGER";
+    };
+
     Validation.prototype.setGeomFromPoints = function(points) {
       var point;
       points = (function() {

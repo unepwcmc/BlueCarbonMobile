@@ -15,6 +15,14 @@ class Backbone.SyncableModel extends Backbone.Model
     super.save()
 
   sqliteSync: (method, model, options) ->
+    @createTableIfNotExist(
+      success: =>
+        @doSqliteSync(method, model, options)
+      error: (error) =>
+        options.error(error)
+    )
+
+  doSqliteSync: (method, model, options) ->
     attrs = model.toJSON()
 
     sql = ""
@@ -61,6 +69,23 @@ class Backbone.SyncableModel extends Backbone.Model
             WHERE id="#{attrs['id']}";
           """
 
+    @db.transaction(
+      (tx) =>
+        tx.executeSql(sql, [], (tx, results) =>
+          options.success.apply(@, arguments)
+        )
+      , (tx, error) =>
+        options.error.apply(@, arguments)
+    )
+
+  createTableIfNotExist: (options) =>
+    console.log "confirming existence of #{@constructor.name} table"
+    
+    unless @schema?
+      alert("Model #{@constructor.name} must implement a this.schema() method, containing a SQLite comma separated string of 'name TYPE, name2 TYPE2...' so the DB can be init")
+      return options.error()
+
+    sql = "CREATE TABLE IF NOT EXISTS validation (#{@schema()})"
     @db.transaction(
       (tx) =>
         tx.executeSql(sql, [], (tx, results) =>
