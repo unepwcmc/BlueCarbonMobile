@@ -13,3 +13,7 @@ class BlueCarbon.Views.ValidationView extends Backbone.View
     @$el.html(@template(validation:@validation))
     @mapPolygon.addTo(@map)
     return @
+
+  onClose: ->
+    @map.removeLayer(@mapPolygon)
+

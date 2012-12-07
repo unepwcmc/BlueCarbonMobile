@@ -35,6 +35,10 @@
       return this;
     };
 
+    ValidationView.prototype.onClose = function() {
+      return this.map.removeLayer(this.mapPolygon);
+    };
+
     return ValidationView;
 
   })(Backbone.View);
