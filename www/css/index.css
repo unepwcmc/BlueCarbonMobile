@@ -25,16 +25,22 @@ h1, h2, h3, h4, h5, h6 {
   text-rendering: optimizelegibility;
 }
 h1 {
-  font-weight: bold;
+  font-weight: normal;
   line-height: 60px;
   font-size: 25px;
   letter-spacing: -1px;
   margin-top: 0;
-    text-shadow: 1px 1px 0px #14181e;
+    text-shadow: 0px -1px 0px #14181e;
 }
+
+h1 span{
+    
+}
+
 h2 {
   font-size: 31.5px;
     text-shadow: 1px 1px 0px #2e333b;
+    font-weight: normal;
 }
 h3 {
   font-size: 24.5px;
@@ -63,7 +69,8 @@ h3 {
   height: 70px;
   padding: 10px;
     color: #9a9da1;
-    background: #2e333b url('img/header_bg.png');
+    background: -webkit-linear-gradient(top, #2e333c 0%,#3e424b 49%,#2e333c 51%,#2e333c 100%);
+
 }
 
 #main-container {
@@ -101,8 +108,6 @@ h3 {
 }
 #modal-container {
   display:none;
-    padding: 20px;
-    border-radius: 10px;
 }
 
 .login{
@@ -116,6 +121,7 @@ h3 {
 
 .fields input{
     width: 300px;
+    background: #cccccc;
 }
 
 ul.fields{
@@ -125,7 +131,7 @@ ul.fields{
 
 
 ul.fields li{
-    margin: 0;
+    margin: 20px 0 20px 0;
     padding: 0;
 }
 
@@ -147,7 +153,7 @@ ul.fields li span{
 #modal-disabler.active #modal-container {
   display:block;
   background-color:white;
-  height: 200px;
+  height: 220px;
     width: 400px;
     margin: auto;
   position:absolute;
@@ -155,8 +161,11 @@ ul.fields li span{
   bottom:0;
   left:0;
   right:0;
-      background: #2e333b url('img/bg_tile.png');
-      border: 1px solid #50545a;
+    background: #141619 url('img/bg_tile~.png');
+      border: 1px solid #22262d;
+    border-radius: 0px;
+        padding: 20px;
+
 
 }
 
@@ -176,22 +185,21 @@ ul.fields li span{
   display: none;
 }
 
-<<<<<<< HEAD
+
 
 .area-index {
   padding: 0;
+    margin: 0;
 }
 
-=======
->>>>>>> d938f87f6ee91601ff641e0f7176f7a9f0e8a5b6
+
 #area-list {
   list-style-type: none;
-  padding: 5px;
+  padding: 0;
   margin: 0;
 }
 
 #area-list > li {
-<<<<<<< HEAD
 border-top: 1px solid #5c6776;
   border-bottom: 1px solid #2e333b;
     padding: 10px;
@@ -204,8 +212,6 @@ border-top: 1px solid #5c6776;
 
 #area-list li:last-child{
     border-bottom: none;
-=======
-  border-bottom: 1px solid #DDD;
   margin-bottom: 10px;
   padding: 5px;
   padding-top: 3px;
@@ -222,7 +228,6 @@ border-top: 1px solid #5c6776;
 #area-list .headline a {
   float:right;
   margin-top: 0;
->>>>>>> d938f87f6ee91601ff641e0f7176f7a9f0e8a5b6
 }
 
 #area-list ul.attributes {
@@ -230,20 +235,21 @@ border-top: 1px solid #5c6776;
   padding-left: 5px;
 }
 #area-list ul.attributes li span{
-  float:right;
 }
 
 .ios-head {
   position:relative;
-  background: -webkit-linear-gradient(top, #aebcc9 0%,#869db2 49%,#7994ad 51%,#6f8aa6 100%);
+  background: -webkit-linear-gradient(top, #1f2229 0%,#1f2229 49%,#1f2229 51%,#1f2229 100%);
   height: 40px;
-  text-align: center;
+    padding: 0 0 0 20px;
+  text-align: left;
 }
 
 .ios-head h2 {
-  color: white;
+  color: #9a9da1;
   position:relative;
-  margin: auto;
+  margin: 0;
+    padding: 0;
   top: 0;
   left: 0;
   right: 0;
