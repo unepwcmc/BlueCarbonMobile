@@ -50,7 +50,7 @@
         return false;
       }
       this.validation.set($('form#validation-attributes').serializeObject());
-      return this.validation.save(this.validation.attributes, {
+      return this.validation.localSave(this.validation.attributes, {
         success: function() {
           console.log('successfully saved:');
           console.log(_this.validation);

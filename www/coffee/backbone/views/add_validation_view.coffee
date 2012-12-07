@@ -29,7 +29,7 @@ class BlueCarbon.Views.AddValidationView extends Backbone.View
       alert("You've not finished your polygon!")
       return false
     @validation.set($('form#validation-attributes').serializeObject())
-    @validation.save(@validation.attributes,
+    @validation.localSave(@validation.attributes,
       success: =>
         console.log 'successfully saved:'
         console.log @validation

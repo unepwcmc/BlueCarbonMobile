@@ -30,7 +30,7 @@
         area: this.area
       });
       this.validationList.on('reset', this.render);
-      return this.validationList.fetch();
+      return this.validationList.localFetch();
     };
 
     AreaEditView.prototype.fireAddValidation = function() {

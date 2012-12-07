@@ -1,7 +1,8 @@
 class Backbone.SyncableCollection extends Backbone.Collection
-  fetch: (options) ->
+  localFetch: (options) ->
     @sync = @sqliteSync
-    super
+    @fetch.apply(@, arguments)
+    @sync = Backbone.sync
 
   sqliteSync: (method, collection, options) ->
     Backbone.SyncableModel::createTableIfNotExist.call(

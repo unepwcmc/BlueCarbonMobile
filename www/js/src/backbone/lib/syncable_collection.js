@@ -12,9 +12,10 @@
       SyncableCollection.__super__.constructor.apply(this, arguments);
     }
 
-    SyncableCollection.prototype.fetch = function(options) {
+    SyncableCollection.prototype.localFetch = function(options) {
       this.sync = this.sqliteSync;
-      return SyncableCollection.__super__.fetch.apply(this, arguments);
+      this.fetch.apply(this, arguments);
+      return this.sync = Backbone.sync;
     };
 
     SyncableCollection.prototype.sqliteSync = function(method, collection, options) {

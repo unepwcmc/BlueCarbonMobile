@@ -1,14 +1,15 @@
+# Extends backbone model to support persistence in a local
+# SQLite database
 class Backbone.SyncableModel extends Backbone.Model
-  save: (key, value, options) ->
-    this.sync = this.sqliteSync
-    super
+  localSave: (attributes, options) ->
+    @sync = @sqliteSync
+    @save.apply(@, arguments)
+    @sync = Backbone.sync
 
-  fetch: (options) ->
-    this.sync = this.sqliteSync
-    super
-
-  pushToServer: (options) ->
-    super.save()
+  localFetch: (options) ->
+    @sync = @sqliteSync
+    @fetch.apply(@, arguments)
+    @sync = Backbone.sync
 
   sqliteSync: (method, model, options) ->
     @createTableIfNotExist(
@@ -65,6 +66,7 @@ class Backbone.SyncableModel extends Backbone.Model
             WHERE id="#{attrs['id']}";
           """
 
+    console.log sql
     BlueCarbon.SQLiteDb.transaction(
       (tx) =>
         tx.executeSql(sql, [], (tx, results) =>
@@ -76,10 +78,6 @@ class Backbone.SyncableModel extends Backbone.Model
 
   createTableIfNotExist: (options) =>
     console.log "confirming existence of #{@constructor.name} table"
-    try
-      fail++
-    catch err
-      console.log(err.stack)
     
     unless @schema?
       alert("Model #{@constructor.name} must implement a this.schema() method, containing a SQLite comma separated string of 'name TYPE, name2 TYPE2...' so the DB can be init")
@@ -92,5 +90,6 @@ class Backbone.SyncableModel extends Backbone.Model
           options.success.apply(@, arguments)
         )
       , (tx, error) =>
+        console.log "failed to make check exists"
         options.error.apply(@, arguments)
     )
