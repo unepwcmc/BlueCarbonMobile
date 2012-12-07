@@ -29,7 +29,6 @@ class BlueCarbon.Views.AreaEditView extends Backbone.View
       @subViews.push validationView
     return @
 
-  onClose: =>
+  onClose: ->
     for view in @subViews
       view.close()
-      view.onClose() if view.onClose

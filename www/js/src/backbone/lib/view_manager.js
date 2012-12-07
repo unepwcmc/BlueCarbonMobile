@@ -32,6 +32,7 @@
       });
     },
     unbindFromAll: function() {
+      if (this.bindings == null) this.bindings = [];
       _.each(this.bindings, function(binding) {
         return binding.model.unbind(binding.ev, binding.callback);
       });

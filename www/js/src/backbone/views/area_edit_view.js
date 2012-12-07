@@ -13,7 +13,6 @@
     __extends(AreaEditView, _super);
 
     function AreaEditView() {
-      this.onClose = __bind(this.onClose, this);
       this.render = __bind(this.render, this);
       AreaEditView.__super__.constructor.apply(this, arguments);
     }
@@ -67,12 +66,7 @@
       _results = [];
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         view = _ref[_i];
-        view.close();
-        if (view.onClose) {
-          _results.push(view.onClose());
-        } else {
-          _results.push(void 0);
-        }
+        _results.push(view.close());
       }
       return _results;
     };

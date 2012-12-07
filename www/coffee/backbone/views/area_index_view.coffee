@@ -9,11 +9,19 @@ class BlueCarbon.Views.AreaIndexView extends Backbone.View
     @areaList.on('reset', @render)
     @areaList.fetch()
 
+    @subViews = []
+
   render: =>
     @$el.html(@template(models:@areaList.toJSON()))
     @areaList.each (area)=>
-      $('#area-list').append(new BlueCarbon.Views.AreaView(area:area).render().el)
+      areaView = new BlueCarbon.Views.AreaView(area:area)
+      $('#area-list').append(areaView.render().el)
+      @subViews.push areaView
     return @
+
+  onClose: ->
+    for view in @subViews
+      view.close()
 
 class BlueCarbon.Views.AreaView extends Backbone.View
   template: JST['area/area']

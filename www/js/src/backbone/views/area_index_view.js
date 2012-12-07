@@ -24,7 +24,8 @@
     AreaIndexView.prototype.initialize = function() {
       this.areaList = new BlueCarbon.Collections.Areas();
       this.areaList.on('reset', this.render);
-      return this.areaList.fetch();
+      this.areaList.fetch();
+      return this.subViews = [];
     };
 
     AreaIndexView.prototype.render = function() {
@@ -33,11 +34,25 @@
         models: this.areaList.toJSON()
       }));
       this.areaList.each(function(area) {
-        return $('#area-list').append(new BlueCarbon.Views.AreaView({
+        var areaView;
+        areaView = new BlueCarbon.Views.AreaView({
           area: area
-        }).render().el);
+        });
+        $('#area-list').append(areaView.render().el);
+        return _this.subViews.push(areaView);
       });
       return this;
+    };
+
+    AreaIndexView.prototype.onClose = function() {
+      var view, _i, _len, _ref, _results;
+      _ref = this.subViews;
+      _results = [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        view = _ref[_i];
+        _results.push(view.close());
+      }
+      return _results;
     };
 
     return AreaIndexView;

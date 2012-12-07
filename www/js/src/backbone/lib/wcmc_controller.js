@@ -9,22 +9,25 @@
     _.extend(Controller.prototype, Backbone.Events);
 
     Controller.prototype.transitionToActionOn = function(publisher, event, action) {
-      var _this = this;
+      var boundAction,
+        _this = this;
       this.actionEventBindings || (this.actionEventBindings = []);
-      this.actionEventBindings.push({
+      boundAction = function() {
+        return _this.transitionToAction(action, arguments);
+      };
+      publisher.on(event, boundAction);
+      return this.actionEventBindings.push({
         publisher: publisher,
         event: event,
-        action: action
-      });
-      return publisher.on(event, function() {
-        return _this.transitionToAction(action, arguments);
+        action: boundAction
       });
     };
 
     Controller.prototype.clearActionEventBindings = function() {
-      return _.each(this.actionEventBindings, function(binding) {
+      _.each(this.actionEventBindings, function(binding) {
         return binding.publisher.off(binding.event, binding.action);
       });
+      return this.actionEventBindings = [];
     };
 
     Controller.prototype.transitionToAction = function(action, eventArguments) {
