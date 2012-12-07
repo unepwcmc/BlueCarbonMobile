@@ -1,18 +1,15 @@
+# Extends backbone model to support persistence in a local
+# SQLite database
 class Backbone.SyncableModel extends Backbone.Model
-  initialize: (options) ->
-    @db = window.BlueCarbon.SQLiteDb
-    super
+  localSave: (attributes, options) ->
+    @sync = @sqliteSync
+    @save.apply(@, arguments)
+    @sync = Backbone.sync
 
-  save: (key, value, options) ->
-    this.sync = this.sqliteSync
-    super
-
-  fetch: (options) ->
-    this.sync = this.sqliteSync
-    super
-
-  pushToServer: (options) ->
-    super.save()
+  localFetch: (options) ->
+    @sync = @sqliteSync
+    @fetch.apply(@, arguments)
+    @sync = Backbone.sync
 
   sqliteSync: (method, model, options) ->
     @createTableIfNotExist(
@@ -69,7 +66,8 @@ class Backbone.SyncableModel extends Backbone.Model
             WHERE id="#{attrs['id']}";
           """
 
-    @db.transaction(
+    console.log sql
+    BlueCarbon.SQLiteDb.transaction(
       (tx) =>
         tx.executeSql(sql, [], (tx, results) =>
           options.success.apply(@, arguments)
@@ -79,18 +77,17 @@ class Backbone.SyncableModel extends Backbone.Model
     )
 
   createTableIfNotExist: (options) =>
-    console.log "confirming existence of #{@constructor.name} table"
-    
     unless @schema?
       alert("Model #{@constructor.name} must implement a this.schema() method, containing a SQLite comma separated string of 'name TYPE, name2 TYPE2...' so the DB can be init")
       return options.error()
 
-    sql = "CREATE TABLE IF NOT EXISTS validation (#{@schema()})"
-    @db.transaction(
+    sql = "CREATE TABLE IF NOT EXISTS #{@constructor.name} (#{@schema()})"
+    BlueCarbon.SQLiteDb.transaction(
       (tx) =>
         tx.executeSql(sql, [], (tx, results) =>
           options.success.apply(@, arguments)
         )
       , (tx, error) =>
+        console.log "failed to make check exists"
         options.error.apply(@, arguments)
     )

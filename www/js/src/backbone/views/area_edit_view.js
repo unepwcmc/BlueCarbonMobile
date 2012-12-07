@@ -1,5 +1,6 @@
 (function() {
   var _base,
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
     __hasProp = Object.prototype.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
 
@@ -12,6 +13,8 @@
     __extends(AreaEditView, _super);
 
     function AreaEditView() {
+      this.onClose = __bind(this.onClose, this);
+      this.render = __bind(this.render, this);
       AreaEditView.__super__.constructor.apply(this, arguments);
     }
 
@@ -23,7 +26,13 @@
     };
 
     AreaEditView.prototype.initialize = function(options) {
-      return this.area = options.area;
+      this.area = options.area;
+      this.validationList = new BlueCarbon.Collections.Validations([], {
+        area: this.area
+      });
+      this.validationList.on('reset', this.render);
+      this.validationList.localFetch();
+      return this.subViews = [];
     };
 
     AreaEditView.prototype.fireAddValidation = function() {
@@ -37,10 +46,35 @@
     };
 
     AreaEditView.prototype.render = function() {
+      var _this = this;
       this.$el.html(this.template({
         area: this.area
       }));
+      this.validationList.each(function(validation) {
+        var validationView;
+        validationView = new BlueCarbon.Views.ValidationView({
+          validation: validation
+        });
+        $('#validation-list').append(validationView.render().el);
+        return _this.subViews.push(validationView);
+      });
       return this;
+    };
+
+    AreaEditView.prototype.onClose = function() {
+      var view, _i, _len, _ref, _results;
+      _ref = this.subViews;
+      _results = [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        view = _ref[_i];
+        view.close();
+        if (view.onClose) {
+          _results.push(view.onClose());
+        } else {
+          _results.push(void 0);
+        }
+      }
+      return _results;
     };
 
     return AreaEditView;

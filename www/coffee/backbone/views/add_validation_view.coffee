@@ -15,6 +15,8 @@ class BlueCarbon.Views.AddValidationView extends Backbone.View
 
     @map.on 'draw:poly-created', (e) =>
       @validation.setGeomFromPoints(e.poly.getLatLngs())
+      @mapPolygon = new L.Polygon(e.poly.getLatLngs())
+      @mapPolygon.addTo(@map)
 
   render: () ->
     # Turn on Leaflet.draw polygon tool
@@ -29,7 +31,7 @@ class BlueCarbon.Views.AddValidationView extends Backbone.View
       alert("You've not finished your polygon!")
       return false
     @validation.set($('form#validation-attributes').serializeObject())
-    @validation.save(@validation.attributes,
+    @validation.localSave(@validation.attributes,
       success: =>
         console.log 'successfully saved:'
         console.log @validation
@@ -45,4 +47,5 @@ class BlueCarbon.Views.AddValidationView extends Backbone.View
   close: () ->
     @polygonDraw.disable()
     @map.off('draw:poly-created')
+    @map.removeLayer(@mapPolygon) if @mapPolygon?
 

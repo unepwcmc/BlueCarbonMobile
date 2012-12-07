@@ -6,6 +6,7 @@ window.JST['area/edit'] = _.template(
       <a class='back'>Back</a>
       <h2><%= area.get('title') %></h2>
     </div>
+    <ul id='validation-list'></ul>
     <input id="new-validation" type="submit" value="Add a validation"/>
   """
 )
@@ -17,6 +18,7 @@ window.JST['area/add_polygon'] = _.template(
       <h2>Add Validation</h3>
     </div>
     <form id="validation-attributes" onSubmit="return false;">
+      <input type='hidden' name='area_id' value="<%= area.get('id') %>"/>
       <ul class="fields">
         <li>
           <select name="type">
@@ -69,5 +71,11 @@ window.JST['area/area'] = _.template(
       <li>Last updated:<span>11/12/2012</span></li>
       <li>Data ready for trip:<span>√</span></li>
     </ul>
+  """
+)
+
+window.JST['area/validation'] = _.template(
+  """
+    <%= validation.get('type') %> at 11/11/2013
   """
 )

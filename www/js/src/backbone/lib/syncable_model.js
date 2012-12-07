@@ -12,23 +12,16 @@
       SyncableModel.__super__.constructor.apply(this, arguments);
     }
 
-    SyncableModel.prototype.initialize = function(options) {
-      this.db = window.BlueCarbon.SQLiteDb;
-      return SyncableModel.__super__.initialize.apply(this, arguments);
-    };
-
-    SyncableModel.prototype.save = function(key, value, options) {
+    SyncableModel.prototype.localSave = function(attributes, options) {
       this.sync = this.sqliteSync;
-      return SyncableModel.__super__.save.apply(this, arguments);
+      this.save.apply(this, arguments);
+      return this.sync = Backbone.sync;
     };
 
-    SyncableModel.prototype.fetch = function(options) {
+    SyncableModel.prototype.localFetch = function(options) {
       this.sync = this.sqliteSync;
-      return SyncableModel.__super__.fetch.apply(this, arguments);
-    };
-
-    SyncableModel.prototype.pushToServer = function(options) {
-      return SyncableModel.__super__.pushToServer.apply(this, arguments).save();
+      this.fetch.apply(this, arguments);
+      return this.sync = Backbone.sync;
     };
 
     SyncableModel.prototype.sqliteSync = function(method, model, options) {
@@ -74,7 +67,8 @@
         case "delete":
           sql = "DELETE FROM " + model.constructor.name + "\nWHERE id=\"" + attrs['id'] + "\";";
       }
-      return this.db.transaction(function(tx) {
+      console.log(sql);
+      return BlueCarbon.SQLiteDb.transaction(function(tx) {
         return tx.executeSql(sql, [], function(tx, results) {
           return options.success.apply(_this, arguments);
         });
@@ -86,17 +80,17 @@
     SyncableModel.prototype.createTableIfNotExist = function(options) {
       var sql,
         _this = this;
-      console.log("confirming existence of " + this.constructor.name + " table");
       if (this.schema == null) {
         alert("Model " + this.constructor.name + " must implement a this.schema() method, containing a SQLite comma separated string of 'name TYPE, name2 TYPE2...' so the DB can be init");
         return options.error();
       }
-      sql = "CREATE TABLE IF NOT EXISTS validation (" + (this.schema()) + ")";
-      return this.db.transaction(function(tx) {
+      sql = "CREATE TABLE IF NOT EXISTS " + this.constructor.name + " (" + (this.schema()) + ")";
+      return BlueCarbon.SQLiteDb.transaction(function(tx) {
         return tx.executeSql(sql, [], function(tx, results) {
           return options.success.apply(_this, arguments);
         });
       }, function(tx, error) {
+        console.log("failed to make check exists");
         return options.error.apply(_this, arguments);
       });
     };
