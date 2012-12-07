@@ -26,7 +26,7 @@
 
     AreaEditView.prototype.initialize = function(options) {
       this.area = options.area;
-      this.validationList = new BlueCarbon.Collections.Validations({
+      this.validationList = new BlueCarbon.Collections.Validations([], {
         area: this.area
       });
       this.validationList.on('reset', this.render);

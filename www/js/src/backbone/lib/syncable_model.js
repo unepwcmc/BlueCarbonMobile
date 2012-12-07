@@ -80,7 +80,6 @@
     SyncableModel.prototype.createTableIfNotExist = function(options) {
       var sql,
         _this = this;
-      console.log("confirming existence of " + this.constructor.name + " table");
       if (this.schema == null) {
         alert("Model " + this.constructor.name + " must implement a this.schema() method, containing a SQLite comma separated string of 'name TYPE, name2 TYPE2...' so the DB can be init");
         return options.error();

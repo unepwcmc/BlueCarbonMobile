@@ -15,6 +15,8 @@ class BlueCarbon.Views.AddValidationView extends Backbone.View
 
     @map.on 'draw:poly-created', (e) =>
       @validation.setGeomFromPoints(e.poly.getLatLngs())
+      @mapPolygon = new L.Polygon(e.poly.getLatLngs())
+      @mapPolygon.addTo(@map)
 
   render: () ->
     # Turn on Leaflet.draw polygon tool
@@ -45,4 +47,5 @@ class BlueCarbon.Views.AddValidationView extends Backbone.View
   close: () ->
     @polygonDraw.disable()
     @map.off('draw:poly-created')
+    @map.removeLayer(@mapPolygon) if @mapPolygon?
 

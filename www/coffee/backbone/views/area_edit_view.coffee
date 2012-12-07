@@ -9,7 +9,7 @@ class BlueCarbon.Views.AreaEditView extends Backbone.View
 
   initialize: (options) ->
     @area = options.area
-    @validationList = new BlueCarbon.Collections.Validations(area: @area)
+    @validationList = new BlueCarbon.Collections.Validations([], area: @area)
     @validationList.on('reset', @render)
     @validationList.localFetch()
   

@@ -77,8 +77,6 @@ class Backbone.SyncableModel extends Backbone.Model
     )
 
   createTableIfNotExist: (options) =>
-    console.log "confirming existence of #{@constructor.name} table"
-    
     unless @schema?
       alert("Model #{@constructor.name} must implement a this.schema() method, containing a SQLite comma separated string of 'name TYPE, name2 TYPE2...' so the DB can be init")
       return options.error()

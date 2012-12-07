@@ -30,7 +30,9 @@
       this.map = options.map;
       this.validation = new BlueCarbon.Models.Validation();
       return this.map.on('draw:poly-created', function(e) {
-        return _this.validation.setGeomFromPoints(e.poly.getLatLngs());
+        _this.validation.setGeomFromPoints(e.poly.getLatLngs());
+        _this.mapPolygon = new L.Polygon(e.poly.getLatLngs());
+        return _this.mapPolygon.addTo(_this.map);
       });
     };
 
@@ -73,7 +75,8 @@
 
     AddValidationView.prototype.close = function() {
       this.polygonDraw.disable();
-      return this.map.off('draw:poly-created');
+      this.map.off('draw:poly-created');
+      if (this.mapPolygon != null) return this.map.removeLayer(this.mapPolygon);
     };
 
     return AddValidationView;

@@ -6,7 +6,10 @@ class BlueCarbon.Views.ValidationView extends Backbone.View
   tagName: 'li'
   initialize: (options)->
     @validation = options.validation
+    @map = window.blueCarbonApp.map
+    @mapPolygon = new L.Polygon(@validation.geomAsLatLngArray())
 
   render: =>
     @$el.html(@template(validation:@validation))
+    @mapPolygon.addTo(@map)
     return @

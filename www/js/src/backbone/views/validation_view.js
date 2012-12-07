@@ -22,13 +22,16 @@
     ValidationView.prototype.tagName = 'li';
 
     ValidationView.prototype.initialize = function(options) {
-      return this.validation = options.validation;
+      this.validation = options.validation;
+      this.map = window.blueCarbonApp.map;
+      return this.mapPolygon = new L.Polygon(this.validation.geomAsLatLngArray());
     };
 
     ValidationView.prototype.render = function() {
       this.$el.html(this.template({
         validation: this.validation
       }));
+      this.mapPolygon.addTo(this.map);
       return this;
     };
 

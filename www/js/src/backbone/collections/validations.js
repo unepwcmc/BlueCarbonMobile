@@ -19,8 +19,9 @@
 
     Validations.prototype.model = BlueCarbon.Models.Validation;
 
-    Validations.prototype.initialize = function(options) {
-      return this.area = options.area;
+    Validations.prototype.initialize = function(models, options) {
+      this.area = options.area;
+      return Validations.__super__.initialize.apply(this, arguments);
     };
 
     Validations.prototype.doSqliteSync = function(method, collection, options) {

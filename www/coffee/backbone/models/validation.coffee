@@ -12,3 +12,16 @@ class BlueCarbon.Models.Validation extends Backbone.SyncableModel
     points.push points[0]
 
     @set('geometry', [[points]])
+
+  geomAsLatLngArray: () ->
+    latLngs = []
+
+    for point in @get('geometry')[0][0]
+      latLngs.push(new L.LatLng(point[1], point[0]))
+
+    return latLngs
+  
+  parse: (data) ->
+    if data.geometry?
+      data.geometry = JSON.parse(data.geometry)
+    super
