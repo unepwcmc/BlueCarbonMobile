@@ -22,9 +22,21 @@
     AreaIndexView.prototype.className = 'area-index';
 
     AreaIndexView.prototype.initialize = function() {
+      var _this = this;
       this.areaList = new BlueCarbon.Collections.Areas();
       this.areaList.on('reset', this.render);
-      return this.areaList.fetch();
+      this.areaList.localFetch({
+        success: function() {
+          _this.showUpdating();
+          return _this.areaList.fetch({
+            success: function() {
+              _this.areaList.localSave();
+              return _this.showUpdated();
+            }
+          });
+        }
+      });
+      return this.subViews = [];
     };
 
     AreaIndexView.prototype.render = function() {
@@ -33,11 +45,33 @@
         models: this.areaList.toJSON()
       }));
       this.areaList.each(function(area) {
-        return $('#area-list').append(new BlueCarbon.Views.AreaView({
+        var areaView;
+        areaView = new BlueCarbon.Views.AreaView({
           area: area
-        }).render().el);
+        });
+        $('#area-list').append(areaView.render().el);
+        return _this.subViews.push(areaView);
       });
       return this;
+    };
+
+    AreaIndexView.prototype.showUpdating = function() {
+      return $('#sync-status').text("Syncing area list...");
+    };
+
+    AreaIndexView.prototype.showUpdated = function() {
+      return $('#sync-status').text("Area list updated");
+    };
+
+    AreaIndexView.prototype.onClose = function() {
+      var view, _i, _len, _ref, _results;
+      _ref = this.subViews;
+      _results = [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        view = _ref[_i];
+        _results.push(view.close());
+      }
+      return _results;
     };
 
     return AreaIndexView;

@@ -11,10 +11,10 @@ class Backbone.ViewManager
     if (@currentView)
       @currentView.close()
 
-    this.currentView = view
-    this.currentView.render()
+    @currentView = view
+    @currentView.render()
 
-    $(@element).html(this.currentView.el)
+    $(@element).html(@currentView.el)
 
   # Returns true if element is empty
   isEmpty: () ->
@@ -33,6 +33,7 @@ _.extend(Backbone.View::,
 
   # Unbinds all the bindings in @bindings
   unbindFromAll: () ->
+    @bindings = [] unless @bindings?
     _.each(@bindings, (binding) ->
       binding.model.unbind(binding.ev, binding.callback))
     @bindings = []

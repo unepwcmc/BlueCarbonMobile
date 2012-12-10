@@ -57,6 +57,7 @@ window.JST['area/area_index'] = _.template(
     <div class='ios-head'>
       <h2>Areas</h2>
     </div>
+    <div id="sync-status"></div>
     <ul id="area-list">
     </ul>
   """

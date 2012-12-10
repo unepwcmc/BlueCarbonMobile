@@ -42,16 +42,22 @@ class Backbone.SyncableModel extends Backbone.Model
             VALUES ( #{values.join(", ")} );
           """
       when "update"
-        sql = []
+        fields = []
+        values = []
+
         for attr, val of attrs
-          sql.push(
-            """
-              UPDATE #{model.constructor.name}
-              SET #{attr}="#{val}"
-              WHERE id="#{attrs['id']}"
-            """
-          )
-        sql = sql.join("; ")
+          if _.isArray(val) or _.isObject(val)
+            val = JSON.stringify(val)
+
+          fields.push(attr)
+          values.push("\"#{val}\"")
+
+        sql =
+          """
+            INSERT OR REPLACE INTO #{model.constructor.name}
+            ( #{fields.join(", ")} )
+            VALUES ( #{values.join(", ")} );
+          """
       when "read"
         sql =
           """

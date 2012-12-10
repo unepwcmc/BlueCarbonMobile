@@ -8,15 +8,17 @@ class Wcmc.Controller
   # Add binding which is only valid for action duration.
   transitionToActionOn: (publisher, event, action) ->
     @actionEventBindings ||= []
-    @actionEventBindings.push(publisher: publisher, event: event, action: action)
-    publisher.on(event, () =>
+    boundAction = () =>
       @transitionToAction(action, arguments)
-    )
+
+    publisher.on(event, boundAction)
+    @actionEventBindings.push(publisher: publisher, event: event, action: boundAction)
 
   # Clear event bindings for current action
   clearActionEventBindings: () ->
     _.each @actionEventBindings, (binding) ->
       binding.publisher.off(binding.event, binding.action)
+    @actionEventBindings = []
 
   # Clean-up, and transition to the new action
   transitionToAction: (action, eventArguments) ->

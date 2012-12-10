@@ -7,13 +7,36 @@ class BlueCarbon.Views.AreaIndexView extends Backbone.View
   initialize: ->
     @areaList = new BlueCarbon.Collections.Areas()
     @areaList.on('reset', @render)
-    @areaList.fetch()
+    @areaList.localFetch(
+      success: =>
+        @showUpdating()
+        @areaList.fetch(
+          success: =>
+            @areaList.localSave() # Write updated list to DB
+            @showUpdated()
+        )
+    )
+    
+
+    @subViews = []
 
   render: =>
     @$el.html(@template(models:@areaList.toJSON()))
     @areaList.each (area)=>
-      $('#area-list').append(new BlueCarbon.Views.AreaView(area:area).render().el)
+      areaView = new BlueCarbon.Views.AreaView(area:area)
+      $('#area-list').append(areaView.render().el)
+      @subViews.push areaView
     return @
+
+  showUpdating: ->
+    $('#sync-status').text("Syncing area list...")
+
+  showUpdated: ->
+    $('#sync-status').text("Area list updated")
+
+  onClose: ->
+    for view in @subViews
+      view.close()
 
 class BlueCarbon.Views.AreaView extends Backbone.View
   template: JST['area/area']

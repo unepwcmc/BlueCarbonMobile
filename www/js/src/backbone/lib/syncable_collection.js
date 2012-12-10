@@ -18,6 +18,16 @@
       return this.sync = Backbone.sync;
     };
 
+    SyncableCollection.prototype.localSave = function(options) {
+      return this.each(function(model) {
+        return model.localSave({
+          error: function(a, b, c) {
+            return console.log(arguments);
+          }
+        });
+      });
+    };
+
     SyncableCollection.prototype.sqliteSync = function(method, collection, options) {
       var _this = this;
       return Backbone.SyncableModel.prototype.createTableIfNotExist.call(collection.model.prototype, {
@@ -34,13 +44,17 @@
 
     SyncableCollection.prototype.parse = function(results, tx) {
       var i, jsonResults;
-      i = 0;
-      jsonResults = [];
-      while (results.rows.item(i)) {
-        jsonResults.push(results.rows.item(i));
-        i = i + 1;
+      if (results.rows != null) {
+        i = 0;
+        jsonResults = [];
+        while (results.rows.item(i)) {
+          jsonResults.push(results.rows.item(i));
+          i = i + 1;
+        }
+        return jsonResults;
+      } else {
+        return SyncableCollection.__super__.parse.apply(this, arguments);
       }
-      return jsonResults;
     };
 
     SyncableCollection.prototype.doSqliteSync = function(method, collection, options) {
