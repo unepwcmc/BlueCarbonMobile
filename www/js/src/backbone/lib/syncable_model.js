@@ -54,12 +54,15 @@
           sql = "INSERT INTO " + model.constructor.name + "\n( " + (fields.join(", ")) + " )\nVALUES ( " + (values.join(", ")) + " );";
           break;
         case "update":
-          sql = [];
+          fields = [];
+          values = [];
           for (attr in attrs) {
             val = attrs[attr];
-            sql.push("UPDATE " + model.constructor.name + "\nSET " + attr + "=\"" + val + "\"\nWHERE id=\"" + attrs['id'] + "\"");
+            if (_.isArray(val) || _.isObject(val)) val = JSON.stringify(val);
+            fields.push(attr);
+            values.push("\"" + val + "\"");
           }
-          sql = sql.join("; ");
+          sql = "INSERT OR REPLACE INTO " + model.constructor.name + "\n( " + (fields.join(", ")) + " )\nVALUES ( " + (values.join(", ")) + " );";
           break;
         case "read":
           sql = "SELECT " + (Object.keys(attrs)) + "\nFROM " + model.constructor.name + "\nWHERE id=\"" + attrs['id'] + "\";";

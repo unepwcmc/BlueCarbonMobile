@@ -16,7 +16,7 @@
     }
 
     Area.prototype.schema = function() {
-      return "id INTEGER, geometry TEXT, coordinates TEXT";
+      return "id INTEGER, title TEXT, coordinates TEXT, mbtiles TEXT, error TEXT, PRIMARY KEY (id)";
     };
 
     return Area;

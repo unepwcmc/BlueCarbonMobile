@@ -18,6 +18,16 @@
       return this.sync = Backbone.sync;
     };
 
+    SyncableCollection.prototype.localSave = function(options) {
+      return this.each(function(model) {
+        return model.localSave({
+          error: function(a, b, c) {
+            return console.log(arguments);
+          }
+        });
+      });
+    };
+
     SyncableCollection.prototype.sqliteSync = function(method, collection, options) {
       var _this = this;
       return Backbone.SyncableModel.prototype.createTableIfNotExist.call(collection.model.prototype, {

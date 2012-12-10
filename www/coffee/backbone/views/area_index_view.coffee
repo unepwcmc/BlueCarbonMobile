@@ -9,7 +9,12 @@ class BlueCarbon.Views.AreaIndexView extends Backbone.View
     @areaList.on('reset', @render)
     @areaList.localFetch(
       success: =>
-        @areaList.fetch()
+        @showUpdating()
+        @areaList.fetch(
+          success: =>
+            @areaList.localSave() # Write updated list to DB
+            @showUpdated()
+        )
     )
     
 
@@ -22,6 +27,12 @@ class BlueCarbon.Views.AreaIndexView extends Backbone.View
       $('#area-list').append(areaView.render().el)
       @subViews.push areaView
     return @
+
+  showUpdating: ->
+    $('#sync-status').text("Syncing area list...")
+
+  showUpdated: ->
+    $('#sync-status').text("Area list updated")
 
   onClose: ->
     for view in @subViews

@@ -27,7 +27,13 @@
       this.areaList.on('reset', this.render);
       this.areaList.localFetch({
         success: function() {
-          return _this.areaList.fetch();
+          _this.showUpdating();
+          return _this.areaList.fetch({
+            success: function() {
+              _this.areaList.localSave();
+              return _this.showUpdated();
+            }
+          });
         }
       });
       return this.subViews = [];
@@ -47,6 +53,14 @@
         return _this.subViews.push(areaView);
       });
       return this;
+    };
+
+    AreaIndexView.prototype.showUpdating = function() {
+      return $('#sync-status').text("Syncing area list...");
+    };
+
+    AreaIndexView.prototype.showUpdated = function() {
+      return $('#sync-status').text("Area list updated");
     };
 
     AreaIndexView.prototype.onClose = function() {
