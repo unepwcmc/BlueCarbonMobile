@@ -222,7 +222,6 @@ border-top: 1px solid #5c6776;
   overflow:hidden;
 }
 #area-list .headline h3 {
-  float:left;
   margin-top: 2px;
 }
 #area-list .headline a {
@@ -248,7 +247,7 @@ border-top: 1px solid #5c6776;
 .ios-head h2 {
   color: #9a9da1;
   position:relative;
-  margin: 0;
+    margin: 0;
     padding: 0;
   top: 0;
   left: 0;
