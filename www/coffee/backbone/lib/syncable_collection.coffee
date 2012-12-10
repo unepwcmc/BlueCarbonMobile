@@ -16,12 +16,15 @@ class Backbone.SyncableCollection extends Backbone.Collection
     )
 
   parse: (results,tx)->
-    i = 0
-    jsonResults = []
-    while results.rows.item(i)
-      jsonResults.push(results.rows.item(i))
-      i = i + 1
-    return jsonResults
+    if results.rows?
+      i = 0
+      jsonResults = []
+      while results.rows.item(i)
+        jsonResults.push(results.rows.item(i))
+        i = i + 1
+      return jsonResults
+    else
+      super
 
   doSqliteSync: (method, collection, options) =>
     alert("Collection #{collection.constructor.name} must implement a doSqliteSync method which provides backbone.sync behavior, but to SQL")

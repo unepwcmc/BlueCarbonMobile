@@ -22,9 +22,14 @@
     AreaIndexView.prototype.className = 'area-index';
 
     AreaIndexView.prototype.initialize = function() {
+      var _this = this;
       this.areaList = new BlueCarbon.Collections.Areas();
       this.areaList.on('reset', this.render);
-      this.areaList.fetch();
+      this.areaList.localFetch({
+        success: function() {
+          return _this.areaList.fetch();
+        }
+      });
       return this.subViews = [];
     };
 

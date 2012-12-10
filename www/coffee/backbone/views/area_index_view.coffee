@@ -7,7 +7,11 @@ class BlueCarbon.Views.AreaIndexView extends Backbone.View
   initialize: ->
     @areaList = new BlueCarbon.Collections.Areas()
     @areaList.on('reset', @render)
-    @areaList.fetch()
+    @areaList.localFetch(
+      success: =>
+        @areaList.fetch()
+    )
+    
 
     @subViews = []
 

@@ -15,8 +15,12 @@
       Area.__super__.constructor.apply(this, arguments);
     }
 
+    Area.prototype.schema = function() {
+      return "id INTEGER, geometry TEXT, coordinates TEXT";
+    };
+
     return Area;
 
-  })(Backbone.Model);
+  })(Backbone.SyncableModel);
 
 }).call(this);
