@@ -12,16 +12,60 @@
       SyncableModel.__super__.constructor.apply(this, arguments);
     }
 
-    SyncableModel.prototype.localSave = function(attributes, options) {
-      this.sync = this.sqliteSync;
-      this.save.apply(this, arguments);
-      return this.sync = Backbone.sync;
+    SyncableModel.prototype.localSave = function(key, val, options) {
+      var attrs, current, done, method, model, silentOptions, success, xhr;
+      attrs = void 0;
+      current = void 0;
+      done = void 0;
+      if (!(key != null) || _.isObject(key)) {
+        attrs = key;
+        options = val;
+      } else {
+        if (key != null) (attrs = {})[key] = val;
+      }
+      options = (options ? _.clone(options) : {});
+      if (options.wait) {
+        if (attrs && !this._validate(attrs, options)) return false;
+        current = _.clone(this.attributes);
+      }
+      silentOptions = _.extend({}, options, {
+        silent: true
+      });
+      if (attrs && !this.set(attrs, (options.wait ? silentOptions : options))) {
+        return false;
+      }
+      if (!attrs && !this._validate(null, options)) return false;
+      model = this;
+      success = options.success;
+      options.success = function(resp, status, xhr) {
+        var serverAttrs;
+        done = true;
+        serverAttrs = model.parse(resp, xhr);
+        if (options.wait) serverAttrs = _.extend(attrs || {}, serverAttrs);
+        if (!model.set(serverAttrs, options)) return false;
+        if (success) return success(model, resp, options);
+      };
+      method = (this.isNew() ? "create" : (options.patch ? "patch" : "update"));
+      if (method === "patch") options.attrs = attrs;
+      xhr = this.sqliteSync(method, this, options);
+      if (!done && options.wait) {
+        this.clear(silentOptions);
+        this.set(current, silentOptions);
+      }
+      return xhr;
     };
 
     SyncableModel.prototype.localFetch = function(options) {
-      this.sync = this.sqliteSync;
-      this.fetch.apply(this, arguments);
-      return this.sync = Backbone.sync;
+      var model, success;
+      options = (options ? _.clone(options) : {});
+      if (options.parse === void 0) options.parse = true;
+      model = this;
+      success = options.success;
+      return options.success = function(resp, status, xhr) {
+        if (!model.set(model.parse(resp, xhr), options)) return false;
+        if (success) success(model, resp, options);
+        return this.sqliteSync("read", this, options);
+      };
     };
 
     SyncableModel.prototype.sqliteSync = function(method, model, options) {

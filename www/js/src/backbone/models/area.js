@@ -15,8 +15,12 @@
       Area.__super__.constructor.apply(this, arguments);
     }
 
+    Area.prototype.defaults = {
+      downloaded_data: false
+    };
+
     Area.prototype.schema = function() {
-      return "id INTEGER, title TEXT, coordinates TEXT, mbtiles TEXT, error TEXT, PRIMARY KEY (id)";
+      return "id INTEGER, title TEXT, coordinates TEXT, mbtiles TEXT, error TEXT, downloaded_data BOOLEAN, PRIMARY KEY (id)";
     };
 
     return Area;

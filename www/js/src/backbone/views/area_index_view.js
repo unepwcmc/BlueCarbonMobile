@@ -83,6 +83,7 @@
     __extends(AreaView, _super);
 
     function AreaView() {
+      this.downloadData = __bind(this.downloadData, this);
       this.startTrip = __bind(this.startTrip, this);
       this.render = __bind(this.render, this);
       AreaView.__super__.constructor.apply(this, arguments);
@@ -93,6 +94,7 @@
     AreaView.prototype.tagName = 'li';
 
     AreaView.prototype.events = {
+      "touchstart .download-data": "startTrip",
       "touchstart .start-trip": "startTrip"
     };
 
@@ -102,7 +104,7 @@
 
     AreaView.prototype.render = function() {
       this.$el.html(this.template({
-        area: this.area
+        area: this.area.toJSON()
       }));
       return this;
     };
@@ -111,6 +113,11 @@
       return BlueCarbon.bus.trigger('area:startTrip', {
         area: this.area
       });
+    };
+
+    AreaView.prototype.downloadData = function() {
+      this.area.downloadData();
+      return this.render();
     };
 
     return AreaView;

@@ -13,9 +13,18 @@
     }
 
     SyncableCollection.prototype.localFetch = function(options) {
-      this.sync = this.sqliteSync;
-      this.fetch.apply(this, arguments);
-      return this.sync = Backbone.sync;
+      var collection, success;
+      options = (options ? _.clone(options) : {});
+      if (options.parse === void 0) options.parse = true;
+      collection = this;
+      success = options.success;
+      options.success = function(resp, status, xhr) {
+        var method;
+        method = (options.update ? "update" : "reset");
+        collection[method](collection.parse(resp, xhr), options);
+        if (success) return success(collection, resp, options);
+      };
+      return this.sqliteSync("read", this, options);
     };
 
     SyncableCollection.prototype.localSave = function(options) {
@@ -35,7 +44,7 @@
           return _this.doSqliteSync(method, collection, options);
         },
         error: function(a, b, c) {
-          console.log('Error fetching collection:');
+          console.log("Error confirming existence of DB for collection " + collection.model.constructor.name + ":");
           console.log(arguments);
           return options.error(error);
         }

@@ -42,13 +42,20 @@ class BlueCarbon.Views.AreaView extends Backbone.View
   template: JST['area/area']
   tagName: 'li'
   events:
+    "touchstart .download-data": "startTrip"
     "touchstart .start-trip": "startTrip"
+
   initialize: (options)->
     @area = options.area
 
   render: =>
-    @$el.html(@template(area:@area))
+    @$el.html(@template(area:@area.toJSON()))
     return @
 
   startTrip: =>
     BlueCarbon.bus.trigger('area:startTrip', area: @area)
+
+  downloadData: =>
+    @area.downloadData()
+    @render()
+
