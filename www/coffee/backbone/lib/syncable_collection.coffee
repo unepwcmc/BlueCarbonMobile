@@ -1,8 +1,17 @@
 class Backbone.SyncableCollection extends Backbone.Collection
   localFetch: (options) ->
-    @sync = @sqliteSync
-    @fetch.apply(@, arguments)
-    @sync = Backbone.sync
+    # This method copies the default backbone behavior, 
+    # but uses our sqliteSync instead of backbone.sync
+    options = (if options then _.clone(options) else {})
+    options.parse = true  if options.parse is undefined
+    collection = this
+    success = options.success
+    options.success = (resp, status, xhr) ->
+      method = (if options.update then "update" else "reset")
+      collection[method] collection.parse(resp, xhr), options
+      success collection, resp, options  if success
+
+    @sqliteSync "read", this, options
 
   localSave: (options) ->
     @each((model)->
@@ -18,7 +27,7 @@ class Backbone.SyncableCollection extends Backbone.Collection
         success: =>
           @doSqliteSync(method, collection, options)
         error: (a,b,c) =>
-          console.log('Error fetching collection:')
+          console.log("Error confirming existence of DB for collection #{collection.model.constructor.name}:")
           console.log arguments
           options.error(error)
     )

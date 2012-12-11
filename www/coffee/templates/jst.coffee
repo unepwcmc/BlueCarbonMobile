@@ -62,15 +62,23 @@ window.JST['area/area_index'] = _.template(
     </ul>
   """
 )
+
 window.JST['area/area'] = _.template(
   """
     <div class='headline'>
-      <h3><%= area.get('title') %></h3>
-      <a class="start-trip btn btn-small">Start trip</a>
+      <h3><%= area.title %></h3>
+      <% if (area.downloaded_data) { %>
+        <a class="start-trip btn btn-small">
+          Start Trip
+        </a>
+      <% } else { %>
+        <a class="download-data btn btn-small">
+          Download the data
+        </a>
+      <% } %>
     </div>
     <ul class='attributes'>
       <li>Last updated:<span>11/12/2012</span></li>
-      <li>Data ready for trip:<span>√</span></li>
     </ul>
   """
 )
