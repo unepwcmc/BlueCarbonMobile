@@ -18,7 +18,7 @@ window.BlueCarbon.Routers ||= {}
 
 class BlueCarbon.App
   _.extend @::, Backbone.Events
-  
+
   # Application Constructor
   constructor: (options)->
     waitForRemoteConsole = options.waitForRemoteConsole
@@ -27,7 +27,7 @@ class BlueCarbon.App
     @on('mapReady', =>
       @controller = new BlueCarbon.Controller(app:@)
     )
-    
+
     # Setup ajax calls to use auth tokens
     BlueCarbon.bus.on('user:gotAuthToken', (token) ->
       console.log("logged in, using token #{token}")
@@ -49,12 +49,12 @@ class BlueCarbon.App
         @ready = true
         @start()
       ), false
-  
+
   start: =>
     unless @ready
       alert('not ready yet!')
       return false
-    
+
     @map = new L.Map("map",
       center: new L.LatLng(24.2870, 54.3274)
       zoom: 10
@@ -79,9 +79,9 @@ class BlueCarbon.App
       console.log error
 
   buildMap: =>
-    db = window.sqlitePlugin.openDatabase(@localFileName, "1.0", "Tiles", 2000000)
-    tileLayer = new L.TileLayer.MBTiles(db,
-      tms: true
-    ).addTo(@map)
+    tileLayerUrl = 'res/tiles/{z}/{x}/{y}.png'
+    tileLayer = new L.TileLayer(tileLayerUrl, {
+      maxZoom: 18
+    }).addTo(@map)
 
     @trigger('mapReady')
