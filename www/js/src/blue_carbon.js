@@ -34,8 +34,6 @@
     _.extend(App.prototype, Backbone.Events);
 
     function App(options) {
-      this.buildMap = __bind(this.buildMap, this);
-      this.downloadBaseLayer = __bind(this.downloadBaseLayer, this);
       this.start = __bind(this.start, this);
       var waitForRemoteConsole,
         _this = this;
@@ -81,34 +79,13 @@
     };
 
     App.prototype.addBaseLayer = function() {
-      var _this = this;
-      window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function(fileSystem) {
-        var file;
-        window.fs = fileSystem;
-        return file = fs.root.getFile(_this.localFileName, {
-          create: false
-        }, _this.buildMap, _this.downloadBaseLayer);
-      });
-      return window.BlueCarbon.SQLiteDb = window.sqlitePlugin.openDatabase("BlueCarbon.db", "1.0", "Test", 10000000);
-    };
-
-    App.prototype.downloadBaseLayer = function() {
-      var ft;
-      console.log("Downloading file...");
-      ft = new FileTransfer();
-      return ft.download(this.remoteFile, fs.root.fullPath + "/" + this.localFileName, this.buildMap, function(error) {
-        alert("Download failed, check error log");
-        return console.log(error);
-      });
-    };
-
-    App.prototype.buildMap = function() {
       var tileLayer, tileLayerUrl;
       tileLayerUrl = 'res/tiles/{z}/{x}/{y}.png';
       tileLayer = new L.TileLayer(tileLayerUrl, {
         maxZoom: 18
       }).addTo(this.map);
-      return this.trigger('mapReady');
+      this.trigger('mapReady');
+      return window.BlueCarbon.SQLiteDb = window.sqlitePlugin.openDatabase("BlueCarbon.db", "1.0", "Test", 10000000);
     };
 
     return App;
