@@ -160,6 +160,12 @@ h3 {
   float:right;
   margin-top: 0;
 }
+#area-list .data-generating {
+  float:right;
+  color: #CCC;
+  padding-top: 2px;
+}
+
 
 #area-list ul.attributes {
   list-style-type: none;

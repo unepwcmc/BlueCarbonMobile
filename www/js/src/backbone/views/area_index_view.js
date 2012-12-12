@@ -37,7 +37,8 @@
         },
         error: function(a, b, c) {
           console.log("local fetch fail:");
-          return console.log(arguments);
+          console.log(arguments);
+          return console.log(arguments[0].stack);
         }
       });
       return this.subViews = [];

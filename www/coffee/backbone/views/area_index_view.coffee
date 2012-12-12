@@ -18,6 +18,7 @@ class BlueCarbon.Views.AreaIndexView extends Backbone.View
       error: (a,b,c)=>
         console.log "local fetch fail:"
         console.log arguments
+        console.log arguments[0].stack
     )
 
     @subViews = []

@@ -69,6 +69,9 @@
         modelAttributes = results.rows.item(i);
         _.each(modelAttributes, function(value, key) {
           try {
+            if ((typeof value) === 'string') {
+              value = value.replace(/(\\\")/g, "\"");
+            }
             return modelAttributes[key] = JSON.parse(value);
           } catch (err) {
 

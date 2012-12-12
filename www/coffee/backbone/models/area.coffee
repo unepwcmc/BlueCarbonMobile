@@ -37,11 +37,19 @@ class BlueCarbon.Models.Area extends Backbone.SyncableModel
 
   downloadState: () ->
     for layer in @get('mbtiles')
-      if layer.status == 'generating'
+      if layer.status == 'pending' || layer.status == 'generating'
         return 'data generating'
       if !layer.downloadedAt?
         return 'no data'
-      console.log "comparing downloadedAt(#{layer.downloadedAt}) < last_generated_at(#{layer.last_generated_at})"
-      if layer.downloadedAt < layer.last_generated_at
+      console.log "comparing downloadedAt(#{layer.downloadedAt}) < last_generated_at(#{Date.parse(layer.last_generated_at)})"
+      if layer.downloadedAt < Date.parse(layer.last_generated_at)
         return 'out of date'
     return "ready"
+
+  lastDownloaded: ->
+    lowestDownloaded = ""
+    for layer in @get('mbtiles')
+      if layer.downloadedAt?
+        if !_.isNumber(lowestDownloaded) || layer.downloadedAt < lowestDownloaded
+          lowestDownloaded = layer.downloadedAt
+    return lowestDownloaded

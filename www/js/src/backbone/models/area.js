@@ -71,12 +71,31 @@
       _ref = this.get('mbtiles');
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         layer = _ref[_i];
-        if (layer.status === 'generating') return 'data generating';
+        if (layer.status === 'pending' || layer.status === 'generating') {
+          return 'data generating';
+        }
         if (!(layer.downloadedAt != null)) return 'no data';
-        console.log("comparing downloadedAt(" + layer.downloadedAt + ") < last_generated_at(" + layer.last_generated_at + ")");
-        if (layer.downloadedAt < layer.last_generated_at) return 'out of date';
+        console.log("comparing downloadedAt(" + layer.downloadedAt + ") < last_generated_at(" + (Date.parse(layer.last_generated_at)) + ")");
+        if (layer.downloadedAt < Date.parse(layer.last_generated_at)) {
+          return 'out of date';
+        }
       }
       return "ready";
+    };
+
+    Area.prototype.lastDownloaded = function() {
+      var layer, lowestDownloaded, _i, _len, _ref;
+      lowestDownloaded = "";
+      _ref = this.get('mbtiles');
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        layer = _ref[_i];
+        if (layer.downloadedAt != null) {
+          if (!_.isNumber(lowestDownloaded) || layer.downloadedAt < lowestDownloaded) {
+            lowestDownloaded = layer.downloadedAt;
+          }
+        }
+      }
+      return lowestDownloaded;
     };
 
     return Area;
