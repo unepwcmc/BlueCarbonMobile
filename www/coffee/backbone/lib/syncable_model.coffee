@@ -1,15 +1,66 @@
 # Extends backbone model to support persistence in a local
 # SQLite database
 class Backbone.SyncableModel extends Backbone.Model
-  localSave: (attributes, options) ->
-    @sync = @sqliteSync
-    @save.apply(@, arguments)
-    @sync = Backbone.sync
+  localSave: (key, val, options) ->
+    # This method copies the default backbone behavior, 
+    # but uses our sqliteSync instead of backbone.sync
+    attrs = undefined
+    current = undefined
+    done = undefined
+    if not key? or _.isObject(key)
+      attrs = key
+      options = val
+    else (attrs = {})[key] = val  if key?
+    options = (if options then _.clone(options) else {})
+
+    # If we're "wait"-ing to set changed attributes, validate early.
+    if options.wait
+      return false  if attrs and not @_validate(attrs, options)
+      current = _.clone(@attributes)
+
+    # Regular saves `set` attributes before persisting to the server.
+    silentOptions = _.extend({}, options,
+      silent: true
+    )
+    return false  if attrs and not @set(attrs, (if options.wait then silentOptions else options))
+
+    # Do not persist invalid models.
+    return false  if not attrs and not @_validate(null, options)
+
+    # After a successful server-side save, the client is (optionally)
+    # updated with the server-side state.
+    model = this
+    success = options.success
+    options.success = (resp, status, xhr) ->
+      done = true
+      serverAttrs = model.parse(resp, xhr)
+      serverAttrs = _.extend(attrs or {}, serverAttrs)  if options.wait
+      return false  unless model.set(serverAttrs, options)
+      success model, resp, options  if success
+
+    # Finish configuring and sending the Ajax request.
+    method = (if @isNew() then "create" else ((if options.patch then "patch" else "update")))
+    options.attrs = attrs  if method is "patch"
+    xhr = @sqliteSync(method, this, options)
+    # When using `wait`, reset attributes to original values unless
+    # `success` has been called already.
+    if not done and options.wait
+      @clear silentOptions
+      @set current, silentOptions
+    xhr
 
   localFetch: (options) ->
-    @sync = @sqliteSync
-    @fetch.apply(@, arguments)
-    @sync = Backbone.sync
+    # This method copies the default backbone behavior, 
+    # but uses our sqliteSync instead of backbone.sync
+    options = (if options then _.clone(options) else {})
+    options.parse = true  if options.parse is undefined
+    model = this
+    success = options.success
+    options.success = (resp, status, xhr) ->
+      return false  unless model.set(model.parse(resp, xhr), options)
+      success model, resp, options  if success
+
+      @sqliteSync "read", this, options
 
   sqliteSync: (method, model, options) ->
     @createTableIfNotExist(
@@ -18,6 +69,12 @@ class Backbone.SyncableModel extends Backbone.Model
       error: (error) =>
         options.error(error)
     )
+
+  stringifyAndEscapeJson: (val) ->
+    val = JSON.stringify(val)
+    val = val.replace(/(\")/g, "\\\"")
+    return val
+
 
   doSqliteSync: (method, model, options) ->
     attrs = model.toJSON()
@@ -29,11 +86,12 @@ class Backbone.SyncableModel extends Backbone.Model
         values = []
 
         for attr, val of attrs
+          continue if _.isFunction(val)
           if _.isArray(val) or _.isObject(val)
-            val = JSON.stringify(val)
+            val = @stringifyAndEscapeJson(val)
 
           fields.push(attr)
-          values.push("\"#{val}\"")
+          values.push("'#{val}'")
 
         sql =
           """
@@ -46,11 +104,12 @@ class Backbone.SyncableModel extends Backbone.Model
         values = []
 
         for attr, val of attrs
+          continue if _.isFunction(val)
           if _.isArray(val) or _.isObject(val)
-            val = JSON.stringify(val)
+            val = @stringifyAndEscapeJson(val)
 
           fields.push(attr)
-          values.push("\"#{val}\"")
+          values.push("'#{val}'")
 
         sql =
           """
@@ -72,13 +131,14 @@ class Backbone.SyncableModel extends Backbone.Model
             WHERE id="#{attrs['id']}";
           """
 
-    console.log sql
     BlueCarbon.SQLiteDb.transaction(
       (tx) =>
         tx.executeSql(sql, [], (tx, results) =>
           options.success.apply(@, arguments)
         )
       , (tx, error) =>
+        console.log "Unable to save model:"
+        console.log @
         options.error.apply(@, arguments)
     )
 

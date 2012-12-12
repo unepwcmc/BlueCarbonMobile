@@ -62,15 +62,30 @@ window.JST['area/area_index'] = _.template(
     </ul>
   """
 )
+
 window.JST['area/area'] = _.template(
   """
     <div class='headline'>
       <h3><%= area.get('title') %></h3>
-      <a class="start-trip btn btn-small">Start trip</a>
+      <%
+      var downloadState = area.downloadState();
+      if (downloadState === 'ready') {
+      %>
+        <a class="start-trip btn btn-small">
+          Start Trip
+        </a>
+      <% } else if (downloadState === 'out of date' || downloadState === 'no data') { %>
+        <a class="download-data btn btn-small">
+          Download the data
+        </a>
+      <% } else if (downloadState === 'data generating') { %>
+        <span class='data-generating'>
+          Data is generating...
+        </span>
+      <% } %>
     </div>
     <ul class='attributes'>
-      <li>Last updated:<span>11/12/2012</span></li>
-      <li>Data ready for trip:<span>√</span></li>
+      <li>Data Downloaded at:<span></span></li>
     </ul>
   """
 )

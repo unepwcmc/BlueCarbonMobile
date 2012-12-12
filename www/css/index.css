@@ -132,6 +132,13 @@ h3 {
   list-style-type: none;
   padding: 5px;
   margin: 0;
+  overflow:scroll;
+  height: 587px;
+}
+@media only screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:portrait) {
+  #area-list {
+    height: 843px;
+  }
 }
 
 #area-list > li {
