@@ -24,6 +24,7 @@ class BlueCarbon.App
     waitForRemoteConsole = options.waitForRemoteConsole
     @localFileName = "bluecarbon.mbtiles"
     @remoteFile = "https://dl.dropbox.com/u/2324263/bluecarbon.mbtiles"
+
     @on('mapReady', =>
       @controller = new BlueCarbon.Controller(app:@)
     )
@@ -38,22 +39,10 @@ class BlueCarbon.App
       )
     )
 
-    #document.addEventListener "deviceready", @start, false)
-    # This is for debugging in development, you can replace it with the above line for producion
-    @ready=false
-    if waitForRemoteConsole
-      #alert('Waiting for weinre to connect, start app with:\n\n blueCarbonApp.start(); \n\n Disable this behavior by setting waitForRemoteConsole option to false')
-      document.addEventListener "deviceready", (=> @ready = true), false
-    else
-      document.addEventListener "deviceready", (=>
-        @ready = true
-        @start()
-      ), false
+    document.addEventListener "deviceready", @start, false
 
   start: =>
-    unless @ready
-      alert('not ready yet!')
-      return false
+    window.BlueCarbon.SQLiteDb = window.sqlitePlugin.openDatabase("BlueCarbon.db", "1.0", "Test", 10000000)
 
     @map = new L.Map("map",
       center: new L.LatLng(24.2870, 54.3274)
@@ -76,5 +65,3 @@ class BlueCarbon.App
     }).addTo(@map)
 
     @trigger('mapReady')
-
-    window.BlueCarbon.SQLiteDb = window.sqlitePlugin.openDatabase("BlueCarbon.db", "1.0", "Test", 10000000)

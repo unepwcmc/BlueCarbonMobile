@@ -56,11 +56,11 @@ class Backbone.SyncableModel extends Backbone.Model
     options.parse = true  if options.parse is undefined
     model = this
     success = options.success
-    options.success = (resp, status, xhr) ->
-      return false  unless model.set(model.parse(resp, xhr), options)
-      success model, resp, options  if success
+    options.success = (tx, results) ->
+      return false  unless model.set(model.localParse(results, tx), options)
+      success model, results, options  if success
 
-      @sqliteSync "read", this, options
+    @sqliteSync "read", this, options
 
   sqliteSync: (method, model, options) ->
     @createTableIfNotExist(
