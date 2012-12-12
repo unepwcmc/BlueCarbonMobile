@@ -24,3 +24,8 @@ class BlueCarbon.Collections.Areas extends Backbone.SyncableCollection
       , (tx, error) =>
         options.error.apply(@, arguments)
     )
+
+  parse: (data, response)->
+    # Don't overwrite attributes from local storage
+    #for layer in @get('mbtiles')
+    super

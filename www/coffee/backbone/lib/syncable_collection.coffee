@@ -17,6 +17,8 @@ class Backbone.SyncableCollection extends Backbone.Collection
     @each((model)->
       model.localSave(
         error: (a,b,c) ->
+          console.log "error saving model:"
+          console.log model
           console.log arguments
       )
     )
@@ -37,7 +39,14 @@ class Backbone.SyncableCollection extends Backbone.Collection
       i = 0
       jsonResults = []
       while results.rows.item(i)
-        jsonResults.push(results.rows.item(i))
+        modelAttributes = results.rows.item(i)
+        _.each modelAttributes, (value, key) ->
+          try
+            modelAttributes[key] = JSON.parse(value)
+          catch err
+        modelAttributes.mbtiles = [{"habitat":"mangroves","last_generated_at":"2012-12-07T15:28:04Z","status":"complete","url":"http://bluecarbon.unep-wcmc.org/areas/1/mbtiles/mangroves"}]
+
+        jsonResults.push(modelAttributes)
         i = i + 1
       return jsonResults
     else

@@ -70,6 +70,12 @@ class Backbone.SyncableModel extends Backbone.Model
         options.error(error)
     )
 
+  stringifyAndEscapeJson: (val) ->
+    val = JSON.stringify(val)
+    val = val.replace(/(\")/g, "\\\"")
+    return val
+
+
   doSqliteSync: (method, model, options) ->
     attrs = model.toJSON()
 
@@ -80,11 +86,12 @@ class Backbone.SyncableModel extends Backbone.Model
         values = []
 
         for attr, val of attrs
+          continue if _.isFunction(val)
           if _.isArray(val) or _.isObject(val)
-            val = JSON.stringify(val)
+            val = @stringifyAndEscapeJson(val)
 
           fields.push(attr)
-          values.push("\"#{val}\"")
+          values.push("'#{val}'")
 
         sql =
           """
@@ -97,11 +104,12 @@ class Backbone.SyncableModel extends Backbone.Model
         values = []
 
         for attr, val of attrs
+          continue if _.isFunction(val)
           if _.isArray(val) or _.isObject(val)
-            val = JSON.stringify(val)
+            val = @stringifyAndEscapeJson(val)
 
           fields.push(attr)
-          values.push("\"#{val}\"")
+          values.push("'#{val}'")
 
         sql =
           """
@@ -123,13 +131,14 @@ class Backbone.SyncableModel extends Backbone.Model
             WHERE id="#{attrs['id']}";
           """
 
-    console.log sql
     BlueCarbon.SQLiteDb.transaction(
       (tx) =>
         tx.executeSql(sql, [], (tx, results) =>
           options.success.apply(@, arguments)
         )
       , (tx, error) =>
+        console.log "Unable to save model:"
+        console.log @
         options.error.apply(@, arguments)
     )
 
