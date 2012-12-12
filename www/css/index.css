@@ -248,3 +248,13 @@ h3 {
             color-stop(0.5, transparent),
             to(transparent));
 }
+
+.leaflet-div-icon-first {
+  border: 0;
+  background: transparent;
+  background-image: url(images/marker-ipad.png) !important;
+  width: 38px !important;
+  height: 38px !important;
+  top: -15px;
+  right: -15px;
+}

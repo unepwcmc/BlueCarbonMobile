@@ -62,26 +62,11 @@ class BlueCarbon.App
     @addBaseLayer()
 
   addBaseLayer: ->
-    window.requestFileSystem LocalFileSystem.PERSISTENT, 0, (fileSystem) =>
-      window.fs = fileSystem
-      file = fs.root.getFile(@localFileName,
-        create: false
-      , @buildMap
-      , @downloadBaseLayer)
-
-    window.BlueCarbon.SQLiteDb = window.sqlitePlugin.openDatabase("BlueCarbon.db", "1.0", "Test", 10000000)
-
-  downloadBaseLayer: =>
-    console.log "Downloading file..."
-    ft = new FileTransfer()
-    ft.download @remoteFile, fs.root.fullPath + "/" + @localFileName, @buildMap, (error) ->
-      alert "Download failed, check error log"
-      console.log error
-
-  buildMap: =>
     tileLayerUrl = 'res/tiles/{z}/{x}/{y}.png'
     tileLayer = new L.TileLayer(tileLayerUrl, {
       maxZoom: 18
     }).addTo(@map)
 
     @trigger('mapReady')
+
+    window.BlueCarbon.SQLiteDb = window.sqlitePlugin.openDatabase("BlueCarbon.db", "1.0", "Test", 10000000)
