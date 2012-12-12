@@ -49,6 +49,7 @@ class BlueCarbon.Views.AreaView extends Backbone.View
 
   initialize: (options)->
     @area = options.area
+    @area.on('sync', @render)
 
   render: =>
     @$el.html(@template(area:@area))

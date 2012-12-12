@@ -22,19 +22,29 @@
     };
 
     Area.prototype.downloadData = function() {
-      var ft, layer, _i, _len, _ref, _results,
+      var boundError, boundSuccess, ft, layer, _i, _len, _ref, _results,
         _this = this;
       _ref = this.get('mbtiles');
       _results = [];
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         layer = _ref[_i];
         ft = new FileTransfer();
-        _results.push(ft.download(layer.url, this.filenameForLayer(layer), function(fileEntry) {
-          return _this.layerDownloaded(layer, fileEntry);
-        }, function(error) {
-          alert("unable to download " + layer.habitat);
-          return console.log(error);
-        }));
+        boundSuccess = (function() {
+          var _layer;
+          _layer = layer;
+          return function(fileEntry) {
+            return _this.layerDownloaded(_layer, fileEntry);
+          };
+        })();
+        boundError = (function() {
+          var _layer;
+          _layer = layer;
+          return function(error) {
+            alert("unable to download " + _layer.habitat);
+            return console.log(error);
+          };
+        })();
+        _results.push(ft.download(layer.url, this.filenameForLayer(layer), boundSuccess, boundError));
       }
       return _results;
     };
@@ -48,8 +58,8 @@
       console.log("downloaded " + layer.habitat);
       layer.downloadedAt = (new Date()).getTime();
       mbTiles = this.get('mbtiles');
-      for (storedLayer = 0, _len = mbTiles.length; storedLayer < _len; storedLayer++) {
-        index = mbTiles[storedLayer];
+      for (index = 0, _len = mbTiles.length; index < _len; index++) {
+        storedLayer = mbTiles[index];
         if (storedLayer.habitat === layer.habitat) mbTiles[index] = layer;
       }
       this.set('mbtiles', mbTiles);
