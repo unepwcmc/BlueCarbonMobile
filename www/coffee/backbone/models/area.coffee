@@ -9,12 +9,18 @@ class BlueCarbon.Models.Area extends Backbone.SyncableModel
     for layer in @get('mbtiles')
       ft = new FileTransfer()
 
-      ft.download layer.url, @filenameForLayer(layer),
-        (fileEntry)=>
-          @layerDownloaded(layer, fileEntry)
-        , (error) ->
-          alert "unable to download #{layer.habitat}"
+      boundSuccess = (() =>
+        _layer = layer
+        return (fileEntry)=>
+          @layerDownloaded(_layer, fileEntry)
+      )()
+      boundError = (() =>
+        _layer = layer
+        return (error) ->
+          alert "unable to download #{_layer.habitat}"
           console.log error
+      )()
+      ft.download layer.url, @filenameForLayer(layer), boundSuccess, boundError
 
   filenameForLayer: (layer) ->
     fs.root.fullPath + "/" + layer.habitat
@@ -23,7 +29,7 @@ class BlueCarbon.Models.Area extends Backbone.SyncableModel
     console.log "downloaded #{layer.habitat}"
     layer.downloadedAt = (new Date()).getTime()
     mbTiles = @get('mbtiles')
-    for index, storedLayer in mbTiles
+    for storedLayer, index in mbTiles
       if storedLayer.habitat == layer.habitat
         mbTiles[index] = layer
     @set('mbtiles', mbTiles)

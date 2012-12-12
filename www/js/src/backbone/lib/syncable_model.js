@@ -128,7 +128,8 @@
       }
       return BlueCarbon.SQLiteDb.transaction(function(tx) {
         return tx.executeSql(sql, [], function(tx, results) {
-          return options.success.apply(_this, arguments);
+          options.success.apply(_this, arguments);
+          return _this.trigger('sync');
         });
       }, function(tx, error) {
         console.log("Unable to save model:");

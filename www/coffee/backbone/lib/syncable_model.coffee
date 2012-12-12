@@ -135,6 +135,7 @@ class Backbone.SyncableModel extends Backbone.Model
       (tx) =>
         tx.executeSql(sql, [], (tx, results) =>
           options.success.apply(@, arguments)
+          @trigger('sync')
         )
       , (tx, error) =>
         console.log "Unable to save model:"

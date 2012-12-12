@@ -79,7 +79,15 @@
     };
 
     App.prototype.addBaseLayer = function() {
-      var tileLayer, tileLayerUrl;
+      var tileLayer, tileLayerUrl,
+        _this = this;
+      window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function(fileSystem) {
+        var file;
+        window.fs = fileSystem;
+        return file = fs.root.getFile(_this.localFileName, {
+          create: false
+        }, void 0, void 0);
+      });
       tileLayerUrl = 'res/tiles/{z}/{x}/{y}.png';
       tileLayer = new L.TileLayer(tileLayerUrl, {
         maxZoom: 18
