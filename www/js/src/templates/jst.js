@@ -11,7 +11,7 @@
 
   window.JST['area/area_index'] = _.template("<div class='ios-head'>\n  <h2>Areas</h2>\n</div>\n<div id=\"sync-status\"></div>\n<ul id=\"area-list\">\n</ul>");
 
-  window.JST['area/area'] = _.template("<div class='headline'>\n  <h3><%= area.title %></h3>\n  <% if (area.downloaded_data) { %>\n    <a class=\"start-trip btn btn-small\">\n      Start Trip\n    </a>\n  <% } else { %>\n    <a class=\"download-data btn btn-small\">\n      Download the data\n    </a>\n  <% } %>\n</div>\n<ul class='attributes'>\n  <li>Last updated:<span>11/12/2012</span></li>\n</ul>");
+  window.JST['area/area'] = _.template("<div class='headline'>\n  <h3><%= area.get('title') %></h3>\n  <%\n  var downloadState = area.downloadState();\n  if (downloadState === 'ready') {\n  %>\n    <a class=\"start-trip btn btn-small\">\n      Start Trip\n    </a>\n  <% } else if (downloadState === 'out of date' || downloadState === 'no data') { %>\n    <a class=\"download-data btn btn-small\">\n      Download the data\n    </a>\n  <% } else if (downloadState === 'data generating') { %>\n    <span class='data-generating'>\n      Data is generating...\n    </span>\n  <% } %>\n</div>\n<ul class='attributes'>\n  <li>Data Downloaded at:<span></span></li>\n</ul>");
 
   window.JST['area/validation'] = _.template("<%= validation.get('type') %> at 11/11/2013");
 

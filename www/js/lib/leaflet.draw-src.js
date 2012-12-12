@@ -389,7 +389,13 @@ L.Polyline.Draw = L.Handler.Draw.extend({
                   this._hideErrorLabel();
           }
 
-          this._markers.push(this._createMarker(latlng));
+          var marker = this._createMarker(latlng);
+
+          if (markerCount === 0) {
+            marker._icon.className = marker._icon.className + " leaflet-div-icon-first";
+          }
+
+          this._markers.push(marker);
 
           this._poly.addLatLng(latlng);
 

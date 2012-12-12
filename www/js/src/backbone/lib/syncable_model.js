@@ -22,11 +22,15 @@
         attrs = key;
         options = val;
       } else {
-        if (key != null) (attrs = {})[key] = val;
+        if (key != null) {
+          (attrs = {})[key] = val;
+        }
       }
       options = (options ? _.clone(options) : {});
       if (options.wait) {
-        if (attrs && !this._validate(attrs, options)) return false;
+        if (attrs && !this._validate(attrs, options)) {
+          return false;
+        }
         current = _.clone(this.attributes);
       }
       silentOptions = _.extend({}, options, {
@@ -35,19 +39,29 @@
       if (attrs && !this.set(attrs, (options.wait ? silentOptions : options))) {
         return false;
       }
-      if (!attrs && !this._validate(null, options)) return false;
+      if (!attrs && !this._validate(null, options)) {
+        return false;
+      }
       model = this;
       success = options.success;
-      options.success = function(resp, status, xhr) {
+      options.success = function(transaction, results) {
         var serverAttrs;
         done = true;
-        serverAttrs = model.parse(resp, xhr);
-        if (options.wait) serverAttrs = _.extend(attrs || {}, serverAttrs);
-        if (!model.set(serverAttrs, options)) return false;
-        if (success) return success(model, resp, options);
+        serverAttrs = model.localParse(results, transaction);
+        if (options.wait) {
+          serverAttrs = _.extend(attrs || {}, serverAttrs);
+        }
+        if (!model.set(serverAttrs, options)) {
+          return false;
+        }
+        if (success) {
+          return success(model, resp, options);
+        }
       };
       method = (this.isNew() ? "create" : (options.patch ? "patch" : "update"));
-      if (method === "patch") options.attrs = attrs;
+      if (method === "patch") {
+        options.attrs = attrs;
+      }
       xhr = this.sqliteSync(method, this, options);
       if (!done && options.wait) {
         this.clear(silentOptions);
@@ -59,14 +73,20 @@
     SyncableModel.prototype.localFetch = function(options) {
       var model, success;
       options = (options ? _.clone(options) : {});
-      if (options.parse === void 0) options.parse = true;
+      if (options.parse === void 0) {
+        options.parse = true;
+      }
       model = this;
       success = options.success;
-      return options.success = function(resp, status, xhr) {
-        if (!model.set(model.parse(resp, xhr), options)) return false;
-        if (success) success(model, resp, options);
-        return this.sqliteSync("read", this, options);
+      options.success = function(tx, results) {
+        if (!model.set(model.localParse(results, tx), options)) {
+          return false;
+        }
+        if (success) {
+          return success(model, results, options);
+        }
       };
+      return this.sqliteSync("read", this, options);
     };
 
     SyncableModel.prototype.sqliteSync = function(method, model, options) {
@@ -81,6 +101,12 @@
       });
     };
 
+    SyncableModel.prototype.stringifyAndEscapeJson = function(val) {
+      val = JSON.stringify(val);
+      val = val.replace(/(\")/g, "\\\"");
+      return val;
+    };
+
     SyncableModel.prototype.doSqliteSync = function(method, model, options) {
       var attr, attrs, fields, sql, val, values,
         _this = this;
@@ -92,11 +118,14 @@
           values = [];
           for (attr in attrs) {
             val = attrs[attr];
+            if (_.isFunction(val)) {
+              continue;
+            }
             if (_.isArray(val) || _.isObject(val)) {
-              val = JSON.stringify(val);
+              val = this.stringifyAndEscapeJson(val);
             }
             fields.push(attr);
-            values.push("\"" + val + "\"");
+            values.push("'" + val + "'");
           }
           sql = "INSERT INTO " + model.constructor.name + "\n( " + (fields.join(", ")) + " )\nVALUES ( " + (values.join(", ")) + " );";
           break;
@@ -105,11 +134,14 @@
           values = [];
           for (attr in attrs) {
             val = attrs[attr];
+            if (_.isFunction(val)) {
+              continue;
+            }
             if (_.isArray(val) || _.isObject(val)) {
-              val = JSON.stringify(val);
+              val = this.stringifyAndEscapeJson(val);
             }
             fields.push(attr);
-            values.push("\"" + val + "\"");
+            values.push("'" + val + "'");
           }
           sql = "INSERT OR REPLACE INTO " + model.constructor.name + "\n( " + (fields.join(", ")) + " )\nVALUES ( " + (values.join(", ")) + " );";
           break;
@@ -119,12 +151,16 @@
         case "delete":
           sql = "DELETE FROM " + model.constructor.name + "\nWHERE id=\"" + attrs['id'] + "\";";
       }
-      console.log(sql);
       return BlueCarbon.SQLiteDb.transaction(function(tx) {
         return tx.executeSql(sql, [], function(tx, results) {
-          return options.success.apply(_this, arguments);
+          options.success.apply(_this, arguments);
+          return _this.trigger('sync');
         });
       }, function(tx, error) {
+        console.log("Unable to save model:");
+        console.log(_this);
+        console.log(arguments);
+        console.log(arguments[0].stack);
         return options.error.apply(_this, arguments);
       });
     };
@@ -145,6 +181,19 @@
         console.log("failed to make check exists");
         return options.error.apply(_this, arguments);
       });
+    };
+
+    SyncableModel.prototype.localParse = function(results, tx) {
+      var modelAttributes;
+      modelAttributes = results.rows.item(0);
+      _.each(modelAttributes, function(value, key) {
+        try {
+          return modelAttributes[key] = JSON.parse(value);
+        } catch (err) {
+
+        }
+      });
+      return modelAttributes;
     };
 
     return SyncableModel;

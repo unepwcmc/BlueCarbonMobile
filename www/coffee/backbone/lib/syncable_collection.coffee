@@ -6,19 +6,27 @@ class Backbone.SyncableCollection extends Backbone.Collection
     options.parse = true  if options.parse is undefined
     collection = this
     success = options.success
-    options.success = (resp, status, xhr) ->
+    options.success = (results,status,transaction) ->
       method = (if options.update then "update" else "reset")
-      collection[method] collection.parse(resp, xhr), options
-      success collection, resp, options  if success
+      collection[method] collection.localParse(results, transaction), options
+      success collection, status, options  if success
 
     @sqliteSync "read", this, options
 
   localSave: (options) ->
-    @each((model)->
-      model.localSave(
-        error: (a,b,c) ->
-          console.log arguments
-      )
+    @emptyDb(
+      success: =>
+        @each((model)->
+          model.localSave({},
+            error: (a,b,c) ->
+              console.log "error saving model:"
+              console.log model
+              console.log arguments
+              #console.log arguments[0].stack
+          )
+        )
+      error: (a,b,c)->
+        alert('unable to clear db')
     )
 
   sqliteSync: (method, collection, options) ->
@@ -32,16 +40,31 @@ class Backbone.SyncableCollection extends Backbone.Collection
           options.error(error)
     )
 
-  parse: (results,tx)->
-    if results.rows?
-      i = 0
-      jsonResults = []
-      while results.rows.item(i)
-        jsonResults.push(results.rows.item(i))
-        i = i + 1
-      return jsonResults
-    else
-      super
+  localParse: (results,tx)->
+    i = 0
+    jsonResults = []
+    while results.rows.item(i)
+      modelAttributes = results.rows.item(i)
+      _.each modelAttributes, (value, key) ->
+        try
+          modelAttributes[key] = JSON.parse(value)
+        catch err
+
+      jsonResults.push(modelAttributes)
+      i = i + 1
+    return jsonResults
 
   doSqliteSync: (method, collection, options) =>
     alert("Collection #{collection.constructor.name} must implement a doSqliteSync method which provides backbone.sync behavior, but to SQL")
+
+  emptyDb: (options)->
+    sql = "DELETE FROM #{@model.name}"
+    BlueCarbon.SQLiteDb.transaction(
+      (tx) =>
+        tx.executeSql(sql, [], (tx, results) =>
+          options.success.apply(@, arguments)
+        )
+      , (tx, error) =>
+        console.log "Unable to empty database #{@model.name}"
+        options.error.apply(@, arguments)
+    )

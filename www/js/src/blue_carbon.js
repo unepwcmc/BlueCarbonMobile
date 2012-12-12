@@ -35,10 +35,6 @@
     _.extend(App.prototype, Backbone.Events);
 
     function App(options) {
-      this.buildMap = __bind(this.buildMap, this);
-
-      this.downloadBaseLayer = __bind(this.downloadBaseLayer, this);
-
       this.start = __bind(this.start, this);
 
       var waitForRemoteConsole,
@@ -59,24 +55,11 @@
           }
         });
       });
-      this.ready = false;
-      if (waitForRemoteConsole) {
-        document.addEventListener("deviceready", (function() {
-          return _this.ready = true;
-        }), false);
-      } else {
-        document.addEventListener("deviceready", (function() {
-          _this.ready = true;
-          return _this.start();
-        }), false);
-      }
+      document.addEventListener("deviceready", this.start, false);
     }
 
     App.prototype.start = function() {
-      if (!this.ready) {
-        alert('not ready yet!');
-        return false;
-      }
+      window.BlueCarbon.SQLiteDb = window.sqlitePlugin.openDatabase("BlueCarbon.db", "1.0", "Test", 10000000);
       this.map = new L.Map("map", {
         center: new L.LatLng(24.2870, 54.3274),
         zoom: 10
@@ -85,29 +68,15 @@
     };
 
     App.prototype.addBaseLayer = function() {
-      var _this = this;
+      var tileLayer, tileLayerUrl,
+        _this = this;
       window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function(fileSystem) {
         var file;
         window.fs = fileSystem;
         return file = fs.root.getFile(_this.localFileName, {
           create: false
-        }, _this.buildMap, _this.downloadBaseLayer);
+        }, void 0, void 0);
       });
-      return window.BlueCarbon.SQLiteDb = window.sqlitePlugin.openDatabase("BlueCarbon.db", "1.0", "Test", 10000000);
-    };
-
-    App.prototype.downloadBaseLayer = function() {
-      var ft;
-      console.log("Downloading file...");
-      ft = new FileTransfer();
-      return ft.download(this.remoteFile, fs.root.fullPath + "/" + this.localFileName, this.buildMap, function(error) {
-        alert("Download failed, check error log");
-        return console.log(error);
-      });
-    };
-
-    App.prototype.buildMap = function() {
-      var tileLayer, tileLayerUrl;
       tileLayerUrl = 'res/tiles/{z}/{x}/{y}.png';
       tileLayer = new L.TileLayer(tileLayerUrl, {
         maxZoom: 18

@@ -24,3 +24,27 @@ class BlueCarbon.Collections.Areas extends Backbone.SyncableCollection
       , (tx, error) =>
         options.error.apply(@, arguments)
     )
+
+  parse: (data, response)->
+    # Don't overwrite attributes from local storage on HTTP sync
+    for fetchedArea in data
+      # Try to find the corresponding area in current object
+      areaModel = null
+      for localAreaModel in @models
+        if localAreaModel.get('id') == fetchedArea.id
+          areaModel = localAreaModel 
+          break
+
+      if areaModel?
+        # Copy the downloaded date for each layer from local data to fetched server data
+        for fetchedLayer in fetchedArea.mbtiles
+          # Find corresponding local layer
+          for localLayer in areaModel.get('mbtiles')
+            if localLayer.habitat == fetchedLayer.habitat
+              # Copy local storage attributes to fetchedData
+              console.log "adding date #{localLayer.downloadedAt} to #{fetchedLayer}"
+              fetchedLayer.downloadedAt = localLayer.downloadedAt
+              break
+
+    
+    super

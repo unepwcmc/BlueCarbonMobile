@@ -27,13 +27,13 @@ class Backbone.SyncableModel extends Backbone.Model
     # Do not persist invalid models.
     return false  if not attrs and not @_validate(null, options)
 
-    # After a successful server-side save, the client is (optionally)
+    # After a successful db save, the client is (optionally)
     # updated with the server-side state.
     model = this
     success = options.success
-    options.success = (resp, status, xhr) ->
+    options.success = (transaction, results) ->
       done = true
-      serverAttrs = model.parse(resp, xhr)
+      serverAttrs = model.localParse(results, transaction)
       serverAttrs = _.extend(attrs or {}, serverAttrs)  if options.wait
       return false  unless model.set(serverAttrs, options)
       success model, resp, options  if success
@@ -56,11 +56,11 @@ class Backbone.SyncableModel extends Backbone.Model
     options.parse = true  if options.parse is undefined
     model = this
     success = options.success
-    options.success = (resp, status, xhr) ->
-      return false  unless model.set(model.parse(resp, xhr), options)
-      success model, resp, options  if success
+    options.success = (tx, results) ->
+      return false  unless model.set(model.localParse(results, tx), options)
+      success model, results, options  if success
 
-      @sqliteSync "read", this, options
+    @sqliteSync "read", this, options
 
   sqliteSync: (method, model, options) ->
     @createTableIfNotExist(
@@ -69,6 +69,12 @@ class Backbone.SyncableModel extends Backbone.Model
       error: (error) =>
         options.error(error)
     )
+
+  stringifyAndEscapeJson: (val) ->
+    val = JSON.stringify(val)
+    val = val.replace(/(\")/g, "\\\"")
+    return val
+
 
   doSqliteSync: (method, model, options) ->
     attrs = model.toJSON()
@@ -80,11 +86,12 @@ class Backbone.SyncableModel extends Backbone.Model
         values = []
 
         for attr, val of attrs
+          continue if _.isFunction(val)
           if _.isArray(val) or _.isObject(val)
-            val = JSON.stringify(val)
+            val = @stringifyAndEscapeJson(val)
 
           fields.push(attr)
-          values.push("\"#{val}\"")
+          values.push("'#{val}'")
 
         sql =
           """
@@ -97,11 +104,12 @@ class Backbone.SyncableModel extends Backbone.Model
         values = []
 
         for attr, val of attrs
+          continue if _.isFunction(val)
           if _.isArray(val) or _.isObject(val)
-            val = JSON.stringify(val)
+            val = @stringifyAndEscapeJson(val)
 
           fields.push(attr)
-          values.push("\"#{val}\"")
+          values.push("'#{val}'")
 
         sql =
           """
@@ -123,13 +131,17 @@ class Backbone.SyncableModel extends Backbone.Model
             WHERE id="#{attrs['id']}";
           """
 
-    console.log sql
     BlueCarbon.SQLiteDb.transaction(
       (tx) =>
         tx.executeSql(sql, [], (tx, results) =>
           options.success.apply(@, arguments)
+          @trigger('sync')
         )
       , (tx, error) =>
+        console.log "Unable to save model:"
+        console.log @
+        console.log arguments
+        console.log arguments[0].stack
         options.error.apply(@, arguments)
     )
 
@@ -148,3 +160,13 @@ class Backbone.SyncableModel extends Backbone.Model
         console.log "failed to make check exists"
         options.error.apply(@, arguments)
     )
+
+  localParse: (results,tx) ->
+    modelAttributes = results.rows.item(0)
+    _.each modelAttributes, (value, key) ->
+      try
+        modelAttributes[key] = JSON.parse(value)
+      catch err
+
+    modelAttributes
+

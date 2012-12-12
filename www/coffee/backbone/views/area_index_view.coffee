@@ -15,8 +15,10 @@ class BlueCarbon.Views.AreaIndexView extends Backbone.View
             @areaList.localSave() # Write updated list to DB
             @showUpdated()
         )
+      error: (a,b,c)=>
+        console.log "local fetch fail:"
+        console.log arguments
     )
-    
 
     @subViews = []
 
@@ -42,14 +44,15 @@ class BlueCarbon.Views.AreaView extends Backbone.View
   template: JST['area/area']
   tagName: 'li'
   events:
-    "touchstart .download-data": "startTrip"
+    "touchstart .download-data": "downloadData"
     "touchstart .start-trip": "startTrip"
 
   initialize: (options)->
     @area = options.area
+    @area.on('sync', @render)
 
   render: =>
-    @$el.html(@template(area:@area.toJSON()))
+    @$el.html(@template(area:@area))
     return @
 
   startTrip: =>
