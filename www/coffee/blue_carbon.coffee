@@ -62,6 +62,14 @@ class BlueCarbon.App
     @addBaseLayer()
 
   addBaseLayer: ->
+    window.requestFileSystem LocalFileSystem.PERSISTENT, 0, (fileSystem) =>
+      window.fs = fileSystem
+      file = fs.root.getFile(@localFileName,
+        create: false
+      , undefined
+      , undefined
+      )
+
     tileLayerUrl = 'res/tiles/{z}/{x}/{y}.png'
     tileLayer = new L.TileLayer(tileLayerUrl, {
       maxZoom: 18
