@@ -37,10 +37,10 @@
       if (!attrs && !this._validate(null, options)) return false;
       model = this;
       success = options.success;
-      options.success = function(resp, status, xhr) {
+      options.success = function(transaction, results) {
         var serverAttrs;
         done = true;
-        serverAttrs = model.parse(resp, xhr);
+        serverAttrs = model.localParse(results, transaction);
         if (options.wait) serverAttrs = _.extend(attrs || {}, serverAttrs);
         if (!model.set(serverAttrs, options)) return false;
         if (success) return success(model, resp, options);
@@ -133,6 +133,8 @@
       }, function(tx, error) {
         console.log("Unable to save model:");
         console.log(_this);
+        console.log(arguments);
+        console.log(arguments[0].stack);
         return options.error.apply(_this, arguments);
       });
     };
@@ -153,6 +155,19 @@
         console.log("failed to make check exists");
         return options.error.apply(_this, arguments);
       });
+    };
+
+    SyncableModel.prototype.localParse = function(results, tx) {
+      var modelAttributes;
+      modelAttributes = results.rows.item(0);
+      _.each(modelAttributes, function(value, key) {
+        try {
+          return modelAttributes[key] = JSON.parse(value);
+        } catch (err) {
+
+        }
+      });
+      return modelAttributes;
     };
 
     return SyncableModel;

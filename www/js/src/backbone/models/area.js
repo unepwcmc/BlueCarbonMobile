@@ -45,7 +45,7 @@
 
     Area.prototype.layerDownloaded = function(layer, fileEntry) {
       var index, mbTiles, storedLayer, _len;
-      alert("Download succeeded");
+      console.log("downloaded " + layer.habitat);
       layer.downloadedAt = (new Date()).getTime();
       mbTiles = this.get('mbtiles');
       for (storedLayer = 0, _len = mbTiles.length; storedLayer < _len; storedLayer++) {

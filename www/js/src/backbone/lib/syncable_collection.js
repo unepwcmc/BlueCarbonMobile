@@ -18,18 +18,18 @@
       if (options.parse === void 0) options.parse = true;
       collection = this;
       success = options.success;
-      options.success = function(resp, status, xhr) {
+      options.success = function(results, status, transaction) {
         var method;
         method = (options.update ? "update" : "reset");
-        collection[method](collection.parse(resp, xhr), options);
-        if (success) return success(collection, resp, options);
+        collection[method](collection.localParse(results, transaction), options);
+        if (success) return success(collection, status, options);
       };
       return this.sqliteSync("read", this, options);
     };
 
     SyncableCollection.prototype.localSave = function(options) {
       return this.each(function(model) {
-        return model.localSave({
+        return model.localSave({}, {
           error: function(a, b, c) {
             console.log("error saving model:");
             console.log(model);
@@ -53,35 +53,23 @@
       });
     };
 
-    SyncableCollection.prototype.parse = function(results, tx) {
+    SyncableCollection.prototype.localParse = function(results, tx) {
       var i, jsonResults, modelAttributes;
-      if (results.rows != null) {
-        i = 0;
-        jsonResults = [];
-        while (results.rows.item(i)) {
-          modelAttributes = results.rows.item(i);
-          _.each(modelAttributes, function(value, key) {
-            try {
-              return modelAttributes[key] = JSON.parse(value);
-            } catch (err) {
+      i = 0;
+      jsonResults = [];
+      while (results.rows.item(i)) {
+        modelAttributes = results.rows.item(i);
+        _.each(modelAttributes, function(value, key) {
+          try {
+            return modelAttributes[key] = JSON.parse(value);
+          } catch (err) {
 
-            }
-          });
-          modelAttributes.mbtiles = [
-            {
-              "habitat": "mangroves",
-              "last_generated_at": "2012-12-07T15:28:04Z",
-              "status": "complete",
-              "url": "http://bluecarbon.unep-wcmc.org/areas/1/mbtiles/mangroves"
-            }
-          ];
-          jsonResults.push(modelAttributes);
-          i = i + 1;
-        }
-        return jsonResults;
-      } else {
-        return SyncableCollection.__super__.parse.apply(this, arguments);
+          }
+        });
+        jsonResults.push(modelAttributes);
+        i = i + 1;
       }
+      return jsonResults;
     };
 
     SyncableCollection.prototype.doSqliteSync = function(method, collection, options) {

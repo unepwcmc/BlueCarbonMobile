@@ -20,7 +20,7 @@ class BlueCarbon.Models.Area extends Backbone.SyncableModel
     fs.root.fullPath + "/" + layer.habitat
 
   layerDownloaded: (layer, fileEntry) =>
-    alert "Download succeeded"
+    console.log "downloaded #{layer.habitat}"
     layer.downloadedAt = (new Date()).getTime()
     mbTiles = @get('mbtiles')
     for index, storedLayer in mbTiles
@@ -39,4 +39,3 @@ class BlueCarbon.Models.Area extends Backbone.SyncableModel
       if layer.downloadedAt < layer.last_generated_at
         return 'out of date'
     return "ready"
-    

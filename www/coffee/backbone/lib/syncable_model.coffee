@@ -27,13 +27,13 @@ class Backbone.SyncableModel extends Backbone.Model
     # Do not persist invalid models.
     return false  if not attrs and not @_validate(null, options)
 
-    # After a successful server-side save, the client is (optionally)
+    # After a successful db save, the client is (optionally)
     # updated with the server-side state.
     model = this
     success = options.success
-    options.success = (resp, status, xhr) ->
+    options.success = (transaction, results) ->
       done = true
-      serverAttrs = model.parse(resp, xhr)
+      serverAttrs = model.localParse(results, transaction)
       serverAttrs = _.extend(attrs or {}, serverAttrs)  if options.wait
       return false  unless model.set(serverAttrs, options)
       success model, resp, options  if success
@@ -139,6 +139,8 @@ class Backbone.SyncableModel extends Backbone.Model
       , (tx, error) =>
         console.log "Unable to save model:"
         console.log @
+        console.log arguments
+        console.log arguments[0].stack
         options.error.apply(@, arguments)
     )
 
@@ -157,3 +159,13 @@ class Backbone.SyncableModel extends Backbone.Model
         console.log "failed to make check exists"
         options.error.apply(@, arguments)
     )
+
+  localParse: (results,tx) ->
+    modelAttributes = results.rows.item(0)
+    _.each modelAttributes, (value, key) ->
+      try
+        modelAttributes[key] = JSON.parse(value)
+      catch err
+
+    modelAttributes
+

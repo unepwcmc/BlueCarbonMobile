@@ -39,6 +39,34 @@
     };
 
     Areas.prototype.parse = function(data, response) {
+      var areaModel, fetchedArea, fetchedLayer, localAreaModel, localLayer, _i, _j, _k, _l, _len, _len2, _len3, _len4, _ref, _ref2, _ref3;
+      for (_i = 0, _len = data.length; _i < _len; _i++) {
+        fetchedArea = data[_i];
+        areaModel = null;
+        _ref = this.models;
+        for (_j = 0, _len2 = _ref.length; _j < _len2; _j++) {
+          localAreaModel = _ref[_j];
+          if (localAreaModel.get('id') === fetchedArea.id) {
+            areaModel = localAreaModel;
+            break;
+          }
+        }
+        if (areaModel != null) {
+          _ref2 = fetchedArea.mbtiles;
+          for (_k = 0, _len3 = _ref2.length; _k < _len3; _k++) {
+            fetchedLayer = _ref2[_k];
+            _ref3 = areaModel.get('mbtiles');
+            for (_l = 0, _len4 = _ref3.length; _l < _len4; _l++) {
+              localLayer = _ref3[_l];
+              if (localLayer.habitat === fetchedLayer.habitat) {
+                console.log("adding date " + localLayer.downloadedAt + " to " + fetchedLayer);
+                fetchedLayer.downloadedAt = localLayer.downloadedAt;
+                break;
+              }
+            }
+          }
+        }
+      }
       return Areas.__super__.parse.apply(this, arguments);
     };
 
