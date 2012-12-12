@@ -28,14 +28,22 @@
     };
 
     SyncableCollection.prototype.localSave = function(options) {
-      return this.each(function(model) {
-        return model.localSave({}, {
-          error: function(a, b, c) {
-            console.log("error saving model:");
-            console.log(model);
-            return console.log(arguments);
-          }
-        });
+      var _this = this;
+      return this.emptyDb({
+        success: function() {
+          return _this.each(function(model) {
+            return model.localSave({}, {
+              error: function(a, b, c) {
+                console.log("error saving model:");
+                console.log(model);
+                return console.log(arguments);
+              }
+            });
+          });
+        },
+        error: function(a, b, c) {
+          return alert('unable to clear db');
+        }
       });
     };
 
@@ -74,6 +82,20 @@
 
     SyncableCollection.prototype.doSqliteSync = function(method, collection, options) {
       return alert("Collection " + collection.constructor.name + " must implement a doSqliteSync method which provides backbone.sync behavior, but to SQL");
+    };
+
+    SyncableCollection.prototype.emptyDb = function(options) {
+      var sql,
+        _this = this;
+      sql = "DELETE FROM " + this.model.name;
+      return BlueCarbon.SQLiteDb.transaction(function(tx) {
+        return tx.executeSql(sql, [], function(tx, results) {
+          return options.success.apply(_this, arguments);
+        });
+      }, function(tx, error) {
+        console.log("Unable to empty database " + _this.model.name);
+        return options.error.apply(_this, arguments);
+      });
     };
 
     return SyncableCollection;

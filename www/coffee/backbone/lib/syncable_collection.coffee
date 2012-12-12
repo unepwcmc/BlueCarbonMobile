@@ -14,14 +14,19 @@ class Backbone.SyncableCollection extends Backbone.Collection
     @sqliteSync "read", this, options
 
   localSave: (options) ->
-    @each((model)->
-      model.localSave({},
-        error: (a,b,c) ->
-          console.log "error saving model:"
-          console.log model
-          console.log arguments
-          #console.log arguments[0].stack
-      )
+    @emptyDb(
+      success: =>
+        @each((model)->
+          model.localSave({},
+            error: (a,b,c) ->
+              console.log "error saving model:"
+              console.log model
+              console.log arguments
+              #console.log arguments[0].stack
+          )
+        )
+      error: (a,b,c)->
+        alert('unable to clear db')
     )
 
   sqliteSync: (method, collection, options) ->
@@ -51,3 +56,15 @@ class Backbone.SyncableCollection extends Backbone.Collection
 
   doSqliteSync: (method, collection, options) =>
     alert("Collection #{collection.constructor.name} must implement a doSqliteSync method which provides backbone.sync behavior, but to SQL")
+
+  emptyDb: (options)->
+    sql = "DELETE FROM #{@model.name}"
+    BlueCarbon.SQLiteDb.transaction(
+      (tx) =>
+        tx.executeSql(sql, [], (tx, results) =>
+          options.success.apply(@, arguments)
+        )
+      , (tx, error) =>
+        console.log "Unable to empty database #{@model.name}"
+        options.error.apply(@, arguments)
+    )
