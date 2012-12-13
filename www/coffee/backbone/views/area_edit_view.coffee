@@ -45,7 +45,7 @@ class BlueCarbon.Views.AreaEditView extends Backbone.View
   removeTileLayers: ->
     return unless @tileLayers?
     for layer in @tileLayers
-      @map.remove(layer)
+      @map.removeLayer(layer)
 
   onClose: ->
     for view in @subViews

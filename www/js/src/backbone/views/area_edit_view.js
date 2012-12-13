@@ -90,7 +90,7 @@
       _results = [];
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         layer = _ref[_i];
-        _results.push(this.map.remove(layer));
+        _results.push(this.map.removeLayer(layer));
       }
       return _results;
     };
