@@ -52,4 +52,8 @@ class BlueCarbon.Models.Area extends Backbone.SyncableModel
       if layer.downloadedAt?
         if !_.isNumber(lowestDownloaded) || layer.downloadedAt < lowestDownloaded
           lowestDownloaded = layer.downloadedAt
-    return lowestDownloaded
+    if (typeof lowestDownloaded) == 'string'
+      return ""
+    else
+      lowestDownloaded = new Date(lowestDownloaded)
+      return "#{lowestDownloaded.getFullYear()}/#{lowestDownloaded.getMonth()+1}/#{lowestDownloaded.getDate()}"
