@@ -15,6 +15,7 @@ class BlueCarbon.Controller extends Wcmc.Controller
       success: () =>
         if @user.get('auth_token')
           @user.trigger('user:loggedIn', @user)
+          BlueCarbon.bus.trigger('user:gotAuthToken', @user.get('auth_token'))
         else
           $('#modal-disabler').addClass('active')
           @modal.showView(loginView)
