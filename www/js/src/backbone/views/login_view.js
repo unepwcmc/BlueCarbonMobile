@@ -26,16 +26,11 @@
       "click #login": "login"
     };
 
-    LoginView.prototype.initialize = function() {
-      return this.user = new BlueCarbon.Models.User();
-    };
-
     LoginView.prototype.login = function() {
       var _this = this;
-      this.user.set($('#login-form').serializeObject());
-      return this.user.login({
+      return this.model.login($('#login-form').serializeObject(), {
         success: function(data) {
-          return _this.trigger('user:loggedIn', _this.user);
+          return _this.trigger('user:loggedIn', _this.model);
         },
         error: function(data) {
           return _this.showError('Unable to login');

@@ -119,7 +119,7 @@ class Backbone.SyncableModel extends Backbone.Model
       when "read"
         sql =
           """
-            SELECT #{Object.keys(attrs)}
+            SELECT *
             FROM #{model.constructor.name}
             WHERE id="#{attrs['id']}";
           """

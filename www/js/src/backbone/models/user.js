@@ -16,7 +16,11 @@
       return User.__super__.constructor.apply(this, arguments);
     }
 
-    User.prototype.login = function(options) {
+    User.prototype.schema = function() {
+      return "id INTEGER, user_id INTEGER, auth_token TEXT";
+    };
+
+    User.prototype.login = function(form, options) {
       var _this = this;
       return $.ajax({
         type: 'GET',
@@ -28,11 +32,17 @@
               type: 'POST',
               url: 'http://bluecarbon.unep-wcmc.org/my/admins/sign_in.json',
               data: {
-                admin: _this.attributes
+                admin: {
+                  email: form.email,
+                  password: form.password
+                }
               },
               dataType: "json",
               success: function(data) {
+                _this.set('id', '1');
+                _this.set('user_id', data.id);
                 _this.set('auth_token', data.auth_token);
+                _this.localSave();
                 BlueCarbon.bus.trigger('user:gotAuthToken', data.auth_token);
                 return options.success(_this);
               },
@@ -47,6 +57,6 @@
 
     return User;
 
-  })(Backbone.Model);
+  })(Backbone.SyncableModel);
 
 }).call(this);
