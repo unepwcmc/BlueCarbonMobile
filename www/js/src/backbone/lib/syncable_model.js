@@ -55,7 +55,7 @@
           return false;
         }
         if (success) {
-          return success(model, resp, options);
+          return success(model, results, options);
         }
       };
       method = (this.isNew() ? "create" : (options.patch ? "patch" : "update"));

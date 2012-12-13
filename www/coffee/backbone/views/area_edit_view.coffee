@@ -14,7 +14,7 @@ class BlueCarbon.Views.AreaEditView extends Backbone.View
     @validationList.localFetch()
 
     @subViews = []
-  
+
   fireAddValidation: ->
     @trigger('addValidation', area: @area)
 

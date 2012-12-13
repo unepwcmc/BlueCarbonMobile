@@ -36,7 +36,7 @@ class Backbone.SyncableModel extends Backbone.Model
       serverAttrs = model.localParse(results, transaction)
       serverAttrs = _.extend(attrs or {}, serverAttrs)  if options.wait
       return false  unless model.set(serverAttrs, options)
-      success model, resp, options  if success
+      success model, results, options  if success
 
     # Finish configuring and sending the Ajax request.
     method = (if @isNew() then "create" else ((if options.patch then "patch" else "update")))
