@@ -33,7 +33,7 @@ class BlueCarbon.Controller extends Wcmc.Controller
     @transitionToActionOn(BlueCarbon.bus, 'area:startTrip', @areaEdit)
 
   areaEdit: (options) =>
-    areaEditView = new BlueCarbon.Views.AreaEditView(area: options.area)
+    areaEditView = new BlueCarbon.Views.AreaEditView(area: options.area, map: @app.map)
     @sidePanel.showView(areaEditView)
 
     @transitionToActionOn(areaEditView, 'addValidation', @addValidation)

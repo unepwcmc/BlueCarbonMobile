@@ -60,7 +60,6 @@
             for (_l = 0, _len3 = _ref2.length; _l < _len3; _l++) {
               localLayer = _ref2[_l];
               if (localLayer.habitat === fetchedLayer.habitat) {
-                console.log("adding date " + localLayer.downloadedAt + " to " + fetchedLayer);
                 fetchedLayer.downloadedAt = localLayer.downloadedAt;
                 break;
               }

@@ -22,8 +22,10 @@ class BlueCarbon.Models.Area extends Backbone.SyncableModel
       )()
       ft.download layer.url, @filenameForLayer(layer), boundSuccess, boundError
 
-  filenameForLayer: (layer) ->
-    fs.root.fullPath + "/" + layer.habitat
+  filenameForLayer: (layer, absolute=true) ->
+    name = ""
+    name = name + "#{fs.root.fullPath}/" if absolute
+    name = name + "#{layer.habitat}.mbtiles"
 
   layerDownloaded: (layer, fileEntry) =>
     console.log "downloaded #{layer.habitat}"
@@ -57,3 +59,12 @@ class BlueCarbon.Models.Area extends Backbone.SyncableModel
     else
       lowestDownloaded = new Date(lowestDownloaded)
       return "#{lowestDownloaded.getFullYear()}/#{lowestDownloaded.getMonth()+1}/#{lowestDownloaded.getDate()}"
+
+  tileLayers: ->
+    layers = []
+    for layer in @get('mbtiles')
+      layers.push(
+        name: layer.habitat
+        mbtileLocation: @filenameForLayer(layer, false)
+      )
+    return layers

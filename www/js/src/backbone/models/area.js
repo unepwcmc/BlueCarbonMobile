@@ -50,8 +50,16 @@
       return _results;
     };
 
-    Area.prototype.filenameForLayer = function(layer) {
-      return fs.root.fullPath + "/" + layer.habitat;
+    Area.prototype.filenameForLayer = function(layer, absolute) {
+      var name;
+      if (absolute == null) {
+        absolute = true;
+      }
+      name = "";
+      if (absolute) {
+        name = name + ("" + fs.root.fullPath + "/");
+      }
+      return name = name + ("" + layer.habitat + ".mbtiles");
     };
 
     Area.prototype.layerDownloaded = function(layer, fileEntry) {
@@ -106,6 +114,20 @@
         lowestDownloaded = new Date(lowestDownloaded);
         return "" + (lowestDownloaded.getFullYear()) + "/" + (lowestDownloaded.getMonth() + 1) + "/" + (lowestDownloaded.getDate());
       }
+    };
+
+    Area.prototype.tileLayers = function() {
+      var layer, layers, _i, _len, _ref;
+      layers = [];
+      _ref = this.get('mbtiles');
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        layer = _ref[_i];
+        layers.push({
+          name: layer.habitat,
+          mbtileLocation: this.filenameForLayer(layer, false)
+        });
+      }
+      return layers;
     };
 
     return Area;
