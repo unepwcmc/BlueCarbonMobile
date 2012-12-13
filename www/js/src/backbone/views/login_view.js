@@ -30,7 +30,7 @@
       var _this = this;
       return this.model.login($('#login-form').serializeObject(), {
         success: function(data) {
-          return _this.trigger('user:loggedIn', _this.model);
+          return _this.model.trigger('user:loggedIn', _this.model);
         },
         error: function(data) {
           return _this.showError('Unable to login');
