@@ -100,7 +100,12 @@
           }
         }
       }
-      return lowestDownloaded;
+      if ((typeof lowestDownloaded) === 'string') {
+        return "";
+      } else {
+        lowestDownloaded = new Date(lowestDownloaded);
+        return "" + (lowestDownloaded.getFullYear()) + "/" + (lowestDownloaded.getMonth() + 1) + "/" + (lowestDownloaded.getDate());
+      }
     };
 
     return Area;

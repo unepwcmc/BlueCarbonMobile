@@ -48,6 +48,10 @@
     <script type="text/javascript" src="js/src/backbone/views/login_view.js"></script>
     <script type="text/javascript" src="js/src/backbone/views/validation_view.js"></script>
     <script type="text/javascript">
+      // Prevent user from being able to scroll in surrounding WebView
+      $('body').on('touchmove', function(e) {
+        e.preventDefault();
+      });
       window.blueCarbonApp = new BlueCarbon.App({waitForRemoteConsole: false});
     </script>
   </body>

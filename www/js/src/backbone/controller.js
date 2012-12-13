@@ -33,7 +33,8 @@
       this.user.localFetch({
         success: function() {
           if (_this.user.get('auth_token')) {
-            return _this.user.trigger('user:loggedIn', _this.user);
+            _this.user.trigger('user:loggedIn', _this.user);
+            return BlueCarbon.bus.trigger('user:gotAuthToken', _this.user.get('auth_token'));
           } else {
             $('#modal-disabler').addClass('active');
             return _this.modal.showView(loginView);

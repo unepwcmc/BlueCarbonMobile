@@ -11,7 +11,7 @@ class BlueCarbon.Views.LoginView extends Backbone.View
     @model.login(
       $('#login-form').serializeObject(),
       success: (data)=>
-        @trigger('user:loggedIn', @model)
+        @model.trigger('user:loggedIn', @model)
       error: (data)=>
         @showError('Unable to login')
     )
