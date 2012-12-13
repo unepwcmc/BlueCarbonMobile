@@ -85,7 +85,7 @@ window.JST['area/area'] = _.template(
       <% } %>
     </div>
     <ul class='attributes'>
-      <li>Data Downloaded at:<span></span></li>
+      <li>Data Downloaded at:<span><%= area.lastDownloaded() %></span></li>
     </ul>
   """
 )

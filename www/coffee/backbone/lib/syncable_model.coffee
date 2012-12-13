@@ -75,7 +75,6 @@ class Backbone.SyncableModel extends Backbone.Model
     val = val.replace(/(\")/g, "\\\"")
     return val
 
-
   doSqliteSync: (method, model, options) ->
     attrs = model.toJSON()
 
@@ -120,7 +119,7 @@ class Backbone.SyncableModel extends Backbone.Model
       when "read"
         sql =
           """
-            SELECT #{Object.keys(attrs)}
+            SELECT *
             FROM #{model.constructor.name}
             WHERE id="#{attrs['id']}";
           """
@@ -165,6 +164,7 @@ class Backbone.SyncableModel extends Backbone.Model
     modelAttributes = results.rows.item(0)
     _.each modelAttributes, (value, key) ->
       try
+        value = value.replace(/(\\\")/g, "\"") if (typeof value) == 'string'
         modelAttributes[key] = JSON.parse(value)
       catch err
 

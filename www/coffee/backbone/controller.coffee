@@ -7,11 +7,20 @@ class BlueCarbon.Controller extends Wcmc.Controller
     @loginUser()
 
   loginUser: =>
-    loginView = new BlueCarbon.Views.LoginView()
-    $('#modal-disabler').addClass('active')
-    @modal.showView(loginView)
+    @user = new BlueCarbon.Models.User()
+    loginView = new BlueCarbon.Views.LoginView(model: @user)
 
-    @transitionToActionOn(loginView, 'user:loggedIn', =>
+    @user.set('id', '1')
+    @user.localFetch(
+      success: () =>
+        if @user.get('auth_token')
+          @user.trigger('user:loggedIn', @user)
+        else
+          $('#modal-disabler').addClass('active')
+          @modal.showView(loginView)
+    )
+
+    @transitionToActionOn(@user, 'user:loggedIn', =>
       $('#modal-disabler').removeClass('active')
       @areaIndex()
     )

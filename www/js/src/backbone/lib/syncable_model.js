@@ -146,7 +146,7 @@
           sql = "INSERT OR REPLACE INTO " + model.constructor.name + "\n( " + (fields.join(", ")) + " )\nVALUES ( " + (values.join(", ")) + " );";
           break;
         case "read":
-          sql = "SELECT " + (Object.keys(attrs)) + "\nFROM " + model.constructor.name + "\nWHERE id=\"" + attrs['id'] + "\";";
+          sql = "SELECT *\nFROM " + model.constructor.name + "\nWHERE id=\"" + attrs['id'] + "\";";
           break;
         case "delete":
           sql = "DELETE FROM " + model.constructor.name + "\nWHERE id=\"" + attrs['id'] + "\";";
@@ -188,6 +188,9 @@
       modelAttributes = results.rows.item(0);
       _.each(modelAttributes, function(value, key) {
         try {
+          if ((typeof value) === 'string') {
+            value = value.replace(/(\\\")/g, "\"");
+          }
           return modelAttributes[key] = JSON.parse(value);
         } catch (err) {
 

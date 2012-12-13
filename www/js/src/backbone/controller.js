@@ -25,10 +25,22 @@
     Controller.prototype.loginUser = function() {
       var loginView,
         _this = this;
-      loginView = new BlueCarbon.Views.LoginView();
-      $('#modal-disabler').addClass('active');
-      this.modal.showView(loginView);
-      return this.transitionToActionOn(loginView, 'user:loggedIn', function() {
+      this.user = new BlueCarbon.Models.User();
+      loginView = new BlueCarbon.Views.LoginView({
+        model: this.user
+      });
+      this.user.set('id', '1');
+      this.user.localFetch({
+        success: function() {
+          if (_this.user.get('auth_token')) {
+            return _this.user.trigger('user:loggedIn', _this.user);
+          } else {
+            $('#modal-disabler').addClass('active');
+            return _this.modal.showView(loginView);
+          }
+        }
+      });
+      return this.transitionToActionOn(this.user, 'user:loggedIn', function() {
         $('#modal-disabler').removeClass('active');
         return _this.areaIndex();
       });

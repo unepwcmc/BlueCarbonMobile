@@ -6,14 +6,12 @@ class BlueCarbon.Views.LoginView extends Backbone.View
   className: 'login'
   events:
     "click #login": "login"
-  initialize: ->
-    @user = new BlueCarbon.Models.User()
 
   login: =>
-    @user.set($('#login-form').serializeObject())
-    @user.login(
+    @model.login(
+      $('#login-form').serializeObject(),
       success: (data)=>
-        @trigger('user:loggedIn', @user)
+        @trigger('user:loggedIn', @model)
       error: (data)=>
         @showError('Unable to login')
     )
@@ -21,7 +19,7 @@ class BlueCarbon.Views.LoginView extends Backbone.View
   render: ->
     @$el.html(@template())
     return @
-  
+
   showError: (message)->
     $('.error').text(message)
     $('.error').slideDown()

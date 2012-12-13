@@ -47,6 +47,7 @@ class Backbone.SyncableCollection extends Backbone.Collection
       modelAttributes = results.rows.item(i)
       _.each modelAttributes, (value, key) ->
         try
+          value = value.replace(/(\\\")/g, "\"") if (typeof value) == 'string'
           modelAttributes[key] = JSON.parse(value)
         catch err
 
