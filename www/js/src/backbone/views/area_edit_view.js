@@ -27,6 +27,7 @@
 
     AreaEditView.prototype.initialize = function(options) {
       this.area = options.area;
+      this.map = options.map;
       this.validationList = new BlueCarbon.Collections.Validations([], {
         area: this.area
       });
@@ -58,18 +59,50 @@
         $('#validation-list').append(validationView.render().el);
         return _this.subViews.push(validationView);
       });
+      this.addMapLayers();
       return this;
     };
 
-    AreaEditView.prototype.onClose = function() {
-      var view, _i, _len, _ref, _results;
-      _ref = this.subViews;
+    AreaEditView.prototype.addMapLayers = function() {
+      var db, layer, tileLayer, _i, _len, _ref, _results;
+      this.removeTileLayers();
+      this.tileLayers || (this.tileLayers = []);
+      _ref = this.area.tileLayers();
       _results = [];
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        view = _ref[_i];
-        _results.push(view.close());
+        layer = _ref[_i];
+        console.log("adding tile layer for " + layer.mbtileLocation);
+        db = window.sqlitePlugin.openDatabase(layer.mbtileLocation, "1.0", "Tiles", 2000000);
+        tileLayer = new L.TileLayer.MBTiles(db, {
+          tms: true
+        }).addTo(this.map);
+        _results.push(this.tileLayers.push(tileLayer));
       }
       return _results;
+    };
+
+    AreaEditView.prototype.removeTileLayers = function() {
+      var layer, _i, _len, _ref, _results;
+      if (this.tileLayers == null) {
+        return;
+      }
+      _ref = this.tileLayers;
+      _results = [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        layer = _ref[_i];
+        _results.push(this.map.remove(layer));
+      }
+      return _results;
+    };
+
+    AreaEditView.prototype.onClose = function() {
+      var view, _i, _len, _ref;
+      _ref = this.subViews;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        view = _ref[_i];
+        view.close();
+      }
+      return this.removeTileLayers();
     };
 
     return AreaEditView;
