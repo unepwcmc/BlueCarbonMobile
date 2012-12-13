@@ -85,7 +85,13 @@ window.JST['area/area'] = _.template(
       <% } %>
     </div>
     <ul class='attributes'>
-      <li>Data Downloaded at:<span><%= area.lastDownloaded() %></span></li>
+      <% if (downloadState === 'out of date') { %>
+        <li>Habitat data is out of date</li>
+      <% } else if (downloadState === 'no data') { %>
+        <li>Habitat data not yet downloaded</li>
+      <% } else { %>
+        <li>Data Downloaded at:<span><%= area.lastDownloaded() %></span></li>
+      <% } %>
     </ul>
   """
 )
