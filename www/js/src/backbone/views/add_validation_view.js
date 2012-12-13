@@ -43,6 +43,7 @@
       this.$el.html(this.template({
         area: this.area
       }));
+      this.addMapLayers(this.area, this.map);
       return this;
     };
 
@@ -78,12 +79,15 @@
       this.polygonDraw.disable();
       this.map.off('draw:poly-created');
       if (this.mapPolygon != null) {
-        return this.map.removeLayer(this.mapPolygon);
+        this.map.removeLayer(this.mapPolygon);
       }
+      return this.removeTileLayers(this.map);
     };
 
     return AddValidationView;
 
   })(Backbone.View);
+
+  _.extend(BlueCarbon.Views.AddValidationView.prototype, BlueCarbon.Mixins.AreaMapLayers);
 
 }).call(this);
