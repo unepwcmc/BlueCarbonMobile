@@ -95,7 +95,10 @@ window.JST['area/area'] = _.template(
     <div class='area-attributes'>
       <h3><%= area.get('title') %></h3>
       <p>
-        <% if (downloadState === 'out of date') { %>
+        <%
+        var downloadState = area.downloadState();
+        if (downloadState === 'out of date') {
+        %>
           Habitat data is out of date
         <% } else if (downloadState === 'no data') { %>
           Habitat data not yet downloaded
@@ -104,23 +107,20 @@ window.JST['area/area'] = _.template(
         <% } %>
       </p>
     </div>
-    <%
-    var downloadState = area.downloadState();
-    if (downloadState === 'ready') {
-    %>
-      <div class="area-actions start-trip btn btn-small">
+    <% if (false || downloadState === 'ready') { %>
+      <div class="area-actions start-trip">
         <img src="css/images/arrow_forward.png"\>
-        START TRIP
+        <div>START TRIP</div>
       </div>
     <% } else if (downloadState === 'out of date' || downloadState === 'no data') { %>
       <div class="area-actions download-data">
         <img src="css/images/download_icon.png"\>
-        DOWNLOAD
+        <div>DOWNLOAD</div>
       </div>
     <% } else if (downloadState === 'data generating') { %>
       <div class='area-actions data-generating'>
-        <img src="css/images/ajax-loader.gif"\>
-        GENERATING
+        <img src="css/images/timer.gif"\>
+        <div>GENERATING</div>
       </div>
     <% } %>
   """

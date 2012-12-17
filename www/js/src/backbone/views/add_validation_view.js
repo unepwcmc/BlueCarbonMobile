@@ -44,6 +44,7 @@
         area: this.area
       }));
       this.addMapLayers(this.area, this.map);
+      this.addLayerControl(this.map);
       return this;
     };
 

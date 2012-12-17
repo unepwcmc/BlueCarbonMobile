@@ -10,7 +10,7 @@
     addMapLayers: function(area, map) {
       var db, layer, tileLayer, _i, _len, _ref, _results;
       this.removeTileLayers();
-      this.tileLayers || (this.tileLayers = {});
+      this.tileLayers || (this.tileLayers = []);
       _ref = area.tileLayers();
       _results = [];
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {

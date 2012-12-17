@@ -26,15 +26,11 @@ h1, h2, h3, h4, h5, h6 {
 }
 h1 {
   font-weight: normal;
-  line-height: 60px;
+  line-height: 69px;
   font-size: 25px;
   letter-spacing: -1px;
   margin-top: 0;
     text-shadow: 0px -1px 0px #14181e;
-}
-
-h1 span{
-    
 }
 
 h2 {
@@ -189,8 +185,7 @@ ul.fields li span{
 
 .area-index {
   padding: 0;
-    margin: 0;
-        border-right: 1px solid #424f5f;
+  margin: 0;
 }
 
 .area-index #sync-status{
@@ -227,7 +222,11 @@ ul.fields li span{
 }
 .area-actions {
   float:right;
-  width: 70px;
+  width: 67px;
+}
+.area-actions {
+  text-shadow: 0px -1px 0px #000;
+  margin: auto;
 }
 #area-list h3 {
   margin: 0;
@@ -243,14 +242,17 @@ ul.fields li span{
   font-size: 10px;
   font-weight: bold;
 }
-.area-actions img,
-#area-list .spinner {
+.area-actions img {
   display:block;
   margin: auto;
   margin-top: -2px;
   margin-bottom: 2px;
   height: 21px;
   width: 21px;
+}
+.area-actions div {
+  width: 100%;
+  text-align:center;
 }
 #area-list .headline a {
   float:right;
@@ -262,20 +264,11 @@ ul.fields li span{
   padding-top: 2px;
 }
 
-#area-list ul.attributes li{
-    padding: 0;
-    margin: 0;
-    text-shadow: 0px -2px 0px #27313d;
-}
-
-#area-list ul.attributes li span{
-}
-
 .ios-head {
   position:relative;
-  background: -webkit-linear-gradient(top, #1f2229 0%,#1f2229 49%,#1f2229 51%,#1f2229 100%);
-  height: 40px;
-    padding: 0 0 0 20px;
+  background: #3d4559; /* Old browsers */
+  background: -webkit-linear-gradient(top, #3d4559 0%,#333a4b 50%,#2a303e 51%,#202129 100%); /* Chrome10+,Safari5.1+ */
+  padding: 0 0 0 20px;
   text-align: right;
 }
 
@@ -300,7 +293,7 @@ ul.fields li span{
     top:5px;
     position:absolute;
     background-repeat:repeat-x;
-    background-color: rgba(74,108,155,1);/*change this and the background color for the :before element*/
+    background-color: rgba(32, 33, 41,1);/*change this and the background color for the :before element*/
     background-image : -webkit-linear-gradient(
         bottom,
         rgba(0,0,0,0) 0%,
@@ -334,7 +327,7 @@ ul.fields li span{
     left:-5px;
     -webkit-background-size : 22px 22px;
     background-position :-2px -1.5px;
-    background-color: rgba(74,108,155,1);/*change to the same as the main element*/
+    background-color: rgba(32, 33, 41,1);/*change to the same as the main element*/
     background-image :
         -webkit-gradient(linear, left bottom, right top,
             from(rgba(0,0,0,0)),
