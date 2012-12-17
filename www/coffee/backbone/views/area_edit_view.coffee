@@ -28,7 +28,7 @@ class BlueCarbon.Views.AreaEditView extends Backbone.View
     @getPosition()
     @geoWatchId = setInterval(@getPosition, 30000)
 
-  getPosition: () ->
+  getPosition: () =>
     navigator.geolocation.getCurrentPosition(@drawLocation, {}, {enableHighAccuracy: true})
 
   stopLocating: () ->
@@ -38,6 +38,9 @@ class BlueCarbon.Views.AreaEditView extends Backbone.View
 
     if @marker?
       @map.removeLayer(@marker)
+
+    if @accuracyMarker?
+      @map.removeLayer(@accuracyMarker)
 
   drawLocation: (position) =>
     if @marker?
@@ -80,6 +83,6 @@ class BlueCarbon.Views.AreaEditView extends Backbone.View
     for view in @subViews
       view.close()
     @removeTileLayers(@map)
-    @stopLocation()
+    @stopLocating()
 
 _.extend(BlueCarbon.Views.AreaEditView::, BlueCarbon.Mixins.AreaMapLayers)

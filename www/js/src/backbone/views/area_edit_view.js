@@ -17,6 +17,8 @@
       this.render = __bind(this.render, this);
 
       this.drawLocation = __bind(this.drawLocation, this);
+
+      this.getPosition = __bind(this.getPosition, this);
       return AreaEditView.__super__.constructor.apply(this, arguments);
     }
 
@@ -66,7 +68,10 @@
         this.geoWatchId = null;
       }
       if (this.marker != null) {
-        return this.map.removeLayer(this.marker);
+        this.map.removeLayer(this.marker);
+      }
+      if (this.accuracyMarker != null) {
+        return this.map.removeLayer(this.accuracyMarker);
       }
     };
 
@@ -119,7 +124,7 @@
         view.close();
       }
       this.removeTileLayers(this.map);
-      return this.stopLocation();
+      return this.stopLocating();
     };
 
     return AreaEditView;
