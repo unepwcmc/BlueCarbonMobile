@@ -92,34 +92,37 @@ window.JST['area/area_index'] = _.template(
 
 window.JST['area/area'] = _.template(
   """
-    <div class='headline'>
+    <div class='area-attributes'>
       <h3><%= area.get('title') %></h3>
-      <%
-      var downloadState = area.downloadState();
-      if (downloadState === 'ready') {
-      %>
-        <a class="start-trip btn btn-small">
-          Start Trip
-        </a>
-      <% } else if (downloadState === 'out of date' || downloadState === 'no data') { %>
-        <a class="download-data btn btn-small">
-          Download the data
-        </a>
-      <% } else if (downloadState === 'data generating') { %>
-        <span class='data-generating'>
-          Data is generating...
-        </span>
-      <% } %>
+      <p>
+        <% if (downloadState === 'out of date') { %>
+          Habitat data is out of date
+        <% } else if (downloadState === 'no data') { %>
+          Habitat data not yet downloaded
+        <% } else { %>
+          Data downloaded at: <%= area.lastDownloaded() %>
+        <% } %>
+      </p>
     </div>
-    <ul class='attributes'>
-      <% if (downloadState === 'out of date') { %>
-        <li>Habitat data is out of date</li>
-      <% } else if (downloadState === 'no data') { %>
-        <li>Habitat data not yet downloaded</li>
-      <% } else { %>
-        <li>Data Downloaded at:<span><%= area.lastDownloaded() %></span></li>
-      <% } %>
-    </ul>
+    <%
+    var downloadState = area.downloadState();
+    if (downloadState === 'ready') {
+    %>
+      <div class="area-actions start-trip btn btn-small">
+        <img src="css/images/arrow_forward.png"\>
+        START TRIP
+      </div>
+    <% } else if (downloadState === 'out of date' || downloadState === 'no data') { %>
+      <div class="area-actions download-data">
+        <img src="css/images/download_icon.png"\>
+        DOWNLOAD
+      </div>
+    <% } else if (downloadState === 'data generating') { %>
+      <div class='area-actions data-generating'>
+        <img src="css/images/ajax-loader.gif"\>
+        GENERATING
+      </div>
+    <% } %>
   """
 )
 

@@ -211,41 +211,46 @@ ul.fields li span{
 }
 
 #area-list > li {
-    background: #2f3b4a;
-    padding: 15px;
+  background: #2A303E;
+  padding: 7px 12px;
   margin-bottom: 0;
-    margin: 10px;
-    border-radius: 10px;
-    border-top: 1px solid #27313d;
-    border-bottom: 1px solid #404d5c;
-    background-image: linear-gradient(bottom, rgb(39,49,61) 38%, rgb(54,64,77) 69%, rgb(69,80,93) 85%);
-    background-image: -o-linear-gradient(bottom, rgb(39,49,61) 38%, rgb(54,64,77) 69%, rgb(69,80,93) 85%);
-    background-image: -moz-linear-gradient(bottom, rgb(39,49,61) 38%, rgb(54,64,77) 69%, rgb(69,80,93) 85%);
-    background-image: -webkit-linear-gradient(bottom, rgb(39,49,61) 38%, rgb(54,64,77) 69%, rgb(69,80,93) 85%);
-    background-image: -ms-linear-gradient(bottom, rgb(39,49,61) 38%, rgb(54,64,77) 69%, rgb(69,80,93) 85%);
-    
-    background-image: -webkit-gradient(
-	linear,
-	left bottom,
-	left top,
-	color-stop(0.38, rgb(39,49,61)),
-	color-stop(0.69, rgb(54,64,77)),
-	color-stop(0.85, rgb(69,80,93))
-    );
-    
-
-}
-
-
-#area-list .headline {
+  margin: 10px;
+  border-radius: 10px;
+  border-top: 1px solid #27313d;
+  border-bottom: 1px solid #404d5c;
   overflow:hidden;
+  color: #D3D5D9;
 }
-#area-list .headline h3 {
-    margin: 0;
-    margin-top: 2px;
-    float: left;
-    font-size: 18px;
-    text-shadow: 0px -2px 0px #27313d;
+.area-attributes {
+  float:left;
+  width: 190px;
+}
+.area-actions {
+  float:right;
+  width: 70px;
+}
+#area-list h3 {
+  margin: 0;
+  font-size: 18px;
+  text-shadow: 0px -2px 0px #27313d;
+}
+.area-attributes p {
+  color: #9a9da1;
+  font-size: 12px;
+  margin: 0;
+}
+.area-actions {
+  font-size: 10px;
+  font-weight: bold;
+}
+.area-actions img,
+#area-list .spinner {
+  display:block;
+  margin: auto;
+  margin-top: -2px;
+  margin-bottom: 2px;
+  height: 21px;
+  width: 21px;
 }
 #area-list .headline a {
   float:right;
@@ -255,14 +260,6 @@ ul.fields li span{
   float:right;
   color: #CCC;
   padding-top: 2px;
-}
-
-
-#area-list ul.attributes {
-  list-style-type: none;
-  padding: 0px;
-    margin: 0px;
-font-size: 12px;
 }
 
 #area-list ul.attributes li{
