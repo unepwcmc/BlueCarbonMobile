@@ -67,3 +67,18 @@ class BlueCarbon.Models.Area extends Backbone.SyncableModel
         mbtileLocation: @filenameForLayer(layer, false)
       )
     return layers
+
+  coordsAsLatLngArray: () ->
+    latLngs = []
+
+    for point in @get('coordinates')
+      latLngs.push(new L.LatLng(point[0], point[1]))
+    latLngs.push(latLngs[0])
+
+    return latLngs
+
+  parse: (data)->
+    try
+      data.coordinates = JSON.parse(data.coordinates)
+    data
+

@@ -89,6 +89,29 @@
       return this.sqliteSync("read", this, options);
     };
 
+    SyncableModel.prototype.localDestroy = function() {
+      var destroy, model, options, success, xhr;
+      options = (options ? _.clone(options) : {});
+      model = this;
+      success = options.success;
+      destroy = function() {
+        return model.trigger("destroy", model, model.collection, options);
+      };
+      options.success = function(resp) {
+        if (options.wait || model.isNew()) {
+          destroy();
+        }
+        if (success) {
+          return success(model, resp, options);
+        }
+      };
+      xhr = this.sqliteSync("delete", this, options);
+      if (!options.wait) {
+        destroy();
+      }
+      return xhr;
+    };
+
     SyncableModel.prototype.sqliteSync = function(method, model, options) {
       var _this = this;
       return this.createTableIfNotExist({
@@ -110,7 +133,7 @@
     SyncableModel.prototype.doSqliteSync = function(method, model, options) {
       var attr, attrs, fields, sql, val, values,
         _this = this;
-      attrs = model.toJSON();
+      attrs = model.toJSON(false);
       sql = "";
       switch (method) {
         case "create":
@@ -149,7 +172,7 @@
           sql = "SELECT *\nFROM " + model.constructor.name + "\nWHERE id=\"" + attrs['id'] + "\";";
           break;
         case "delete":
-          sql = "DELETE FROM " + model.constructor.name + "\nWHERE id=\"" + attrs['id'] + "\";";
+          sql = "DELETE FROM " + model.constructor.name + "\nWHERE row_id=\"" + attrs['row_id'] + "\";";
       }
       return BlueCarbon.SQLiteDb.transaction(function(tx) {
         return tx.executeSql(sql, [], function(tx, results) {

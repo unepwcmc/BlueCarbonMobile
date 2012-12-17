@@ -14,6 +14,8 @@
     __extends(ValidationView, _super);
 
     function ValidationView() {
+      this["delete"] = __bind(this["delete"], this);
+
       this.render = __bind(this.render, this);
       return ValidationView.__super__.constructor.apply(this, arguments);
     }
@@ -22,8 +24,16 @@
 
     ValidationView.prototype.tagName = 'li';
 
+    ValidationView.prototype.events = {
+      "touchstart .delete": "delete"
+    };
+
     ValidationView.prototype.initialize = function(options) {
+      var _this = this;
       this.validation = options.validation;
+      this.validation.on('destroy', function() {
+        return _this.close();
+      });
       this.map = window.blueCarbonApp.map;
       return this.mapPolygon = new L.Polygon(this.validation.geomAsLatLngArray());
     };
@@ -34,6 +44,10 @@
       }));
       this.mapPolygon.addTo(this.map);
       return this;
+    };
+
+    ValidationView.prototype["delete"] = function() {
+      return this.validation.localDestroy();
     };
 
     ValidationView.prototype.onClose = function() {

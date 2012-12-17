@@ -22,8 +22,9 @@
 
     AreaIndexView.prototype.className = 'area-index';
 
-    AreaIndexView.prototype.initialize = function() {
+    AreaIndexView.prototype.initialize = function(options) {
       var _this = this;
+      this.map = options.map;
       this.areaList = new BlueCarbon.Collections.Areas();
       this.areaList.on('reset', this.render);
       this.areaList.localFetch({
@@ -53,7 +54,8 @@
       this.areaList.each(function(area) {
         var areaView;
         areaView = new BlueCarbon.Views.AreaView({
-          area: area
+          area: area,
+          map: _this.map
         });
         $('#area-list').append(areaView.render().el);
         return _this.subViews.push(areaView);
@@ -89,6 +91,8 @@
     __extends(AreaView, _super);
 
     function AreaView() {
+      this.zoomToBounds = __bind(this.zoomToBounds, this);
+
       this.downloadData = __bind(this.downloadData, this);
 
       this.startTrip = __bind(this.startTrip, this);
@@ -103,18 +107,25 @@
 
     AreaView.prototype.events = {
       "touchstart .download-data": "downloadData",
-      "touchstart .start-trip": "startTrip"
+      "touchstart .start-trip": "startTrip",
+      "touchstart": "zoomToBounds"
     };
 
     AreaView.prototype.initialize = function(options) {
       this.area = options.area;
-      return this.area.on('sync', this.render);
+      this.area.on('sync', this.render);
+      return this.map = options.map;
     };
 
     AreaView.prototype.render = function() {
       this.$el.html(this.template({
         area: this.area
       }));
+      if (this.mapPolygon != null) {
+        this.map.removeLayer(this.mapPolygon);
+      }
+      this.mapPolygon = new L.rectangle(this.area.coordsAsLatLngArray());
+      this.mapPolygon.addTo(this.map);
       return this;
     };
 
@@ -127,6 +138,16 @@
     AreaView.prototype.downloadData = function() {
       this.area.downloadData();
       return this.render();
+    };
+
+    AreaView.prototype.zoomToBounds = function() {
+      var bounds;
+      bounds = this.area.coordsAsLatLngArray();
+      return this.map.fitBounds(bounds);
+    };
+
+    AreaView.prototype.onClose = function() {
+      return this.map.removeLayer(this.mapPolygon);
     };
 
     return AreaView;

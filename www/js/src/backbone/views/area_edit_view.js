@@ -26,6 +26,7 @@
 
     AreaEditView.prototype.events = {
       "touchstart #new-validation": "fireAddValidation",
+      "touchstart #upload-validations": "uploadValidations",
       "touchstart .ios-head .back": "fireBack"
     };
 
@@ -98,10 +99,15 @@
       return this.accuracyMarker = L.circle(latlng, radius).addTo(this.map);
     };
 
+    AreaEditView.prototype.uploadValidations = function() {
+      return this.validationList.pushToServer();
+    };
+
     AreaEditView.prototype.render = function() {
       var _this = this;
       this.$el.html(this.template({
-        area: this.area
+        area: this.area,
+        validationCount: this.validationList.models.length
       }));
       this.validationList.each(function(validation) {
         var validationView;

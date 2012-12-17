@@ -27,7 +27,7 @@ class BlueCarbon.Controller extends Wcmc.Controller
     )
 
   areaIndex: =>
-    areaIndexView = new BlueCarbon.Views.AreaIndexView()
+    areaIndexView = new BlueCarbon.Views.AreaIndexView(map: @app.map)
     @sidePanel.showView(areaIndexView)
 
     @transitionToActionOn(BlueCarbon.bus, 'area:startTrip', @areaEdit)

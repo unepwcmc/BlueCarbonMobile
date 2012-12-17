@@ -49,7 +49,9 @@
 
     Controller.prototype.areaIndex = function() {
       var areaIndexView;
-      areaIndexView = new BlueCarbon.Views.AreaIndexView();
+      areaIndexView = new BlueCarbon.Views.AreaIndexView({
+        map: this.app.map
+      });
       this.sidePanel.showView(areaIndexView);
       return this.transitionToActionOn(BlueCarbon.bus, 'area:startTrip', this.areaEdit);
     };

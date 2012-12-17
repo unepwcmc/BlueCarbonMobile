@@ -29,7 +29,7 @@ class BlueCarbon.Views.AddValidationView extends Backbone.View
     return @
 
   createAnalysis: () =>
-    unless @validation.get('geometry')?
+    unless @validation.get('coordinates')?
       alert("You've not finished your polygon!")
       return false
     @validation.set($('form#validation-attributes').serializeObject())

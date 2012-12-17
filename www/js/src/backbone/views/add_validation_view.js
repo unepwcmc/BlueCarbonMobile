@@ -49,7 +49,7 @@
 
     AddValidationView.prototype.createAnalysis = function() {
       var _this = this;
-      if (this.validation.get('geometry') == null) {
+      if (this.validation.get('coordinates') == null) {
         alert("You've not finished your polygon!");
         return false;
       }
