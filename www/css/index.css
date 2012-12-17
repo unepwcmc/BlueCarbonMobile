@@ -270,6 +270,7 @@ ul.fields li span{
   background: -webkit-linear-gradient(top, #3d4559 0%,#333a4b 50%,#2a303e 51%,#202129 100%); /* Chrome10+,Safari5.1+ */
   padding: 0 0 0 20px;
   text-align: right;
+  padding-bottom: 5px;
 }
 
 .ios-head h2 {
@@ -319,6 +320,7 @@ ul.fields li span{
     font-family : HelveticaNeue;
     font-weight: 700;
     -webkit-background-size : 30px;
+    margin-top:2px;
 }
  
 .back:before {
