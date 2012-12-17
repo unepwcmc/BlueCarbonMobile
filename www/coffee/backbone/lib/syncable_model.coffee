@@ -61,6 +61,23 @@ class Backbone.SyncableModel extends Backbone.Model
       success model, results, options  if success
 
     @sqliteSync "read", this, options
+  
+  localDestroy: ->
+    # This method copies the default backbone behavior, 
+    # but uses our sqliteSync instead of backbone.sync
+    options = (if options then _.clone(options) else {})
+    model = this
+    success = options.success
+    destroy = ->
+      model.trigger "destroy", model, model.collection, options
+
+    options.success = (resp) ->
+      destroy()  if options.wait or model.isNew()
+      success model, resp, options  if success
+
+    xhr = @sqliteSync("delete", this, options)
+    destroy()  unless options.wait
+    xhr
 
   sqliteSync: (method, model, options) ->
     @createTableIfNotExist(
@@ -76,7 +93,7 @@ class Backbone.SyncableModel extends Backbone.Model
     return val
 
   doSqliteSync: (method, model, options) ->
-    attrs = model.toJSON()
+    attrs = model.toJSON(false)
 
     sql = ""
     switch method
@@ -127,7 +144,7 @@ class Backbone.SyncableModel extends Backbone.Model
         sql =
           """
             DELETE FROM #{model.constructor.name}
-            WHERE id="#{attrs['id']}";
+            WHERE row_id="#{attrs['row_id']}";
           """
 
     BlueCarbon.SQLiteDb.transaction(

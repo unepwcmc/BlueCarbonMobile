@@ -42,6 +42,29 @@
       });
     };
 
+    Validations.prototype.pushToServer = function() {
+      return this.each(function(validation) {
+        return validation.save({}, {
+          success: function() {
+            console.log("successfully pushed to server");
+            return validation.localDestroy({
+              success: function() {
+                return alert('destroyed');
+              },
+              error: function(a, b, c) {
+                console.log("failed to delete area with:");
+                return console.log(arguments);
+              }
+            });
+          },
+          error: function(a, b, c) {
+            console.log("failed to upload area with:");
+            return console.log(arguments);
+          }
+        });
+      });
+    };
+
     return Validations;
 
   })(Backbone.SyncableCollection);

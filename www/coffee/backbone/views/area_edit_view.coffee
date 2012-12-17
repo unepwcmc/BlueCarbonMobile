@@ -5,6 +5,7 @@ class BlueCarbon.Views.AreaEditView extends Backbone.View
   template: JST['area/edit']
   events :
     "touchstart #new-validation" : "fireAddValidation"
+    "touchstart #upload-validations" : "uploadValidations"
     "touchstart .ios-head .back" : "fireBack"
 
   initialize: (options) ->
@@ -22,8 +23,11 @@ class BlueCarbon.Views.AreaEditView extends Backbone.View
   fireBack: ->
     @trigger('back')
 
+  uploadValidations: ->
+    @validationList.pushToServer()
+
   render: =>
-    @$el.html(@template(area: @area))
+    @$el.html(@template(area: @area, validationCount: @validationList.models.length))
     @validationList.each (validation)=>
       validationView =  new BlueCarbon.Views.ValidationView(validation:validation)
       $('#validation-list').append(validationView.render().el)

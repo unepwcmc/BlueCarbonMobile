@@ -6,6 +6,11 @@ window.JST['area/edit'] = _.template(
       <a class='back'>Back</a>
       <h2><%= area.get('title') %></h2>
     </div>
+    <% if (validationCount > 0) { %>
+      <a id="upload-validations" class="btn btn-small">
+        Upload validations
+      </a>
+    <% } %>
     <ul id='validation-list'></ul>
     <input id="new-validation" type="submit" value="Add a validation"/>
   """
@@ -21,9 +26,31 @@ window.JST['area/add_polygon'] = _.template(
       <input type='hidden' name='area_id' value="<%= area.get('id') %>"/>
       <ul class="fields">
         <li>
-          <select name="type">
+          <label>Name</label>
+          <input type='text' name="name">
+        </li>
+        <li>
+          <select name="action">
             <option value="add">Add</option>
             <option value="delete">Delete</option>
+          </select>
+        </li>
+        <li>
+          <label>Knowledge</label>
+          <input type='text' name="knowledge">
+        </li>
+        <li>
+          <label>Density</label>
+          <input name="density">
+        </li>
+        <li>
+          <label>Age</label>
+          <input name="age">
+        </li>
+        <li>
+          <select name="habitat">
+            <option value="mangroves">Mangroves</option>
+            <option value="seagrass">Seagrass</option>
           </select>
         </li>
       </ul>
@@ -98,6 +125,6 @@ window.JST['area/area'] = _.template(
 
 window.JST['area/validation'] = _.template(
   """
-    <%= validation.get('type') %> at 11/11/2013
+    <%= validation.get('name') %> (<%= validation.get('action') %>)<a class='btn btn-small delete'>Delete</a>
   """
 )

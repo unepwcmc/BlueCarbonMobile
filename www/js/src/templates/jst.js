@@ -3,9 +3,9 @@
 
   window.JST = {};
 
-  window.JST['area/edit'] = _.template("<div class='ios-head'>\n  <a class='back'>Back</a>\n  <h2><%= area.get('title') %></h2>\n</div>\n<ul id='validation-list'></ul>\n<input id=\"new-validation\" type=\"submit\" value=\"Add a validation\"/>");
+  window.JST['area/edit'] = _.template("<div class='ios-head'>\n  <a class='back'>Back</a>\n  <h2><%= area.get('title') %></h2>\n</div>\n<% if (validationCount > 0) { %>\n  <a id=\"upload-validations\" class=\"btn btn-small\">\n    Upload validations\n  </a>\n<% } %>\n<ul id='validation-list'></ul>\n<input id=\"new-validation\" type=\"submit\" value=\"Add a validation\"/>");
 
-  window.JST['area/add_polygon'] = _.template("<div class='ios-head'>\n  <a class='back'>Area</a>\n  <h2>Add Validation</h3>\n</div>\n<form id=\"validation-attributes\" onSubmit=\"return false;\">\n  <input type='hidden' name='area_id' value=\"<%= area.get('id') %>\"/>\n  <ul class=\"fields\">\n    <li>\n      <select name=\"type\">\n        <option value=\"add\">Add</option>\n        <option value=\"delete\">Delete</option>\n      </select>\n    </li>\n  </ul>\n  <input id=\"create-analysis\" type=\"submit\" value=\"Add\">\n</form>");
+  window.JST['area/add_polygon'] = _.template("<div class='ios-head'>\n  <a class='back'>Area</a>\n  <h2>Add Validation</h3>\n</div>\n<form id=\"validation-attributes\" onSubmit=\"return false;\">\n  <input type='hidden' name='area_id' value=\"<%= area.get('id') %>\"/>\n  <ul class=\"fields\">\n    <li>\n      <label>Name</label>\n      <input type='text' name=\"name\">\n    </li>\n    <li>\n      <select name=\"action\">\n        <option value=\"add\">Add</option>\n        <option value=\"delete\">Delete</option>\n      </select>\n    </li>\n    <li>\n      <label>Knowledge</label>\n      <input type='text' name=\"knowledge\">\n    </li>\n    <li>\n      <label>Density</label>\n      <input name=\"density\">\n    </li>\n    <li>\n      <label>Age</label>\n      <input name=\"age\">\n    </li>\n    <li>\n      <select name=\"habitat\">\n        <option value=\"mangroves\">Mangroves</option>\n        <option value=\"seagrass\">Seagrass</option>\n      </select>\n    </li>\n  </ul>\n  <input id=\"create-analysis\" type=\"submit\" value=\"Add\">\n</form>");
 
   window.JST['area/login'] = _.template("<h3>Please login</h3>\n<div class='error'></div>\n<form id=\"login-form\" onSubmit=\"return false;\">\n  <ul class=\"fields\">\n    <li>\n      <span>Email</span>\n      <input name=\"email\" value=\"decio.ferreira@unep-wcmc.org\"/>\n    </li>\n    <li>\n      <span>Password</span>\n      <input name=\"password\" type=\"password\" value=\"decioferreira\"/>\n    </li>\n  </ul>\n  <input id=\"login\" type=\"submit\" value=\"Login\">\n</form>");
 
@@ -13,6 +13,6 @@
 
   window.JST['area/area'] = _.template("<div class='headline'>\n  <h3><%= area.get('title') %></h3>\n  <%\n  var downloadState = area.downloadState();\n  if (downloadState === 'ready') {\n  %>\n    <a class=\"start-trip btn btn-small\">\n      Start Trip\n    </a>\n  <% } else if (downloadState === 'out of date' || downloadState === 'no data') { %>\n    <a class=\"download-data btn btn-small\">\n      Download the data\n    </a>\n  <% } else if (downloadState === 'data generating') { %>\n    <span class='data-generating'>\n      Data is generating...\n    </span>\n  <% } %>\n</div>\n<ul class='attributes'>\n  <% if (downloadState === 'out of date') { %>\n    <li>Habitat data is out of date</li>\n  <% } else if (downloadState === 'no data') { %>\n    <li>Habitat data not yet downloaded</li>\n  <% } else { %>\n    <li>Data Downloaded at:<span><%= area.lastDownloaded() %></span></li>\n  <% } %>\n</ul>");
 
-  window.JST['area/validation'] = _.template("<%= validation.get('type') %> at 11/11/2013");
+  window.JST['area/validation'] = _.template("<%= validation.get('name') %> (<%= validation.get('action') %>)<a class='btn btn-small delete'>Delete</a>");
 
 }).call(this);
