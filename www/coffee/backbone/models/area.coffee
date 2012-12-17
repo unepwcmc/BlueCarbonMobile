@@ -43,7 +43,6 @@ class BlueCarbon.Models.Area extends Backbone.SyncableModel
         return 'data generating'
       if !layer.downloadedAt?
         return 'no data'
-      console.log "comparing downloadedAt(#{layer.downloadedAt}) < last_generated_at(#{Date.parse(layer.last_generated_at)})"
       if layer.downloadedAt < Date.parse(layer.last_generated_at)
         return 'out of date'
     return "ready"
@@ -68,3 +67,18 @@ class BlueCarbon.Models.Area extends Backbone.SyncableModel
         mbtileLocation: @filenameForLayer(layer, false)
       )
     return layers
+
+  coordsAsLatLngArray: () ->
+    latLngs = []
+
+    for point in @get('coordinates')
+      latLngs.push(new L.LatLng(point[0], point[1]))
+    latLngs.push(latLngs[0])
+
+    return latLngs
+
+  parse: (data)->
+    try
+      data.coordinates = JSON.parse(data.coordinates)
+    data
+
