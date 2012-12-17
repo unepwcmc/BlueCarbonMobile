@@ -88,7 +88,6 @@
         if (!(layer.downloadedAt != null)) {
           return 'no data';
         }
-        console.log("comparing downloadedAt(" + layer.downloadedAt + ") < last_generated_at(" + (Date.parse(layer.last_generated_at)) + ")");
         if (layer.downloadedAt < Date.parse(layer.last_generated_at)) {
           return 'out of date';
         }
@@ -128,6 +127,25 @@
         });
       }
       return layers;
+    };
+
+    Area.prototype.coordsAsLatLngArray = function() {
+      var latLngs, point, _i, _len, _ref;
+      latLngs = [];
+      _ref = this.get('coordinates');
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        point = _ref[_i];
+        latLngs.push(new L.LatLng(point[0], point[1]));
+      }
+      latLngs.push(latLngs[0]);
+      return latLngs;
+    };
+
+    Area.prototype.parse = function(data) {
+      try {
+        data.coordinates = JSON.parse(data.coordinates);
+      } catch (_error) {}
+      return data;
     };
 
     return Area;
