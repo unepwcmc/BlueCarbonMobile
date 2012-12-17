@@ -3,7 +3,7 @@ class Backbone.SyncableCollection extends Backbone.Collection
     # This method copies the default backbone behavior, 
     # but uses our sqliteSync instead of backbone.sync
     options = (if options then _.clone(options) else {})
-    options.parse = true  if options.parse is undefined
+    options.parse = false
     collection = this
     success = options.success
     options.success = (results,status,transaction) ->

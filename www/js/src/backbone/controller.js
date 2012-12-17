@@ -57,7 +57,8 @@
     Controller.prototype.areaEdit = function(options) {
       var areaEditView;
       areaEditView = new BlueCarbon.Views.AreaEditView({
-        area: options.area
+        area: options.area,
+        map: this.app.map
       });
       this.sidePanel.showView(areaEditView);
       this.transitionToActionOn(areaEditView, 'addValidation', this.addValidation);

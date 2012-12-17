@@ -4,8 +4,14 @@ window.BlueCarbon.Views ||= {}
 class BlueCarbon.Views.ValidationView extends Backbone.View
   template: JST['area/validation']
   tagName: 'li'
+  events:
+    "touchstart .delete" : "delete"
+
   initialize: (options)->
     @validation = options.validation
+    @validation.on('destroy', =>
+      @close()
+    )
     @map = window.blueCarbonApp.map
     @mapPolygon = new L.Polygon(@validation.geomAsLatLngArray())
 
@@ -13,6 +19,9 @@ class BlueCarbon.Views.ValidationView extends Backbone.View
     @$el.html(@template(validation:@validation))
     @mapPolygon.addTo(@map)
     return @
+
+  delete: =>
+    @validation.localDestroy()
 
   onClose: ->
     @map.removeLayer(@mapPolygon)

@@ -16,8 +16,25 @@
       return Validation.__super__.constructor.apply(this, arguments);
     }
 
+    Validation.prototype.url = 'http://bluecarbon.unep-wcmc.org/validations.json';
+
     Validation.prototype.schema = function() {
-      return "geometry TEXT, type TEXT, area_id INTEGER, user_id INTEGER";
+      return "coordinates TEXT, action TEXT, area_id INTEGER, user_id INTEGER, knowledge TEXT, density TEXT, age TEXT, habitat TEXT, name TEXT, row_id INTEGER PRIMARY KEY";
+    };
+
+    Validation.prototype.toJSON = function(forRails) {
+      var json;
+      if (forRails == null) {
+        forRails = true;
+      }
+      json = Validation.__super__.toJSON.apply(this, arguments);
+      if (forRails) {
+        return {
+          validation: json
+        };
+      } else {
+        return json;
+      }
     };
 
     Validation.prototype.setGeomFromPoints = function(points) {
@@ -32,25 +49,18 @@
         return _results;
       })();
       points.push(points[0]);
-      return this.set('geometry', [[points]]);
+      return this.set('coordinates', [[points]]);
     };
 
     Validation.prototype.geomAsLatLngArray = function() {
       var latLngs, point, _i, _len, _ref;
       latLngs = [];
-      _ref = this.get('geometry')[0][0];
+      _ref = this.get('coordinates')[0][0];
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         point = _ref[_i];
         latLngs.push(new L.LatLng(point[1], point[0]));
       }
       return latLngs;
-    };
-
-    Validation.prototype.parse = function(data) {
-      if (data.geometry != null) {
-        data.geometry = JSON.parse(data.geometry);
-      }
-      return Validation.__super__.parse.apply(this, arguments);
     };
 
     return Validation;

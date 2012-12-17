@@ -24,10 +24,11 @@ class BlueCarbon.Views.AddValidationView extends Backbone.View
     @polygonDraw.enable()
 
     @$el.html(@template(area: @area))
+    @addMapLayers(@area, @map)
     return @
 
   createAnalysis: () =>
-    unless @validation.get('geometry')?
+    unless @validation.get('coordinates')?
       alert("You've not finished your polygon!")
       return false
     @validation.set($('form#validation-attributes').serializeObject())
@@ -48,4 +49,6 @@ class BlueCarbon.Views.AddValidationView extends Backbone.View
     @polygonDraw.disable()
     @map.off('draw:poly-created')
     @map.removeLayer(@mapPolygon) if @mapPolygon?
+    @removeTileLayers(@map)
 
+_.extend(BlueCarbon.Views.AddValidationView::, BlueCarbon.Mixins.AreaMapLayers)

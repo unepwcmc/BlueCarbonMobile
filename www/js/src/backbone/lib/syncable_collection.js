@@ -16,9 +16,7 @@
     SyncableCollection.prototype.localFetch = function(options) {
       var collection, success;
       options = (options ? _.clone(options) : {});
-      if (options.parse === void 0) {
-        options.parse = true;
-      }
+      options.parse = false;
       collection = this;
       success = options.success;
       options.success = function(results, status, transaction) {

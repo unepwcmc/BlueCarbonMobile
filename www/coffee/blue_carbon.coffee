@@ -21,9 +21,6 @@ class BlueCarbon.App
 
   # Application Constructor
   constructor: (options)->
-    waitForRemoteConsole = options.waitForRemoteConsole
-    @localFileName = "bluecarbon.mbtiles"
-    @remoteFile = "https://dl.dropbox.com/u/2324263/bluecarbon.mbtiles"
 
     @on('mapReady', =>
       @controller = new BlueCarbon.Controller(app:@)
@@ -36,6 +33,14 @@ class BlueCarbon.App
       $.ajaxSetup(
         data:
           auth_token: token
+        beforeSend: (xhr, settings) ->
+          if (settings.type == 'POST')
+            try
+              settings.data = JSON.parse settings.data
+              settings.data.auth_token = token
+              settings.data = JSON.stringify settings.data
+            catch err
+              console.log "oh well"
       )
     )
 
@@ -53,11 +58,6 @@ class BlueCarbon.App
   addBaseLayer: ->
     window.requestFileSystem LocalFileSystem.PERSISTENT, 0, (fileSystem) =>
       window.fs = fileSystem
-      file = fs.root.getFile(@localFileName,
-        create: false
-      , undefined
-      , undefined
-      )
 
     tileLayerUrl = 'res/tiles/{z}/{x}/{y}.png'
     tileLayer = new L.TileLayer(tileLayerUrl, {

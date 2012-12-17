@@ -364,6 +364,8 @@ font-size: 12px;
             to(transparent));
 }
 
+/* LeafletJS Style Overrides */
+
 .leaflet-div-icon-first {
   border: 0;
   background: transparent;
@@ -372,4 +374,16 @@ font-size: 12px;
   height: 38px !important;
   top: -15px;
   right: -15px;
+}
+
+.leaflet-control-zoom a:hover {
+	background-color: rgba(255, 255, 255, 0.75);
+}
+
+.leaflet-control-zoom a:active {
+  background-color: #fff;
+}
+
+.leaflet-container a.leaflet-active {
+  outline: none;
 }

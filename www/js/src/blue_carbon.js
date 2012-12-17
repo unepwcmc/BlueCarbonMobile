@@ -37,11 +37,7 @@
     function App(options) {
       this.start = __bind(this.start, this);
 
-      var waitForRemoteConsole,
-        _this = this;
-      waitForRemoteConsole = options.waitForRemoteConsole;
-      this.localFileName = "bluecarbon.mbtiles";
-      this.remoteFile = "https://dl.dropbox.com/u/2324263/bluecarbon.mbtiles";
+      var _this = this;
       this.on('mapReady', function() {
         return _this.controller = new BlueCarbon.Controller({
           app: _this
@@ -52,6 +48,17 @@
         return $.ajaxSetup({
           data: {
             auth_token: token
+          },
+          beforeSend: function(xhr, settings) {
+            if (settings.type === 'POST') {
+              try {
+                settings.data = JSON.parse(settings.data);
+                settings.data.auth_token = token;
+                return settings.data = JSON.stringify(settings.data);
+              } catch (err) {
+                return console.log("oh well");
+              }
+            }
           }
         });
       });
@@ -71,11 +78,7 @@
       var tileLayer, tileLayerUrl,
         _this = this;
       window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function(fileSystem) {
-        var file;
-        window.fs = fileSystem;
-        return file = fs.root.getFile(_this.localFileName, {
-          create: false
-        }, void 0, void 0);
+        return window.fs = fileSystem;
       });
       tileLayerUrl = 'res/tiles/{z}/{x}/{y}.png';
       tileLayer = new L.TileLayer(tileLayerUrl, {

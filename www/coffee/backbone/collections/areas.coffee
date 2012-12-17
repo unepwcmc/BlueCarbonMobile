@@ -42,7 +42,6 @@ class BlueCarbon.Collections.Areas extends Backbone.SyncableCollection
           for localLayer in areaModel.get('mbtiles')
             if localLayer.habitat == fetchedLayer.habitat
               # Copy local storage attributes to fetchedData
-              console.log "adding date #{localLayer.downloadedAt} to #{fetchedLayer}"
               fetchedLayer.downloadedAt = localLayer.downloadedAt
               break
 

@@ -22,11 +22,13 @@
 
     AreaEditView.prototype.events = {
       "touchstart #new-validation": "fireAddValidation",
+      "touchstart #upload-validations": "uploadValidations",
       "touchstart .ios-head .back": "fireBack"
     };
 
     AreaEditView.prototype.initialize = function(options) {
       this.area = options.area;
+      this.map = options.map;
       this.validationList = new BlueCarbon.Collections.Validations([], {
         area: this.area
       });
@@ -45,10 +47,15 @@
       return this.trigger('back');
     };
 
+    AreaEditView.prototype.uploadValidations = function() {
+      return this.validationList.pushToServer();
+    };
+
     AreaEditView.prototype.render = function() {
       var _this = this;
       this.$el.html(this.template({
-        area: this.area
+        area: this.area,
+        validationCount: this.validationList.models.length
       }));
       this.validationList.each(function(validation) {
         var validationView;
@@ -58,22 +65,24 @@
         $('#validation-list').append(validationView.render().el);
         return _this.subViews.push(validationView);
       });
+      this.addMapLayers(this.area, this.map);
       return this;
     };
 
     AreaEditView.prototype.onClose = function() {
-      var view, _i, _len, _ref, _results;
+      var view, _i, _len, _ref;
       _ref = this.subViews;
-      _results = [];
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         view = _ref[_i];
-        _results.push(view.close());
+        view.close();
       }
-      return _results;
+      return this.removeTileLayers(this.map);
     };
 
     return AreaEditView;
 
   })(Backbone.View);
+
+  _.extend(BlueCarbon.Views.AreaEditView.prototype, BlueCarbon.Mixins.AreaMapLayers);
 
 }).call(this);

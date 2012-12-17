@@ -26,3 +26,20 @@ class BlueCarbon.Collections.Validations extends Backbone.SyncableCollection
       , (tx, error) =>
         options.error.apply(@, arguments)
     )
+
+  pushToServer: ->
+    @each (validation) ->
+      validation.save({},
+        success: ->
+          console.log "successfully pushed to server"
+          validation.localDestroy(
+            success: ->
+              alert('destroyed')
+            error: (a,b,c) ->
+              console.log("failed to delete area with:")
+              console.log arguments
+          )
+        error: (a,b,c)->
+          console.log("failed to upload area with:")
+          console.log arguments
+      )
