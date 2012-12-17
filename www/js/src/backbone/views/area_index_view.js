@@ -91,6 +91,8 @@
     __extends(AreaView, _super);
 
     function AreaView() {
+      this.zoomToBounds = __bind(this.zoomToBounds, this);
+
       this.downloadData = __bind(this.downloadData, this);
 
       this.startTrip = __bind(this.startTrip, this);
@@ -105,7 +107,8 @@
 
     AreaView.prototype.events = {
       "touchstart .download-data": "downloadData",
-      "touchstart .start-trip": "startTrip"
+      "touchstart .start-trip": "startTrip",
+      "touchstart": "zoomToBounds"
     };
 
     AreaView.prototype.initialize = function(options) {
@@ -135,6 +138,12 @@
     AreaView.prototype.downloadData = function() {
       this.area.downloadData();
       return this.render();
+    };
+
+    AreaView.prototype.zoomToBounds = function() {
+      var bounds;
+      bounds = this.area.coordsAsLatLngArray();
+      return this.map.fitBounds(bounds);
     };
 
     AreaView.prototype.onClose = function() {

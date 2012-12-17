@@ -48,6 +48,7 @@ class BlueCarbon.Views.AreaView extends Backbone.View
   events:
     "touchstart .download-data": "downloadData"
     "touchstart .start-trip": "startTrip"
+    "touchstart": "zoomToBounds"
 
   initialize: (options)->
     @area = options.area
@@ -68,6 +69,10 @@ class BlueCarbon.Views.AreaView extends Backbone.View
   downloadData: =>
     @area.downloadData()
     @render()
+
+  zoomToBounds: =>
+    bounds = @area.coordsAsLatLngArray()
+    @map.fitBounds(bounds)
 
   onClose: ->
     @map.removeLayer(@mapPolygon)
