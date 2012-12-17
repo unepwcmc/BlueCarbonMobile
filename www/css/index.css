@@ -53,7 +53,9 @@ h3 {
   padding: 7px 9px 9px 9px;
   color: #000;
   font-weight: bold;
+    font-size: 12px;
   height: 100%;
+    float: right;
   -webkit-box-sizing: border-box;
 }
 .btn.btn-small {
@@ -185,13 +187,15 @@ ul.fields li span{
   display: none;
 }
 
-
-
 .area-index {
   padding: 0;
     margin: 0;
+        border-right: 1px solid #424f5f;
 }
 
+.area-index #sync-status{
+    margin: 10px 0 0 20px;
+}
 
 #area-list {
   list-style-type: none;
@@ -207,29 +211,41 @@ ul.fields li span{
 }
 
 #area-list > li {
-border-top: 1px solid #5c6776;
-  border-bottom: 1px solid #2e333b;
-    padding: 10px;
+    background: #2f3b4a;
+    padding: 15px;
   margin-bottom: 0;
+    margin: 10px;
+    border-radius: 10px;
+    border-top: 1px solid #27313d;
+    border-bottom: 1px solid #404d5c;
+    background-image: linear-gradient(bottom, rgb(39,49,61) 38%, rgb(54,64,77) 69%, rgb(69,80,93) 85%);
+    background-image: -o-linear-gradient(bottom, rgb(39,49,61) 38%, rgb(54,64,77) 69%, rgb(69,80,93) 85%);
+    background-image: -moz-linear-gradient(bottom, rgb(39,49,61) 38%, rgb(54,64,77) 69%, rgb(69,80,93) 85%);
+    background-image: -webkit-linear-gradient(bottom, rgb(39,49,61) 38%, rgb(54,64,77) 69%, rgb(69,80,93) 85%);
+    background-image: -ms-linear-gradient(bottom, rgb(39,49,61) 38%, rgb(54,64,77) 69%, rgb(69,80,93) 85%);
+    
+    background-image: -webkit-gradient(
+	linear,
+	left bottom,
+	left top,
+	color-stop(0.38, rgb(39,49,61)),
+	color-stop(0.69, rgb(54,64,77)),
+	color-stop(0.85, rgb(69,80,93))
+    );
+    
+
 }
 
-#area-list li:first-child{
-    border-top: none;
-}
-
-#area-list li:last-child{
-    border-bottom: none;
-  margin-bottom: 10px;
-  padding: 5px;
-  padding-top: 3px;
-  padding-bottom: 10px;
-}
 
 #area-list .headline {
   overflow:hidden;
 }
 #area-list .headline h3 {
-  margin-top: 2px;
+    margin: 0;
+    margin-top: 2px;
+    float: left;
+    font-size: 18px;
+    text-shadow: 0px -2px 0px #27313d;
 }
 #area-list .headline a {
   float:right;
@@ -244,8 +260,17 @@ border-top: 1px solid #5c6776;
 
 #area-list ul.attributes {
   list-style-type: none;
-  padding-left: 5px;
+  padding: 0px;
+    margin: 0px;
+font-size: 12px;
 }
+
+#area-list ul.attributes li{
+    padding: 0;
+    margin: 0;
+    text-shadow: 0px -2px 0px #27313d;
+}
+
 #area-list ul.attributes li span{
 }
 
@@ -254,14 +279,14 @@ border-top: 1px solid #5c6776;
   background: -webkit-linear-gradient(top, #1f2229 0%,#1f2229 49%,#1f2229 51%,#1f2229 100%);
   height: 40px;
     padding: 0 0 0 20px;
-  text-align: left;
+  text-align: right;
 }
 
 .ios-head h2 {
   color: #9a9da1;
   position:relative;
     margin: 0;
-    padding: 0;
+    padding: 0 20px 0 0;
   top: 0;
   left: 0;
   right: 0;
@@ -269,6 +294,7 @@ border-top: 1px solid #5c6776;
   line-height: 38px;
   font-family : HelveticaNeue;
   font-size: 25px;
+    font-weight: bolder;
   text-shadow : 0px -1px 0px #000;
 }
 
