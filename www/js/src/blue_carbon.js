@@ -71,7 +71,8 @@
         center: new L.LatLng(24.2870, 54.3274),
         zoom: 10
       });
-      return this.addBaseLayer();
+      this.addBaseLayer();
+      return this.map.addControl(new L.Control.Gps());
     };
 
     App.prototype.addBaseLayer = function() {
