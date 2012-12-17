@@ -43,7 +43,6 @@ class BlueCarbon.Models.Area extends Backbone.SyncableModel
         return 'data generating'
       if !layer.downloadedAt?
         return 'no data'
-      console.log "comparing downloadedAt(#{layer.downloadedAt}) < last_generated_at(#{Date.parse(layer.last_generated_at)})"
       if layer.downloadedAt < Date.parse(layer.last_generated_at)
         return 'out of date'
     return "ready"

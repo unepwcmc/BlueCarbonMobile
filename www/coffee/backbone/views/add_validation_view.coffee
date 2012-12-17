@@ -25,6 +25,7 @@ class BlueCarbon.Views.AddValidationView extends Backbone.View
 
     @$el.html(@template(area: @area))
     @addMapLayers(@area, @map)
+    @addLayerControl(@map)
     return @
 
   createAnalysis: () =>

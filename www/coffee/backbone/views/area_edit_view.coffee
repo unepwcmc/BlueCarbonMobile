@@ -16,11 +16,53 @@ class BlueCarbon.Views.AreaEditView extends Backbone.View
 
     @subViews = []
 
+    @startLocating()
+
   fireAddValidation: ->
     @trigger('addValidation', area: @area)
 
   fireBack: ->
     @trigger('back')
+
+  startLocating: (options) ->
+    @getPosition()
+    @geoWatchId = setInterval(@getPosition, 30000)
+
+  getPosition: () ->
+    navigator.geolocation.getCurrentPosition(@drawLocation, {}, {enableHighAccuracy: true})
+
+  stopLocating: () ->
+    if @geoWatchId?
+      clearInterval(@geoWatchId)
+      @geoWatchId = null
+
+    if @marker?
+      @map.removeLayer(@marker)
+
+  drawLocation: (position) =>
+    if @marker?
+      @map.removeLayer(@marker)
+
+    if @accuracyMarker?
+      @map.removeLayer(@accuracyMarker)
+
+    GpsIcon = L.Icon.extend(
+      options:
+        iconUrl: 'css/images/gps-marker.png'
+        iconSize: [16, 16]
+    )
+
+    gpsIcon = new GpsIcon()
+
+    latlng = [
+      position.coords.latitude,
+      position.coords.longitude
+    ]
+
+    @marker = L.marker(latlng, {icon: gpsIcon}).addTo(@map)
+
+    radius = position.coords.accuracy / 2
+    @accuracyMarker = L.circle(latlng, radius).addTo(@map)
 
   render: =>
     @$el.html(@template(area: @area))
@@ -28,12 +70,16 @@ class BlueCarbon.Views.AreaEditView extends Backbone.View
       validationView =  new BlueCarbon.Views.ValidationView(validation:validation)
       $('#validation-list').append(validationView.render().el)
       @subViews.push validationView
+
     @addMapLayers(@area, @map)
+    @startLocating(@map)
+
     return @
 
   onClose: ->
     for view in @subViews
       view.close()
     @removeTileLayers(@map)
+    @stopLocation()
 
 _.extend(BlueCarbon.Views.AreaEditView::, BlueCarbon.Mixins.AreaMapLayers)

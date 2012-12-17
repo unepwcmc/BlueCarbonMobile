@@ -88,7 +88,6 @@
         if (!(layer.downloadedAt != null)) {
           return 'no data';
         }
-        console.log("comparing downloadedAt(" + layer.downloadedAt + ") < last_generated_at(" + (Date.parse(layer.last_generated_at)) + ")");
         if (layer.downloadedAt < Date.parse(layer.last_generated_at)) {
           return 'out of date';
         }
@@ -123,11 +122,18 @@
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         layer = _ref[_i];
         layers.push({
-          name: layer.habitat,
+          name: this.parseLayerName(layer.habitat),
           mbtileLocation: this.filenameForLayer(layer, false)
         });
       }
       return layers;
+    };
+
+    Area.prototype.parseLayerName = function(name) {
+      name = name.replace("_", " ");
+      return _.map(name.split(" "), function(name) {
+        return name.charAt(0).toUpperCase() + name.slice(1);
+      }).join(" ");
     };
 
     return Area;

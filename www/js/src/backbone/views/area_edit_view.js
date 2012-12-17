@@ -15,6 +15,8 @@
 
     function AreaEditView() {
       this.render = __bind(this.render, this);
+
+      this.drawLocation = __bind(this.drawLocation, this);
       return AreaEditView.__super__.constructor.apply(this, arguments);
     }
 
@@ -33,7 +35,8 @@
       });
       this.validationList.on('reset', this.render);
       this.validationList.localFetch();
-      return this.subViews = [];
+      this.subViews = [];
+      return this.startLocating();
     };
 
     AreaEditView.prototype.fireAddValidation = function() {
@@ -44,6 +47,50 @@
 
     AreaEditView.prototype.fireBack = function() {
       return this.trigger('back');
+    };
+
+    AreaEditView.prototype.startLocating = function(options) {
+      this.getPosition();
+      return this.geoWatchId = setInterval(this.getPosition, 30000);
+    };
+
+    AreaEditView.prototype.getPosition = function() {
+      return navigator.geolocation.getCurrentPosition(this.drawLocation, {}, {
+        enableHighAccuracy: true
+      });
+    };
+
+    AreaEditView.prototype.stopLocating = function() {
+      if (this.geoWatchId != null) {
+        clearInterval(this.geoWatchId);
+        this.geoWatchId = null;
+      }
+      if (this.marker != null) {
+        return this.map.removeLayer(this.marker);
+      }
+    };
+
+    AreaEditView.prototype.drawLocation = function(position) {
+      var GpsIcon, gpsIcon, latlng, radius;
+      if (this.marker != null) {
+        this.map.removeLayer(this.marker);
+      }
+      if (this.accuracyMarker != null) {
+        this.map.removeLayer(this.accuracyMarker);
+      }
+      GpsIcon = L.Icon.extend({
+        options: {
+          iconUrl: 'css/images/gps-marker.png',
+          iconSize: [16, 16]
+        }
+      });
+      gpsIcon = new GpsIcon();
+      latlng = [position.coords.latitude, position.coords.longitude];
+      this.marker = L.marker(latlng, {
+        icon: gpsIcon
+      }).addTo(this.map);
+      radius = position.coords.accuracy / 2;
+      return this.accuracyMarker = L.circle(latlng, radius).addTo(this.map);
     };
 
     AreaEditView.prototype.render = function() {
@@ -60,6 +107,7 @@
         return _this.subViews.push(validationView);
       });
       this.addMapLayers(this.area, this.map);
+      this.startLocating(this.map);
       return this;
     };
 
@@ -70,7 +118,8 @@
         view = _ref[_i];
         view.close();
       }
-      return this.removeTileLayers(this.map);
+      this.removeTileLayers(this.map);
+      return this.stopLocation();
     };
 
     return AreaEditView;
