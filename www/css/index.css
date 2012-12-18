@@ -64,12 +64,33 @@ h3 {
   font-size: 20px;
 }
 
+#upload-validations {
+  border-radius: 12px;
+  border: 1px solid #2F333F;
+  float:right;
+  font-family: Helvetica;
+  font-weight: normal;
+  margin-right: 15px;
+  padding: 5px 7px;
+  overflow:hidden;
+}
+
+#upload-validations span {
+  float:left;
+}
+#upload-validations img {
+  margin-top: 1px;
+  margin-left: 5px;
+  height: 16px;
+  width: 24px;
+  float:right;
+}
+
 #header-strip {
   height: 70px;
   padding: 10px;
-    color: #9a9da1;
-    background: -webkit-linear-gradient(top, #2e333c 0%,#3e424b 49%,#2e333c 51%,#2e333c 100%);
-
+  color: #9a9da1;
+  background: -webkit-linear-gradient(top, #2e333c 0%,#3e424b 49%,#2e333c 51%,#2e333c 100%);
 }
 
 #main-container {

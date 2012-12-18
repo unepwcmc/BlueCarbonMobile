@@ -10,7 +10,8 @@ window.JST['area/edit'] = _.template(
     <ul id='validation-list'></ul>
     <% if (validationCount > 0) { %>
       <a id="upload-validations" class="btn">
-        Upload validations
+        <span>Upload Validations</span>
+        <img src="css/images/upload.png"/>
       </a>
     <% } %>
   """
@@ -111,17 +112,17 @@ window.JST['area/area'] = _.template(
     </div>
     <% if (false || downloadState === 'ready') { %>
       <div class="area-actions start-trip">
-        <img src="css/images/arrow_forward.png"\>
+        <img src="css/images/arrow_forward.png"/>
         <div>START TRIP</div>
       </div>
     <% } else if (downloadState === 'out of date' || downloadState === 'no data') { %>
       <div class="area-actions download-data">
-        <img src="css/images/download_icon.png"\>
+        <img src="css/images/download_icon.png"/>
         <div>DOWNLOAD</div>
       </div>
     <% } else if (downloadState === 'data generating') { %>
       <div class='area-actions data-generating'>
-        <img src="css/images/timer.gif"\>
+        <img src="css/images/timer.gif"/>
         <div>GENERATING</div>
       </div>
     <% } %>
