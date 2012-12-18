@@ -6,13 +6,13 @@ window.JST['area/edit'] = _.template(
       <a class='back'>Back</a>
       <h2><%= area.get('title') %></h2>
     </div>
+    <a id="new-validation" class="btn btn-large">New Validation</a>
+    <ul id='validation-list'></ul>
     <% if (validationCount > 0) { %>
-      <a id="upload-validations" class="btn btn-small">
+      <a id="upload-validations" class="btn">
         Upload validations
       </a>
     <% } %>
-    <ul id='validation-list'></ul>
-    <input id="new-validation" type="submit" value="Add a validation"/>
   """
 )
 
@@ -130,6 +130,6 @@ window.JST['area/area'] = _.template(
 
 window.JST['area/validation'] = _.template(
   """
-    <%= validation.get('name') %> (<%= validation.get('action') %>)<a class='btn btn-small delete'>Delete</a>
+    <%= validation.get('name') %> (<%= validation.get('action') %>)<img class='delete-validation' src="css/images/trash_can.png"/>
   """
 )

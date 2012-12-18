@@ -43,24 +43,25 @@ h3 {
 }
 
 .btn {
-  border-radius: 4px;
-  border: 1px solid #858585;
-  background: -webkit-linear-gradient(top, #ebeced 0%,#d3d4d6 49%,#c8c9cb 50%,#bfc0c3 51%,#bfc1c4 100%); /* Chrome10+,Safari5.1+ */
+  border-radius: 8px;
+  border: 2px solid #383D49;
+  background: #444a5a; /* Old browsers */
+  background: -webkit-linear-gradient(top, #444a5a 0%,#2a303e 100%); /* Chrome10+,Safari5.1+ */
   padding: 7px 9px 9px 9px;
-  color: #000;
+  color: #AAADB3;
+  text-shadow: 0px -1px 0px #000;
   font-weight: bold;
-    font-size: 12px;
   height: 100%;
-    float: right;
   -webkit-box-sizing: border-box;
+  display: inline-block;
+  margin: 2px;
 }
-.btn.btn-small {
-  padding: 1px 5px;
-}
-.btn.primary {
-  border: 1px solid #0062B8;
-  background: -webkit-linear-gradient(top, #0085cc 0%,#0045cc 100%);
-  color: white;
+
+.btn.btn-large {
+  width: 287px;
+  margin: 15px 10px;
+  text-align: center;
+  font-size: 20px;
 }
 
 #header-strip {
@@ -152,19 +153,17 @@ ul.fields li span{
   display:block;
   background-color:white;
   height: 220px;
-    width: 400px;
-    margin: auto;
+  width: 400px;
+  margin: auto;
   position:absolute;
   top:0;
   bottom:0;
   left:0;
   right:0;
-    background: #141619 url('img/bg_tile~.png');
-      border: 1px solid #22262d;
-    border-radius: 0px;
-        padding: 20px;
-
-
+  background: #141619 url('img/bg_tile~.png');
+  border: 1px solid #22262d;
+  border-radius: 0px;
+  padding: 20px;
 }
 
 @media only screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:portrait) {
@@ -262,6 +261,24 @@ ul.fields li span{
   float:right;
   color: #CCC;
   padding-top: 2px;
+}
+
+#validation-list {
+  padding: 10px;
+}
+
+#validation-list li{
+  padding: 10px 15px;
+  border-radius: 10px;
+  background-color: #2A303E;
+  color: #9a9da1;
+  margin-bottom: 5px;
+}
+
+.delete-validation {
+  height: 25px;
+  width: 25px;
+  float: right;
 }
 
 .ios-head {

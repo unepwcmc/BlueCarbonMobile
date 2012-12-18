@@ -25,7 +25,7 @@
     ValidationView.prototype.tagName = 'li';
 
     ValidationView.prototype.events = {
-      "touchstart .delete": "delete"
+      "touchstart .delete-validation": "delete"
     };
 
     ValidationView.prototype.initialize = function(options) {
