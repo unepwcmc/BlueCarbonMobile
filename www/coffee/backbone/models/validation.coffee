@@ -5,7 +5,7 @@ class BlueCarbon.Models.Validation extends Backbone.SyncableModel
   url: 'http://bluecarbon.unep-wcmc.org/validations.json'
 
   schema: ->
-    "coordinates TEXT, action TEXT, area_id INTEGER, user_id INTEGER, knowledge TEXT, density TEXT, age TEXT, habitat TEXT, name TEXT, row_id INTEGER PRIMARY KEY"
+    "coordinates TEXT, action TEXT, area_id INTEGER, user_id INTEGER, knowledge TEXT, density TEXT, age TEXT, habitat TEXT, name TEXT, condition TEXT, species TEXT, row_id INTEGER PRIMARY KEY"
 
   toJSON: (forRails = true)->
     json = super

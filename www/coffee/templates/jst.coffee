@@ -27,34 +27,68 @@ window.JST['area/add_polygon'] = _.template(
       <input type='hidden' name='area_id' value="<%= area.get('id') %>"/>
       <ul class="fields">
         <li>
-          <label>Name</label>
-          <input type='text' name="name">
-        </li>
-        <li>
+          <label>Validation Type</label>
           <select name="action">
             <option value="add">Add</option>
             <option value="delete">Delete</option>
           </select>
         </li>
         <li>
-          <label>Knowledge</label>
-          <input type='text' name="knowledge">
-        </li>
-        <li>
-          <label>Density</label>
-          <input name="density">
-        </li>
-        <li>
-          <label>Age</label>
-          <input name="age">
-        </li>
-        <li>
+          <label>Habitat</label>
           <select name="habitat">
             <option value="mangrove">Mangrove</option>
             <option value="seagrass">Seagrass</option>
             <option value="sabkha">Sabkha</option>
             <option value="salt marsh">Salt Marsh</option>
           </select>
+        </li>
+        <li>
+          <label>Density</label>
+          <select name="density">
+            <option value="1">Sparse (<20% cover)</option>
+            <option value="2">Moderate (20-50% cover)</option>
+            <option value="3">Dense (50-80% cover)</option>
+            <option value="4">Very dense (>80% cover)</option>
+            <option value="5">Unknown</option>
+          </select>
+        </li>
+        <li>
+          <label>Condition</label>
+          <select name="condition">
+            <option value="1">Undisturbed / Intact</option>
+            <option value="2">Degraded</option>
+            <option value="3">Restored / Rehabilitating</option>
+            <option value="4">Afforested/ Created</option>
+            <option value="5">Cleared</option>
+          </select>
+        </li>
+        <li>
+          <label>Age</label>
+          <select name="age">
+            <option value="1">Natural Mangrove</option>
+            <option value="2">2-10 yrs old</option>
+            <option value="3">10-25 yrs old</option>
+            <option value="4">25-50 yrs old</option>
+            <option value="5">Unknown</option>
+          </select>
+        </li>
+        <li>
+          <label>Species</label>
+          <select name="species">
+            <option value="Halodule uninervis">Halodule uninervis</option>
+            <option value="Halophila ovalis">Halophila ovalis</option>
+            <option value="Halophila stipulacea">Halophila stipulacea</option>
+            <option value="Mixed species">Mixed species</option>
+            <option value="Unknown">Unknown</option>
+          </select>
+        </li>
+        <li>
+          <label>Name</label>
+          <input type='text' name="name">
+        </li>
+        <li>
+          <label>Knowledge</label>
+          <input type='text' name="knowledge">
         </li>
       </ul>
       <input id="create-analysis" type="submit" value="Add">
