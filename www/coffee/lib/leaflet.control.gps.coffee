@@ -2,7 +2,7 @@ L.Control.Gps = L.Control.extend(
   options:
     position: 'topright'
     text: ''
-    iconUrl: 'css/images/gps-marker.png'
+    iconUrl: 'css/images/location_finder.png'
 
   onAdd: (map) ->
     @container = L.DomUtil.create('div', 'my-custom-control')
