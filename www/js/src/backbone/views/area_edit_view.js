@@ -118,6 +118,7 @@
         return _this.subViews.push(validationView);
       });
       this.addMapLayers(this.area, this.map);
+      this.addLayerControl(this.map);
       this.startLocating(this.map);
       return this;
     };

@@ -63,10 +63,17 @@ class BlueCarbon.Models.Area extends Backbone.SyncableModel
     layers = []
     for layer in @get('mbtiles')
       layers.push(
-        name: layer.habitat
+        name: @parseLayerName(layer.habitat)
         mbtileLocation: @filenameForLayer(layer, false)
       )
     return layers
+
+  parseLayerName: (name) ->
+    name = name.replace("_", " ")
+
+    _.map(name.split(" "), (name) ->
+      name.charAt(0).toUpperCase() + name.slice(1)
+    ).join(" ")
 
   coordsAsLatLngArray: () ->
     latLngs = []
