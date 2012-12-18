@@ -50,9 +50,9 @@ class BlueCarbon.Views.AreaView extends Backbone.View
   template: JST['area/area']
   tagName: 'li'
   events:
-    "touchstart .download-data": "downloadData"
-    "touchstart .start-trip": "startTrip"
-    "touchstart": "zoomToBounds"
+    "click .download-data": "downloadData"
+    "click .start-trip": "startTrip"
+    "click": "zoomToBounds"
 
   initialize: (options)->
     @area = options.area
