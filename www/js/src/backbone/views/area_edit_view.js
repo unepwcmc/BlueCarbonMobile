@@ -25,9 +25,9 @@
     AreaEditView.prototype.template = JST['area/edit'];
 
     AreaEditView.prototype.events = {
-      "touchstart #new-validation": "fireAddValidation",
-      "touchstart #upload-validations": "uploadValidations",
-      "touchstart .ios-head .back": "fireBack"
+      "click #new-validation": "fireAddValidation",
+      "click #upload-validations": "uploadValidations",
+      "click .ios-head .back": "fireBack"
     };
 
     AreaEditView.prototype.initialize = function(options) {

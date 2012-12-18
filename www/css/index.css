@@ -57,6 +57,10 @@ h3 {
   margin: 2px;
 }
 
+.btn:hover {
+  background: -webkit-linear-gradient(top, #2a303e 0%,#444a5a 100%); /* Chrome10+,Safari5.1+ */
+}
+
 .btn.btn-large {
   width: 287px;
   margin: 15px 10px;

@@ -111,9 +111,9 @@
     AreaView.prototype.tagName = 'li';
 
     AreaView.prototype.events = {
-      "touchstart .download-data": "downloadData",
-      "touchstart .start-trip": "startTrip",
-      "touchstart": "zoomToBounds"
+      "click .download-data": "downloadData",
+      "click .start-trip": "startTrip",
+      "click": "zoomToBounds"
     };
 
     AreaView.prototype.initialize = function(options) {
