@@ -10,7 +10,7 @@
     addMapLayers: function(area, map) {
       var db, layer, tileLayer, _i, _len, _ref, _results;
       this.removeTileLayers();
-      this.tileLayers || (this.tileLayers = []);
+      this.tileLayers || (this.tileLayers = {});
       _ref = area.tileLayers();
       _results = [];
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
@@ -20,22 +20,29 @@
         tileLayer = new L.TileLayer.MBTiles(db, {
           tms: true
         }).addTo(map);
-        _results.push(this.tileLayers.push(tileLayer));
+        _results.push(this.tileLayers[layer.name] = tileLayer);
       }
       return _results;
     },
-    removeTileLayers: function(map) {
-      var layer, _i, _len, _ref, _results;
+    addLayerControl: function(map) {
       if (this.tileLayers == null) {
         return;
       }
-      _ref = this.tileLayers;
-      _results = [];
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        layer = _ref[_i];
-        _results.push(map.removeLayer(layer));
+      this.layerControl = L.control.layers([], this.tileLayers);
+      return this.layerControl.addTo(map);
+    },
+    removeTileLayers: function(map) {
+      var layer, _i, _len, _ref;
+      if (this.tileLayers != null) {
+        _ref = this.tileLayers;
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          layer = _ref[_i];
+          map.removeLayer(layer);
+        }
       }
-      return _results;
+      if (this.layerControl != null) {
+        return map.removeControl(this.layerControl);
+      }
     }
   };
 

@@ -79,6 +79,7 @@ class BlueCarbon.Views.AreaEditView extends Backbone.View
       @subViews.push validationView
 
     @addMapLayers(@area, @map)
+    @addLayerControl(@map)
     @startLocating(@map)
 
     return @

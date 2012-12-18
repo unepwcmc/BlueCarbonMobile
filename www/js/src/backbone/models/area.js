@@ -122,11 +122,18 @@
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         layer = _ref[_i];
         layers.push({
-          name: layer.habitat,
+          name: this.parseLayerName(layer.habitat),
           mbtileLocation: this.filenameForLayer(layer, false)
         });
       }
       return layers;
+    };
+
+    Area.prototype.parseLayerName = function(name) {
+      name = name.replace("_", " ");
+      return _.map(name.split(" "), function(name) {
+        return name.charAt(0).toUpperCase() + name.slice(1);
+      }).join(" ");
     };
 
     Area.prototype.coordsAsLatLngArray = function() {

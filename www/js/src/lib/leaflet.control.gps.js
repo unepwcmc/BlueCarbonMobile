@@ -5,7 +5,7 @@
     options: {
       position: 'topright',
       text: '',
-      iconUrl: 'css/images/gps-marker.png'
+      iconUrl: 'css/images/location_finder.png'
     },
     onAdd: function(map) {
       this.container = L.DomUtil.create('div', 'my-custom-control');

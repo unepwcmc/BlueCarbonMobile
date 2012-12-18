@@ -379,3 +379,8 @@ ul.fields li span{
 .leaflet-container a.leaflet-active {
   outline: none;
 }
+
+.leaflet-buttons-control-img {
+  width: 32px;
+  height: 32px;
+}
