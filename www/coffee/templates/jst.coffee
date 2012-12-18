@@ -107,7 +107,7 @@ window.JST['area/area'] = _.template(
         <% } %>
       </p>
     </div>
-    <% if (true || downloadState === 'ready') { %>
+    <% if (false || downloadState === 'ready') { %>
       <div class="area-actions start-trip">
         <img src="css/images/arrow_forward.png"\>
         <div>START TRIP</div>
