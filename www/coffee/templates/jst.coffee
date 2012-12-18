@@ -6,13 +6,13 @@ window.JST['area/edit'] = _.template(
       <a class='back'>Back</a>
       <h2><%= area.get('title') %></h2>
     </div>
+    <a id="new-validation" class="btn btn-large">New Validation</a>
+    <ul id='validation-list'></ul>
     <% if (validationCount > 0) { %>
-      <a id="upload-validations" class="btn btn-small">
+      <a id="upload-validations" class="btn">
         Upload validations
       </a>
     <% } %>
-    <ul id='validation-list'></ul>
-    <input id="new-validation" type="submit" value="Add a validation"/>
   """
 )
 
@@ -49,8 +49,10 @@ window.JST['area/add_polygon'] = _.template(
         </li>
         <li>
           <select name="habitat">
-            <option value="mangroves">Mangroves</option>
+            <option value="mangrove">Mangrove</option>
             <option value="seagrass">Seagrass</option>
+            <option value="sabkha">Sabkha</option>
+            <option value="salt marsh">Salt Marsh</option>
           </select>
         </li>
       </ul>
@@ -107,7 +109,7 @@ window.JST['area/area'] = _.template(
         <% } %>
       </p>
     </div>
-    <% if (true || downloadState === 'ready') { %>
+    <% if (false || downloadState === 'ready') { %>
       <div class="area-actions start-trip">
         <img src="css/images/arrow_forward.png"\>
         <div>START TRIP</div>
@@ -128,6 +130,6 @@ window.JST['area/area'] = _.template(
 
 window.JST['area/validation'] = _.template(
   """
-    <%= validation.get('name') %> (<%= validation.get('action') %>)<a class='btn btn-small delete'>Delete</a>
+    <%= validation.get('name') %> (<%= validation.get('action') %>)<img class='delete-validation' src="css/images/trash_can.png"/>
   """
 )

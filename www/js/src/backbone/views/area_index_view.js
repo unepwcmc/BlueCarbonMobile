@@ -51,6 +51,7 @@
       this.$el.html(this.template({
         models: this.areaList.toJSON()
       }));
+      this.closeSubViews();
       this.areaList.each(function(area) {
         var areaView;
         areaView = new BlueCarbon.Views.AreaView({
@@ -71,7 +72,7 @@
       return $('#sync-status').text("Area list updated");
     };
 
-    AreaIndexView.prototype.onClose = function() {
+    AreaIndexView.prototype.closeSubViews = function() {
       var view, _i, _len, _ref, _results;
       _ref = this.subViews;
       _results = [];
@@ -80,6 +81,10 @@
         _results.push(view.close());
       }
       return _results;
+    };
+
+    AreaIndexView.prototype.onClose = function() {
+      return this.closeSubViews();
     };
 
     return AreaIndexView;

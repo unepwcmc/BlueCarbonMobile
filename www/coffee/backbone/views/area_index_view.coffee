@@ -26,6 +26,7 @@ class BlueCarbon.Views.AreaIndexView extends Backbone.View
 
   render: =>
     @$el.html(@template(models:@areaList.toJSON()))
+    @closeSubViews()
     @areaList.each (area)=>
       areaView = new BlueCarbon.Views.AreaView(area:area, map: @map)
       $('#area-list').append(areaView.render().el)
@@ -38,9 +39,12 @@ class BlueCarbon.Views.AreaIndexView extends Backbone.View
   showUpdated: ->
     $('#sync-status').text("Area list updated")
 
-  onClose: ->
+  closeSubViews: ->
     for view in @subViews
       view.close()
+
+  onClose: ->
+    @closeSubViews()
 
 class BlueCarbon.Views.AreaView extends Backbone.View
   template: JST['area/area']
