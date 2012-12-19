@@ -25,9 +25,9 @@
     AreaEditView.prototype.template = JST['area/edit'];
 
     AreaEditView.prototype.events = {
-      "click #new-validation": "fireAddValidation",
-      "click #upload-validations": "uploadValidations",
-      "click .ios-head .back": "fireBack"
+      "touchend #new-validation": "fireAddValidation",
+      "touchend #upload-validations": "uploadValidations",
+      "touchend .ios-head .back": "fireBack"
     };
 
     AreaEditView.prototype.initialize = function(options) {
@@ -131,6 +131,7 @@
         view.close();
       }
       this.removeTileLayers(this.map);
+      this.removeLayerControl(this.map);
       return this.stopLocating();
     };
 

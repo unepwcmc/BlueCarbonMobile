@@ -28,18 +28,23 @@
       if (this.tileLayers == null) {
         return;
       }
+      this.removeLayerControl(map);
       this.layerControl = L.control.layers([], this.tileLayers);
       return this.layerControl.addTo(map);
     },
     removeTileLayers: function(map) {
-      var layer, _i, _len, _ref;
+      var layer, _i, _len, _ref, _results;
       if (this.tileLayers != null) {
         _ref = this.tileLayers;
+        _results = [];
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
           layer = _ref[_i];
-          map.removeLayer(layer);
+          _results.push(map.removeLayer(layer));
         }
+        return _results;
       }
+    },
+    removeLayerControl: function(map) {
       if (this.layerControl != null) {
         return map.removeControl(this.layerControl);
       }

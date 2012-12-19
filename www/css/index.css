@@ -15,6 +15,7 @@ body {
   padding: 0;
   margin: 0;
   font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+  -webkit-user-select: none;
 }
 h1, h2, h3, h4, h5, h6 {
   margin: 10px 0;
@@ -143,24 +144,31 @@ h3 {
     margin: 0;
 }
 
-.fields input{
-    width: 300px;
-    background: #cccccc;
+ul.fields {
+  padding: 10px;
 }
-
-ul.fields{
-    margin: 0 0 20px 0;
-    padding: 0;
-}
-
 
 ul.fields li{
-    margin: 20px 0 20px 0;
-    padding: 0;
+  padding: 10px 15px;
+  border-radius: 10px;
+  background-color: #2A303E;
+  color: #9a9da1;
+  margin-bottom: 5px;
+  overflow:hidden;
 }
 
-ul.fields li span{
-    display: block;
+ul.fields label{
+  float:left;
+}
+ul.fields select{
+  float:right;
+}
+
+ul.fields input{
+  width: 243px;
+  float:left;
+  border-radius: 10px
+  background: #FFF;
 }
 
 
@@ -306,6 +314,27 @@ ul.fields li span{
   float: right;
 }
 
+#validation-attributes {
+  display:none;
+}
+
+#draw-polygon-notice {
+  color:white;
+  padding: 15px;
+  font-size: 15px;
+}
+
+/* progressive form reveal CSS */
+#validation-attributes #validation-details{
+  display:none;
+}
+#validation-attributes #validation-details .conditional{
+  display:none;
+}
+#validation-attributes #create-analysis{
+  display:none;
+}
+
 .ios-head {
   position:relative;
   background: #3d4559; /* Old browsers */
@@ -372,7 +401,7 @@ ul.fields li span{
     -webkit-background-size : 30px;
     margin-top:2px;
 }
- 
+
 .back:before {
     position:absolute;
     top:9.9%;
@@ -404,6 +433,11 @@ ul.fields li span{
             color-stop(0.33,#000000),
             color-stop(0.5, transparent),
             to(transparent));
+}
+
+.back:hover,
+.back:hover:before {
+  background-color: rgba(0,0,0,1);/*hovercolor*/
 }
 
 /* LeafletJS Style Overrides */
