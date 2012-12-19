@@ -25,7 +25,7 @@ class BlueCarbon.Models.Area extends Backbone.SyncableModel
   filenameForLayer: (layer, absolute=true) ->
     name = ""
     name = name + "#{fs.root.fullPath}/" if absolute
-    name = name + "#{layer.habitat}.mbtiles"
+    name = name + "#{@get('id')}-#{layer.habitat}.mbtiles"
 
   layerDownloaded: (layer, fileEntry) =>
     console.log "downloaded #{layer.habitat}"
