@@ -9,13 +9,13 @@
   BlueCarbon.Mixins.AreaMapLayers = {
     addMapLayers: function(area, map) {
       var db, layer, tileLayer, _i, _len, _ref, _results;
+      console.log("Adding tile layers");
       this.removeTileLayers();
       this.tileLayers || (this.tileLayers = {});
       _ref = area.tileLayers();
       _results = [];
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         layer = _ref[_i];
-        console.log("adding tile layer for " + layer.mbtileLocation);
         db = window.sqlitePlugin.openDatabase(layer.mbtileLocation, "1.0", "Tiles", 2000000);
         tileLayer = new L.TileLayer.MBTiles(db, {
           tms: true
@@ -34,6 +34,7 @@
     },
     removeTileLayers: function(map) {
       var layer, _i, _len, _ref, _results;
+      console.log("remove tile layers");
       if (this.tileLayers != null) {
         _ref = this.tileLayers;
         _results = [];
