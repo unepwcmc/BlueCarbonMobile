@@ -79,12 +79,9 @@
     };
 
     AreaEditView.prototype.drawLocation = function(position) {
-      var GpsIcon, gpsIcon, latlng, radius;
+      var GpsIcon, gpsIcon, latlng;
       if (this.marker != null) {
         this.map.removeLayer(this.marker);
-      }
-      if (this.accuracyMarker != null) {
-        this.map.removeLayer(this.accuracyMarker);
       }
       GpsIcon = L.Icon.extend({
         options: {
@@ -94,11 +91,9 @@
       });
       gpsIcon = new GpsIcon();
       latlng = [position.coords.latitude, position.coords.longitude];
-      this.marker = L.marker(latlng, {
+      return this.marker = L.marker(latlng, {
         icon: gpsIcon
       }).addTo(this.map);
-      radius = position.coords.accuracy / 2;
-      return this.accuracyMarker = L.circle(latlng, radius).addTo(this.map);
     };
 
     AreaEditView.prototype.uploadValidations = function() {

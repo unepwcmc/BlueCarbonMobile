@@ -59,7 +59,7 @@
       if (absolute) {
         name = name + ("" + fs.root.fullPath + "/");
       }
-      return name = name + ("" + layer.habitat + ".mbtiles");
+      return name = name + ("" + (this.get('id')) + "-" + layer.habitat + ".mbtiles");
     };
 
     Area.prototype.layerDownloaded = function(layer, fileEntry) {

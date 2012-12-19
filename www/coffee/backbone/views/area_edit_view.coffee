@@ -47,8 +47,8 @@ class BlueCarbon.Views.AreaEditView extends Backbone.View
     if @marker?
       @map.removeLayer(@marker)
 
-    if @accuracyMarker?
-      @map.removeLayer(@accuracyMarker)
+    #if @accuracyMarker?
+      #@map.removeLayer(@accuracyMarker)
 
     GpsIcon = L.Icon.extend(
       options:
@@ -65,8 +65,8 @@ class BlueCarbon.Views.AreaEditView extends Backbone.View
 
     @marker = L.marker(latlng, {icon: gpsIcon}).addTo(@map)
 
-    radius = position.coords.accuracy / 2
-    @accuracyMarker = L.circle(latlng, radius).addTo(@map)
+    #radius = position.coords.accuracy / 2
+    #@accuracyMarker = L.circle(latlng, radius).addTo(@map)
 
   uploadValidations: ->
     @validationList.pushToServer()
