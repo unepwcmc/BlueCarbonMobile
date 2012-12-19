@@ -4,9 +4,9 @@ window.BlueCarbon.Views ||= {}
 class BlueCarbon.Views.AreaEditView extends Backbone.View
   template: JST['area/edit']
   events :
-    "click #new-validation" : "fireAddValidation"
-    "click #upload-validations" : "uploadValidations"
-    "click .ios-head .back" : "fireBack"
+    "touchend #new-validation" : "fireAddValidation"
+    "touchend #upload-validations" : "uploadValidations"
+    "touchend .ios-head .back" : "fireBack"
 
   initialize: (options) ->
     @area = options.area

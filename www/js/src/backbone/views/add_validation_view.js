@@ -25,8 +25,8 @@
     AddValidationView.prototype.template = JST['area/add_polygon'];
 
     AddValidationView.prototype.events = {
-      "click #create-analysis": 'createAnalysis',
-      "click .ios-head .back": "fireBack",
+      "touchend #create-analysis": 'createAnalysis',
+      "touchend .ios-head .back": "fireBack",
       "change [name=habitat]": "showAttributesForHabitat",
       "change [name=action]": "showAttributesForAction"
     };
