@@ -14,6 +14,8 @@
     __extends(AreaEditView, _super);
 
     function AreaEditView() {
+      this.drawSubViews = __bind(this.drawSubViews, this);
+
       this.render = __bind(this.render, this);
 
       this.drawLocation = __bind(this.drawLocation, this);
@@ -104,23 +106,31 @@
     };
 
     AreaEditView.prototype.render = function() {
-      var _this = this;
       this.$el.html(this.template({
         area: this.area,
         validationCount: this.validationList.models.length
       }));
-      this.validationList.each(function(validation) {
+      this.addMapLayers(this.area, this.map);
+      this.addLayerControl(this.map);
+      this.startLocating(this.map);
+      setTimeout(this.drawSubViews, 5);
+      return this;
+    };
+
+    AreaEditView.prototype.drawSubViews = function() {
+      var _this = this;
+      return this.validationList.each(function(validation) {
         var validationView;
         validationView = new BlueCarbon.Views.ValidationView({
           validation: validation
         });
+        console.log("going to render:");
+        console.log(validationView.render().el);
+        console.log("into:");
+        console.log($('#validation-list'));
         $('#validation-list').append(validationView.render().el);
         return _this.subViews.push(validationView);
       });
-      this.addMapLayers(this.area, this.map);
-      this.addLayerControl(this.map);
-      this.startLocating(this.map);
-      return this;
     };
 
     AreaEditView.prototype.onClose = function() {

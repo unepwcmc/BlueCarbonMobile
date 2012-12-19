@@ -5,7 +5,7 @@ class BlueCarbon.Views.ValidationView extends Backbone.View
   template: JST['area/validation']
   tagName: 'li'
   events:
-    "touchstart .delete-validation" : "delete"
+    "click .delete-validation" : "delete"
 
   initialize: (options)->
     @validation = options.validation

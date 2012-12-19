@@ -73,16 +73,24 @@ class BlueCarbon.Views.AreaEditView extends Backbone.View
 
   render: =>
     @$el.html(@template(area: @area, validationCount: @validationList.models.length))
-    @validationList.each (validation)=>
-      validationView =  new BlueCarbon.Views.ValidationView(validation:validation)
-      $('#validation-list').append(validationView.render().el)
-      @subViews.push validationView
-
     @addMapLayers(@area, @map)
     @addLayerControl(@map)
     @startLocating(@map)
 
+    # Big hack, apparently the view we try to render into isn't made immediately after above
+    setTimeout(@drawSubViews, 5)
+
     return @
+  
+  drawSubViews: =>
+    @validationList.each (validation)=>
+      validationView =  new BlueCarbon.Views.ValidationView(validation:validation)
+      console.log "going to render:"
+      console.log validationView.render().el
+      console.log "into:"
+      console.log $('#validation-list')
+      $('#validation-list').append(validationView.render().el)
+      @subViews.push validationView
 
   onClose: ->
     for view in @subViews
