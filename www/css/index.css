@@ -144,24 +144,31 @@ h3 {
     margin: 0;
 }
 
-.fields input{
-    width: 300px;
-    background: #cccccc;
+ul.fields {
+  padding: 10px;
 }
-
-ul.fields{
-    margin: 0 0 20px 0;
-    padding: 0;
-}
-
 
 ul.fields li{
-    margin: 20px 0 20px 0;
-    padding: 0;
+  padding: 10px 15px;
+  border-radius: 10px;
+  background-color: #2A303E;
+  color: #9a9da1;
+  margin-bottom: 5px;
+  overflow:hidden;
 }
 
-ul.fields li span{
-    display: block;
+ul.fields label{
+  float:left;
+}
+ul.fields select{
+  float:right;
+}
+
+ul.fields input{
+  width: 243px;
+  float:left;
+  border-radius: 10px
+  background: #FFF;
 }
 
 
