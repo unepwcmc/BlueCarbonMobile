@@ -107,7 +107,7 @@
         if ($('[name=habitat]').val() !== '') {
           return $('#create-analysis').slideDown();
         }
-      } else if (actionSelect === 'delete') {
+      } else if (actionSelected === 'delete') {
         $('#validation-details').slideUp();
         if ($('[name=habitat]').val() !== '') {
           return $('#create-analysis').slideDown();

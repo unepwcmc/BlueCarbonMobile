@@ -318,6 +318,12 @@ ul.fields input{
   display:none;
 }
 
+#draw-polygon-notice {
+  color:white;
+  padding: 15px;
+  font-size: 15px;
+}
+
 /* progressive form reveal CSS */
 #validation-attributes #validation-details{
   display:none;
