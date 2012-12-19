@@ -4,8 +4,8 @@ window.BlueCarbon.Views ||= {}
 class BlueCarbon.Views.AddValidationView extends Backbone.View
   template: JST['area/add_polygon']
   events:
-    "click #create-analysis": 'createAnalysis'
-    "click .ios-head .back" : "fireBack"
+    "touchend #create-analysis": 'createAnalysis'
+    "touchend .ios-head .back" : "fireBack"
 
   initialize: (options)->
     @area = options.area
