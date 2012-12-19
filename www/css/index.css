@@ -314,6 +314,21 @@ ul.fields input{
   float: right;
 }
 
+#validation-attributes {
+  display:none;
+}
+
+/* progressive form reveal CSS */
+#validation-attributes #validation-details{
+  display:none;
+}
+#validation-attributes #validation-details .conditional{
+  display:none;
+}
+#validation-attributes #create-analysis{
+  display:none;
+}
+
 .ios-head {
   position:relative;
   background: #3d4559; /* Old browsers */

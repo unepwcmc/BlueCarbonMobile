@@ -6,6 +6,8 @@ class BlueCarbon.Views.AddValidationView extends Backbone.View
   events:
     "click #create-analysis": 'createAnalysis'
     "click .ios-head .back" : "fireBack"
+    "change [name=habitat]" : "showAttributesForHabitat"
+    "change [name=action]" : "showAttributesForAction"
 
   initialize: (options)->
     @area = options.area
@@ -17,6 +19,7 @@ class BlueCarbon.Views.AddValidationView extends Backbone.View
       @validation.setGeomFromPoints(e.poly.getLatLngs())
       @mapPolygon = new L.Polygon(e.poly.getLatLngs())
       @mapPolygon.addTo(@map)
+      @showForm()
 
   render: () ->
     # Turn on Leaflet.draw polygon tool
@@ -29,9 +32,7 @@ class BlueCarbon.Views.AddValidationView extends Backbone.View
     return @
 
   createAnalysis: () =>
-    unless @validation.get('coordinates')?
-      alert("You've not finished your polygon!")
-      return false
+    @clearUnselectedFields()
     @validation.set($('form#validation-attributes').serializeObject())
     @validation.localSave(@validation.attributes,
       success: =>
@@ -45,6 +46,39 @@ class BlueCarbon.Views.AddValidationView extends Backbone.View
 
   fireBack: ->
     @trigger('back', area: @area)
+
+  showForm: ->
+    $('#draw-polygon-notice').slideUp()
+    $('#validation-attributes').slideDown()
+
+  # Show conditional fields based on habitat selected
+  showAttributesForHabitat: (event)=>
+    habitatSelected = $(event.srcElement).val()
+    $('.conditional').slideUp()
+
+    if habitatSelected == ''
+      $('#create-analysis').slideUp()
+    else
+      $(".conditional.#{habitatSelected}").slideDown()
+      $('#create-analysis').slideDown() if $('[name=action]').val() != ''
+
+  # Show conditional fields based on action selected
+  showAttributesForAction: (event)=>
+    actionSelected = $(event.srcElement).val()
+    if actionSelected == 'add'
+      $('#validation-details').slideDown()
+      $('#create-analysis').slideDown() if $('[name=habitat]').val() != ''
+    else if actionSelect == 'delete'
+      $('#validation-details').slideUp()
+      $('#create-analysis').slideDown() if $('[name=habitat]').val() != ''
+    else
+      $('#validation-details').slideUp()
+      $('#create-analysis').slideUp()
+
+  # Unset values in conditional fields which are hidden
+  clearUnselectedFields: ->
+    $('.conditional:hidden input').val('')
+    $('.conditional:hidden select').val([])
 
   close: () ->
     @polygonDraw.disable()
