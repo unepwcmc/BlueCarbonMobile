@@ -14,6 +14,10 @@
     __extends(AddValidationView, _super);
 
     function AddValidationView() {
+      this.showAttributesForAction = __bind(this.showAttributesForAction, this);
+
+      this.showAttributesForHabitat = __bind(this.showAttributesForHabitat, this);
+
       this.createAnalysis = __bind(this.createAnalysis, this);
       return AddValidationView.__super__.constructor.apply(this, arguments);
     }
@@ -21,8 +25,10 @@
     AddValidationView.prototype.template = JST['area/add_polygon'];
 
     AddValidationView.prototype.events = {
-      "click #create-analysis": 'createAnalysis',
-      "click .ios-head .back": "fireBack"
+      "touchend #create-analysis": 'createAnalysis',
+      "touchend .ios-head .back": "fireBack",
+      "change [name=habitat]": "showAttributesForHabitat",
+      "change [name=action]": "showAttributesForAction"
     };
 
     AddValidationView.prototype.initialize = function(options) {
@@ -33,7 +39,8 @@
       return this.map.on('draw:poly-created', function(e) {
         _this.validation.setGeomFromPoints(e.poly.getLatLngs());
         _this.mapPolygon = new L.Polygon(e.poly.getLatLngs());
-        return _this.mapPolygon.addTo(_this.map);
+        _this.mapPolygon.addTo(_this.map);
+        return _this.showForm();
       });
     };
 
@@ -50,10 +57,7 @@
 
     AddValidationView.prototype.createAnalysis = function() {
       var _this = this;
-      if (this.validation.get('coordinates') == null) {
-        alert("You've not finished your polygon!");
-        return false;
-      }
+      this.clearUnselectedFields();
       this.validation.set($('form#validation-attributes').serializeObject());
       return this.validation.localSave(this.validation.attributes, {
         success: function() {
@@ -76,12 +80,56 @@
       });
     };
 
+    AddValidationView.prototype.showForm = function() {
+      $('#draw-polygon-notice').slideUp();
+      return $('#validation-attributes').slideDown();
+    };
+
+    AddValidationView.prototype.showAttributesForHabitat = function(event) {
+      var habitatSelected;
+      habitatSelected = $(event.srcElement).val();
+      $('.conditional').slideUp();
+      if (habitatSelected === '') {
+        return $('#create-analysis').slideUp();
+      } else {
+        $(".conditional." + habitatSelected).slideDown();
+        if ($('[name=action]').val() !== '') {
+          return $('#create-analysis').slideDown();
+        }
+      }
+    };
+
+    AddValidationView.prototype.showAttributesForAction = function(event) {
+      var actionSelected;
+      actionSelected = $(event.srcElement).val();
+      if (actionSelected === 'add') {
+        $('#validation-details').slideDown();
+        if ($('[name=habitat]').val() !== '') {
+          return $('#create-analysis').slideDown();
+        }
+      } else if (actionSelect === 'delete') {
+        $('#validation-details').slideUp();
+        if ($('[name=habitat]').val() !== '') {
+          return $('#create-analysis').slideDown();
+        }
+      } else {
+        $('#validation-details').slideUp();
+        return $('#create-analysis').slideUp();
+      }
+    };
+
+    AddValidationView.prototype.clearUnselectedFields = function() {
+      $('.conditional:hidden input').val('');
+      return $('.conditional:hidden select').val([]);
+    };
+
     AddValidationView.prototype.close = function() {
       this.polygonDraw.disable();
       this.map.off('draw:poly-created');
       if (this.mapPolygon != null) {
         this.map.removeLayer(this.mapPolygon);
       }
+      this.removeLayerControl(this.map);
       return this.removeTileLayers(this.map);
     };
 
