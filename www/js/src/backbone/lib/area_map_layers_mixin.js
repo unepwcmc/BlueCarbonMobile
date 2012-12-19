@@ -33,13 +33,13 @@
       return this.layerControl.addTo(map);
     },
     removeTileLayers: function(map) {
-      var layer, _i, _len, _ref, _results;
-      console.log("remove tile layers");
+      var layer, layerName, _ref, _results;
+      console.log("removing tile layers");
       if (this.tileLayers != null) {
         _ref = this.tileLayers;
         _results = [];
-        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          layer = _ref[_i];
+        for (layerName in _ref) {
+          layer = _ref[layerName];
           _results.push(map.removeLayer(layer));
         }
         return _results;

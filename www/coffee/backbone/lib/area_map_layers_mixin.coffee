@@ -25,9 +25,9 @@ BlueCarbon.Mixins.AreaMapLayers =
     @layerControl.addTo(map)
 
   removeTileLayers: (map)->
-    console.log "remove tile layers"
+    console.log "removing tile layers"
     if @tileLayers?
-      for layer in @tileLayers
+      for layerName, layer of @tileLayers
         map.removeLayer(layer)
 
   removeLayerControl: (map) ->
