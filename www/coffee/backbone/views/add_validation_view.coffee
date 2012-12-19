@@ -68,7 +68,7 @@ class BlueCarbon.Views.AddValidationView extends Backbone.View
     if actionSelected == 'add'
       $('#validation-details').slideDown()
       $('#create-analysis').slideDown() if $('[name=habitat]').val() != ''
-    else if actionSelect == 'delete'
+    else if actionSelected == 'delete'
       $('#validation-details').slideUp()
       $('#create-analysis').slideDown() if $('[name=habitat]').val() != ''
     else
