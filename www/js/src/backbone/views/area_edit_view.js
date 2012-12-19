@@ -131,6 +131,7 @@
         view.close();
       }
       this.removeTileLayers(this.map);
+      this.removeLayerControl(this.map);
       return this.stopLocating();
     };
 

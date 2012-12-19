@@ -88,6 +88,7 @@ class BlueCarbon.Views.AreaEditView extends Backbone.View
     for view in @subViews
       view.close()
     @removeTileLayers(@map)
+    @removeLayerControl(@map)
     @stopLocating()
 
 _.extend(BlueCarbon.Views.AreaEditView::, BlueCarbon.Mixins.AreaMapLayers)

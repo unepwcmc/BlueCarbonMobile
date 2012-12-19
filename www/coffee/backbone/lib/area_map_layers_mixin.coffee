@@ -18,6 +18,9 @@ BlueCarbon.Mixins.AreaMapLayers =
 
   addLayerControl: (map) ->
     return unless @tileLayers?
+
+    @removeLayerControl(map)
+
     @layerControl = L.control.layers([], @tileLayers)
     @layerControl.addTo(map)
 
@@ -26,5 +29,6 @@ BlueCarbon.Mixins.AreaMapLayers =
       for layer in @tileLayers
         map.removeLayer(layer)
 
+  removeLayerControl: (map) ->
     if @layerControl?
       map.removeControl(@layerControl)

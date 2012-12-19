@@ -82,6 +82,7 @@
       if (this.mapPolygon != null) {
         this.map.removeLayer(this.mapPolygon);
       }
+      this.removeLayerControl(this.map);
       return this.removeTileLayers(this.map);
     };
 
