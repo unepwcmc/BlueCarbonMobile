@@ -84,11 +84,7 @@ class BlueCarbon.Views.AreaEditView extends Backbone.View
   
   drawSubViews: =>
     @validationList.each (validation)=>
-      validationView =  new BlueCarbon.Views.ValidationView(validation:validation)
-      console.log "going to render:"
-      console.log validationView.render().el
-      console.log "into:"
-      console.log $('#validation-list')
+      validationView = new BlueCarbon.Views.ValidationView(validation:validation)
       $('#validation-list').append(validationView.render().el)
       @subViews.push validationView
 

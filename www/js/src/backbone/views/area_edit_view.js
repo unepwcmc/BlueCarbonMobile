@@ -124,10 +124,6 @@
         validationView = new BlueCarbon.Views.ValidationView({
           validation: validation
         });
-        console.log("going to render:");
-        console.log(validationView.render().el);
-        console.log("into:");
-        console.log($('#validation-list'));
         $('#validation-list').append(validationView.render().el);
         return _this.subViews.push(validationView);
       });
