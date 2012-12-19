@@ -15,6 +15,7 @@ body {
   padding: 0;
   margin: 0;
   font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+  -webkit-user-select: none;
 }
 h1, h2, h3, h4, h5, h6 {
   margin: 10px 0;
@@ -372,7 +373,7 @@ ul.fields li span{
     -webkit-background-size : 30px;
     margin-top:2px;
 }
- 
+
 .back:before {
     position:absolute;
     top:9.9%;
@@ -404,6 +405,11 @@ ul.fields li span{
             color-stop(0.33,#000000),
             color-stop(0.5, transparent),
             to(transparent));
+}
+
+.back:hover,
+.back:hover:before {
+  background-color: rgba(0,0,0,1);/*hovercolor*/
 }
 
 /* LeafletJS Style Overrides */
