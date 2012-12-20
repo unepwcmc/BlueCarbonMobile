@@ -57,9 +57,11 @@
       return this.trigger('back');
     };
 
-    AreaEditView.prototype.startLocating = function(options) {
-      this.getPosition();
-      return this.geoWatchId = setInterval(this.getPosition, 30000);
+    AreaEditView.prototype.startLocating = function() {
+      if (this.geoWatchId == null) {
+        this.getPosition();
+        return this.geoWatchId = setInterval(this.getPosition, 30000);
+      }
     };
 
     AreaEditView.prototype.getPosition = function() {

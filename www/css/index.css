@@ -338,6 +338,7 @@ ul.fields input{
 }
 #validation-attributes #create-analysis{
   display:none;
+  float:right;
 }
 
 .ios-head {

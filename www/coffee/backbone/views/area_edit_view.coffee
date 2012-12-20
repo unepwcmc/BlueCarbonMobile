@@ -28,9 +28,10 @@ class BlueCarbon.Views.AreaEditView extends Backbone.View
   fireBack: ->
     @trigger('back')
 
-  startLocating: (options) ->
-    @getPosition()
-    @geoWatchId = setInterval(@getPosition, 30000)
+  startLocating: () ->
+    unless @geoWatchId?
+      @getPosition()
+      @geoWatchId = setInterval(@getPosition, 30000)
 
   getPosition: () =>
     navigator.geolocation.getCurrentPosition(@drawLocation, {}, {enableHighAccuracy: true})

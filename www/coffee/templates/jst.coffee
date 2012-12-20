@@ -98,7 +98,7 @@ window.JST['area/add_polygon'] = _.template(
           </li>
         </div>
       </ul>
-      <input id="create-analysis" type="submit" value="Add">
+      <a id="create-analysis" class="btn btn-large">Save</a>
     </form>
   """
 )
