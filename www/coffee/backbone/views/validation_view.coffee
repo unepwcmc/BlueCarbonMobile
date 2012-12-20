@@ -13,7 +13,12 @@ class BlueCarbon.Views.ValidationView extends Backbone.View
       @close()
     )
     @map = window.blueCarbonApp.map
-    @mapPolygon = new L.Polygon(@validation.geomAsLatLngArray())
+    polyOptions = {}
+    if @validation.get('action') == 'delete'
+      polyOptions =
+        color: "#FF0000"
+        strokeColor: "#FF0000"
+    @mapPolygon = new L.Polygon(@validation.geomAsLatLngArray(), polyOptions)
 
   render: =>
     @$el.html(@template(validation:@validation))

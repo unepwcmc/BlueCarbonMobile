@@ -29,13 +29,21 @@
     };
 
     ValidationView.prototype.initialize = function(options) {
-      var _this = this;
+      var polyOptions,
+        _this = this;
       this.validation = options.validation;
       this.validation.on('destroy', function() {
         return _this.close();
       });
       this.map = window.blueCarbonApp.map;
-      return this.mapPolygon = new L.Polygon(this.validation.geomAsLatLngArray());
+      polyOptions = {};
+      if (this.validation.get('action') === 'delete') {
+        polyOptions = {
+          color: "#FF0000",
+          strokeColor: "#FF0000"
+        };
+      }
+      return this.mapPolygon = new L.Polygon(this.validation.geomAsLatLngArray(), polyOptions);
     };
 
     ValidationView.prototype.render = function() {
