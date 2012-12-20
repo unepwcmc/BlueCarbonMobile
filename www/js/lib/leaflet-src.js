@@ -6499,11 +6499,16 @@ L.Control = L.Class.extend({
 
     L.DomUtil.addClass(container, 'leaflet-control');
 
-    if (pos.indexOf('bottom') !== -1) {
-      corner.insertBefore(container, corner.firstChild);
-    } else {
-      corner.appendChild(container);
-    }
+    //if (pos.indexOf('bottom') !== -1) {
+      //corner.insertBefore(container, corner.firstChild);
+    //} else {
+      //corner.appendChild(container);
+    //}
+
+    // Insert controls before already inserted controls
+    // This is a modification required for the layer control to be
+    // styled correctly
+    corner.insertBefore(container, corner.firstChild);
 
     return this;
   },
@@ -6891,6 +6896,12 @@ L.Control.Layers = L.Control.extend({
 
     var form = this._form = L.DomUtil.create('form', className + '-list');
 
+    this._baseLayersList = L.DomUtil.create('div', className + '-base', form);
+    this._separator = L.DomUtil.create('div', className + '-separator', form);
+    this._overlaysList = L.DomUtil.create('div', className + '-overlays', form);
+
+    container.appendChild(form);
+
     if (this.options.collapsed) {
       L.DomEvent
         .on(container, 'mouseover', this._expand, this)
@@ -6915,12 +6926,6 @@ L.Control.Layers = L.Control.extend({
     } else {
       this._expand();
     }
-
-    this._baseLayersList = L.DomUtil.create('div', className + '-base', form);
-    this._separator = L.DomUtil.create('div', className + '-separator', form);
-    this._overlaysList = L.DomUtil.create('div', className + '-overlays', form);
-
-    container.appendChild(form);
   },
 
   _addLayer: function (layer, name, overlay) {
@@ -7020,7 +7025,11 @@ L.Control.Layers = L.Control.extend({
   },
 
   _expand: function () {
-    L.DomUtil.addClass(this._container, 'leaflet-control-layers-expanded');
+    if (L.DomUtil.hasClass(this._container, 'leaflet-control-layers-expanded')) {
+      L.DomUtil.removeClass(this._container, 'leaflet-control-layers-expanded');
+    } else {
+      L.DomUtil.addClass(this._container, 'leaflet-control-layers-expanded');
+    }
   },
 
   _collapse: function () {
