@@ -54,11 +54,18 @@
       this.polygonDraw = new L.Polygon.Draw(this.map, {});
       this.polygonDraw.enable();
       this.$el.html(this.template({
-        area: this.area
+        area: this.area,
+        date: this.getDate()
       }));
       this.addMapLayers(this.area, this.map);
       this.addLayerControl(this.map);
       return this;
+    };
+
+    AddValidationView.prototype.getDate = function() {
+      var date;
+      date = new Date();
+      return "" + (date.getFullYear()) + "-" + (date.getMonth() + 1) + "-" + (date.getDate());
     };
 
     AddValidationView.prototype.undoBtnHtml = "<br/><a id='undo-last-marker' class='btn'><img src='css/images/undo_selected.png'/>Undo last point</a>";

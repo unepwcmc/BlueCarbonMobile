@@ -5,7 +5,7 @@ class BlueCarbon.Models.Validation extends Backbone.SyncableModel
   url: 'http://bluecarbon.unep-wcmc.org/validations.json'
 
   schema: ->
-    "coordinates TEXT, action TEXT, area_id INTEGER, user_id INTEGER, knowledge TEXT, density TEXT, age TEXT, habitat TEXT, name TEXT, condition TEXT, species TEXT, row_id INTEGER PRIMARY KEY"
+    "coordinates TEXT, action TEXT, area_id INTEGER, user_id INTEGER, knowledge TEXT, density TEXT, age TEXT, habitat TEXT, name TEXT, condition TEXT, species TEXT, recorded_at TEXT, row_id INTEGER PRIMARY KEY"
 
   toJSON: (forRails = true)->
     json = super
@@ -22,12 +22,12 @@ class BlueCarbon.Models.Validation extends Backbone.SyncableModel
 
     points.push points[0]
 
-    @set('coordinates', [[points]])
+    @set('coordinates', points)
 
   geomAsLatLngArray: () ->
     latLngs = []
 
-    for point in @get('coordinates')[0][0]
+    for point in @get('coordinates')
       latLngs.push(new L.LatLng(point[1], point[0]))
 
     return latLngs

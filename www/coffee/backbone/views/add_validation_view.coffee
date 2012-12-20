@@ -29,10 +29,14 @@ class BlueCarbon.Views.AddValidationView extends Backbone.View
     @polygonDraw = new L.Polygon.Draw(@map, {})
     @polygonDraw.enable()
 
-    @$el.html(@template(area: @area))
+    @$el.html(@template(area: @area, date: @getDate()))
     @addMapLayers(@area, @map)
     @addLayerControl(@map)
     return @
+  
+  getDate: ->
+    date = new Date()
+    return "#{date.getFullYear()}-#{date.getMonth() + 1}-#{date.getDate()}"
 
   undoBtnHtml: "<br/><a id='undo-last-marker' class='btn'><img src='css/images/undo_selected.png'/>Undo last point</a>"
 

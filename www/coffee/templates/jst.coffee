@@ -28,6 +28,7 @@ window.JST['area/add_polygon'] = _.template(
     </div>
     <form id="validation-attributes" onSubmit="return false;">
       <input type='hidden' name='area_id' value="<%= area.get('id') %>"/>
+      <input type='hidden' name='recorded_at' value="<%= date %>"/>
       <ul class="fields">
         <li>
           <label>Habitat</label>
@@ -175,6 +176,6 @@ window.JST['area/area'] = _.template(
 
 window.JST['area/validation'] = _.template(
   """
-    <%= validation.get('name') %> (<%= validation.get('action') %>)<img class='delete-validation' src="css/images/trash_can.png"/>
+    <%= validation.get('name') %> - <%= validation.get('action') %> (<%= validation.get('recorded_at') %>)<img class='delete-validation' src="css/images/trash_can.png"/>
   """
 )

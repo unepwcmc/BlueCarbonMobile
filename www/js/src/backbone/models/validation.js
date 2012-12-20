@@ -19,7 +19,7 @@
     Validation.prototype.url = 'http://bluecarbon.unep-wcmc.org/validations.json';
 
     Validation.prototype.schema = function() {
-      return "coordinates TEXT, action TEXT, area_id INTEGER, user_id INTEGER, knowledge TEXT, density TEXT, age TEXT, habitat TEXT, name TEXT, condition TEXT, species TEXT, row_id INTEGER PRIMARY KEY";
+      return "coordinates TEXT, action TEXT, area_id INTEGER, user_id INTEGER, knowledge TEXT, density TEXT, age TEXT, habitat TEXT, name TEXT, condition TEXT, species TEXT, recorded_at TEXT, row_id INTEGER PRIMARY KEY";
     };
 
     Validation.prototype.toJSON = function(forRails) {
@@ -49,13 +49,13 @@
         return _results;
       })();
       points.push(points[0]);
-      return this.set('coordinates', [[points]]);
+      return this.set('coordinates', points);
     };
 
     Validation.prototype.geomAsLatLngArray = function() {
       var latLngs, point, _i, _len, _ref;
       latLngs = [];
-      _ref = this.get('coordinates')[0][0];
+      _ref = this.get('coordinates');
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         point = _ref[_i];
         latLngs.push(new L.LatLng(point[1], point[0]));
