@@ -15,6 +15,8 @@ class BlueCarbon.Views.AddValidationView extends Backbone.View
 
     @validation = new BlueCarbon.Models.Validation()
 
+    @map.on 'draw:polygon:add-vertex', @showPolygonDrawHelpText
+
     @map.on 'draw:poly-created', (e) =>
       @validation.setGeomFromPoints(e.poly.getLatLngs())
       @mapPolygon = new L.Polygon(e.poly.getLatLngs())
@@ -30,6 +32,14 @@ class BlueCarbon.Views.AddValidationView extends Backbone.View
     @addMapLayers(@area, @map)
     @addLayerControl(@map)
     return @
+
+  showPolygonDrawHelpText: (markers) =>
+    if markers[2]?
+      text = 'Click first point to close this shape.'
+    else
+      text = 'Click to continue drawing shape.'
+
+    $('#draw-polygon-notice').html(text)
 
   createAnalysis: () =>
     @clearUnselectedFields()

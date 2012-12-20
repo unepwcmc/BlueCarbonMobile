@@ -617,6 +617,7 @@ L.Polygon.Draw = L.Polyline.Draw.extend({
 
 	_vertexAdded: function (latlng) {
 		//calc area here
+                this._map.fire('draw:polygon:add-vertex', this._markers);
 	},
 
 	_cleanUpShape: function () {
