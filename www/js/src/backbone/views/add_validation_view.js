@@ -19,6 +19,8 @@
       this.showAttributesForHabitat = __bind(this.showAttributesForHabitat, this);
 
       this.createAnalysis = __bind(this.createAnalysis, this);
+
+      this.showPolygonDrawHelpText = __bind(this.showPolygonDrawHelpText, this);
       return AddValidationView.__super__.constructor.apply(this, arguments);
     }
 
@@ -36,6 +38,7 @@
       this.area = options.area;
       this.map = options.map;
       this.validation = new BlueCarbon.Models.Validation();
+      this.map.on('draw:polygon:add-vertex', this.showPolygonDrawHelpText);
       return this.map.on('draw:poly-created', function(e) {
         _this.validation.setGeomFromPoints(e.poly.getLatLngs());
         _this.mapPolygon = new L.Polygon(e.poly.getLatLngs());
@@ -53,6 +56,16 @@
       this.addMapLayers(this.area, this.map);
       this.addLayerControl(this.map);
       return this;
+    };
+
+    AddValidationView.prototype.showPolygonDrawHelpText = function(markers) {
+      var text;
+      if (markers[2] != null) {
+        text = 'Click first point to close this shape.';
+      } else {
+        text = 'Click to continue drawing shape.';
+      }
+      return $('#draw-polygon-notice').html(text);
     };
 
     AddValidationView.prototype.createAnalysis = function() {

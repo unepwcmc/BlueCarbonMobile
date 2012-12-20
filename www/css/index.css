@@ -326,7 +326,7 @@ ul.fields input{
 #draw-polygon-notice {
   color:white;
   padding: 15px;
-  font-size: 15px;
+  font-size: 17px;
 }
 
 /* progressive form reveal CSS */
@@ -339,6 +339,11 @@ ul.fields input{
 #validation-attributes #create-analysis{
   display:none;
   float:right;
+}
+
+/* We're not using leaflet draw help messages, so hide them */
+.leaflet-draw-label {
+  display:none;
 }
 
 .ios-head {
