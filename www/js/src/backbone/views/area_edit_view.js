@@ -33,6 +33,7 @@
     };
 
     AreaEditView.prototype.initialize = function(options) {
+      console.log("Creating an AreaEditView");
       this.area = options.area;
       this.map = options.map;
       this.validationList = new BlueCarbon.Collections.Validations([], {
@@ -41,6 +42,8 @@
       this.validationList.on('reset', this.render);
       this.validationList.localFetch();
       this.subViews = [];
+      this.addMapLayers(this.area, this.map);
+      this.addLayerControl(this.map);
       return this.startLocating();
     };
 
@@ -79,12 +82,9 @@
     };
 
     AreaEditView.prototype.drawLocation = function(position) {
-      var GpsIcon, gpsIcon, latlng, radius;
+      var GpsIcon, gpsIcon, latlng;
       if (this.marker != null) {
         this.map.removeLayer(this.marker);
-      }
-      if (this.accuracyMarker != null) {
-        this.map.removeLayer(this.accuracyMarker);
       }
       GpsIcon = L.Icon.extend({
         options: {
@@ -94,11 +94,9 @@
       });
       gpsIcon = new GpsIcon();
       latlng = [position.coords.latitude, position.coords.longitude];
-      this.marker = L.marker(latlng, {
+      return this.marker = L.marker(latlng, {
         icon: gpsIcon
       }).addTo(this.map);
-      radius = position.coords.accuracy / 2;
-      return this.accuracyMarker = L.circle(latlng, radius).addTo(this.map);
     };
 
     AreaEditView.prototype.uploadValidations = function() {
@@ -110,31 +108,30 @@
         area: this.area,
         validationCount: this.validationList.models.length
       }));
-      this.addMapLayers(this.area, this.map);
-      this.addLayerControl(this.map);
-      this.startLocating(this.map);
-      setTimeout(this.drawSubViews, 5);
+      this.drawSubViews();
       return this;
     };
 
     AreaEditView.prototype.drawSubViews = function() {
       var _this = this;
-      return this.validationList.each(function(validation) {
-        var validationView;
-        validationView = new BlueCarbon.Views.ValidationView({
-          validation: validation
+      if ($('#validation-list').length > 0) {
+        $('#validation-list').empty();
+        return this.validationList.each(function(validation) {
+          var validationView;
+          validationView = new BlueCarbon.Views.ValidationView({
+            validation: validation
+          });
+          $('#validation-list').append(validationView.render().el);
+          return _this.subViews.push(validationView);
         });
-        console.log("going to render:");
-        console.log(validationView.render().el);
-        console.log("into:");
-        console.log($('#validation-list'));
-        $('#validation-list').append(validationView.render().el);
-        return _this.subViews.push(validationView);
-      });
+      } else {
+        return setTimeout(this.drawSubViews, 200);
+      }
     };
 
     AreaEditView.prototype.onClose = function() {
       var view, _i, _len, _ref;
+      console.log("Closing AreaEditView");
       _ref = this.subViews;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         view = _ref[_i];

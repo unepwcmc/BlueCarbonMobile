@@ -50,8 +50,8 @@ class BlueCarbon.App
     window.BlueCarbon.SQLiteDb = window.sqlitePlugin.openDatabase("BlueCarbon.db", "1.0", "Test", 10000000)
 
     @map = new L.Map("map",
-      center: new L.LatLng(24.2870, 54.3274)
-      zoom: 10
+      center: new L.LatLng(52.220496,0.09244)
+      zoom: 15
     )
     @addBaseLayer()
 
@@ -63,7 +63,7 @@ class BlueCarbon.App
 
     tileLayerUrl = 'res/tiles/{z}/{x}/{y}.png'
     tileLayer = new L.TileLayer(tileLayerUrl, {
-      maxZoom: 18
+      maxZoom: 19
     }).addTo(@map)
 
     @trigger('mapReady')

@@ -6,10 +6,10 @@ window.BlueCarbon.Mixins ||= {}
 
 BlueCarbon.Mixins.AreaMapLayers = 
   addMapLayers: (area, map)->
+    console.log "Adding tile layers"
     @removeTileLayers()
     @tileLayers ||= {}
     for layer in area.tileLayers()
-      console.log "adding tile layer for #{layer.mbtileLocation}"
       db = window.sqlitePlugin.openDatabase(layer.mbtileLocation, "1.0", "Tiles", 2000000)
       tileLayer = new L.TileLayer.MBTiles(db,
         tms: true
@@ -25,8 +25,9 @@ BlueCarbon.Mixins.AreaMapLayers =
     @layerControl.addTo(map)
 
   removeTileLayers: (map)->
+    console.log "removing tile layers"
     if @tileLayers?
-      for layer in @tileLayers
+      for layerName, layer of @tileLayers
         map.removeLayer(layer)
 
   removeLayerControl: (map) ->
