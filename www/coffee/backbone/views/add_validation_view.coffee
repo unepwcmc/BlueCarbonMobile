@@ -6,6 +6,7 @@ class BlueCarbon.Views.AddValidationView extends Backbone.View
   events:
     "touchend #create-analysis": 'createAnalysis'
     "touchend .ios-head .back" : "fireBack"
+    "touchend #undo-last-marker" : "removeLastMarker"
     "change [name=habitat]" : "showAttributesForHabitat"
     "change [name=action]" : "showAttributesForAction"
 
@@ -15,7 +16,7 @@ class BlueCarbon.Views.AddValidationView extends Backbone.View
 
     @validation = new BlueCarbon.Models.Validation()
 
-    @map.on 'draw:polygon:add-vertex', @showPolygonDrawHelpText
+    @map.on 'draw:polygon:add-vertex', @updatePolygonDrawHelpText
 
     @map.on 'draw:poly-created', (e) =>
       @validation.setGeomFromPoints(e.poly.getLatLngs())
@@ -33,13 +34,24 @@ class BlueCarbon.Views.AddValidationView extends Backbone.View
     @addLayerControl(@map)
     return @
 
-  showPolygonDrawHelpText: (markers) =>
-    if markers[2]?
-      text = 'Click first point to close this shape.'
+  undoBtnHtml: "<br/><a id='undo-last-marker' class='btn'><img src='css/images/undo_selected.png'/>Undo last point</a>"
+
+  updatePolygonDrawHelpText: =>
+    markerCount = @polygonDraw._markers.length
+    if markerCount > 2
+      text = 'Tap the first point to close this shape.'
+      text += @undoBtnHtml
+    else if markerCount > 0
+      text = 'Tap another point to continue drawing shape.'
+      text += @undoBtnHtml
     else
-      text = 'Click to continue drawing shape.'
+      text = 'Draw your polygon by tapping on the map'
 
     $('#draw-polygon-notice').html(text)
+
+  removeLastMarker: =>
+    @polygonDraw.removeLastMarker()
+    @updatePolygonDrawHelpText()
 
   createAnalysis: () =>
     @clearUnselectedFields()
@@ -93,6 +105,7 @@ class BlueCarbon.Views.AddValidationView extends Backbone.View
   close: () ->
     @polygonDraw.disable()
     @map.off('draw:poly-created')
+    @map.off('draw:polygon:add-vertex')
     @map.removeLayer(@mapPolygon) if @mapPolygon?
     @removeLayerControl(@map)
     @removeTileLayers(@map)

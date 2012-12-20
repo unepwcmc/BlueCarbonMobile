@@ -408,6 +408,13 @@ L.Polyline.Draw = L.Handler.Draw.extend({
           this._vertexAdded(latlng);
 	},
 
+        removeLastMarker: function() {
+          var markerToRemove = this._markers.pop();
+          this._map.removeLayer(markerToRemove);
+          this._updateMarkerHandler();
+          this._poly.spliceLatLngs(-1, 1);
+        },
+
 	_updateMarkerHandler: function () {
 		// The last marker shold have a click handler to close the polyline
 		if (this._markers.length > 1) {
@@ -617,7 +624,7 @@ L.Polygon.Draw = L.Polyline.Draw.extend({
 
 	_vertexAdded: function (latlng) {
 		//calc area here
-                this._map.fire('draw:polygon:add-vertex', this._markers);
+                this._map.fire('draw:polygon:add-vertex');
 	},
 
 	_cleanUpShape: function () {

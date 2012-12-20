@@ -20,7 +20,9 @@
 
       this.createAnalysis = __bind(this.createAnalysis, this);
 
-      this.showPolygonDrawHelpText = __bind(this.showPolygonDrawHelpText, this);
+      this.removeLastMarker = __bind(this.removeLastMarker, this);
+
+      this.updatePolygonDrawHelpText = __bind(this.updatePolygonDrawHelpText, this);
       return AddValidationView.__super__.constructor.apply(this, arguments);
     }
 
@@ -29,6 +31,7 @@
     AddValidationView.prototype.events = {
       "touchend #create-analysis": 'createAnalysis',
       "touchend .ios-head .back": "fireBack",
+      "touchend #undo-last-marker": "removeLastMarker",
       "change [name=habitat]": "showAttributesForHabitat",
       "change [name=action]": "showAttributesForAction"
     };
@@ -38,7 +41,7 @@
       this.area = options.area;
       this.map = options.map;
       this.validation = new BlueCarbon.Models.Validation();
-      this.map.on('draw:polygon:add-vertex', this.showPolygonDrawHelpText);
+      this.map.on('draw:polygon:add-vertex', this.updatePolygonDrawHelpText);
       return this.map.on('draw:poly-created', function(e) {
         _this.validation.setGeomFromPoints(e.poly.getLatLngs());
         _this.mapPolygon = new L.Polygon(e.poly.getLatLngs());
@@ -58,14 +61,26 @@
       return this;
     };
 
-    AddValidationView.prototype.showPolygonDrawHelpText = function(markers) {
-      var text;
-      if (markers[2] != null) {
-        text = 'Click first point to close this shape.';
+    AddValidationView.prototype.undoBtnHtml = "<br/><a id='undo-last-marker' class='btn'><img src='css/images/undo_selected.png'/>Undo last point</a>";
+
+    AddValidationView.prototype.updatePolygonDrawHelpText = function() {
+      var markerCount, text;
+      markerCount = this.polygonDraw._markers.length;
+      if (markerCount > 2) {
+        text = 'Tap the first point to close this shape.';
+        text += this.undoBtnHtml;
+      } else if (markerCount > 0) {
+        text = 'Tap another point to continue drawing shape.';
+        text += this.undoBtnHtml;
       } else {
-        text = 'Click to continue drawing shape.';
+        text = 'Draw your polygon by tapping on the map';
       }
       return $('#draw-polygon-notice').html(text);
+    };
+
+    AddValidationView.prototype.removeLastMarker = function() {
+      this.polygonDraw.removeLastMarker();
+      return this.updatePolygonDrawHelpText();
     };
 
     AddValidationView.prototype.createAnalysis = function() {
@@ -139,6 +154,7 @@
     AddValidationView.prototype.close = function() {
       this.polygonDraw.disable();
       this.map.off('draw:poly-created');
+      this.map.off('draw:polygon:add-vertex');
       if (this.mapPolygon != null) {
         this.map.removeLayer(this.mapPolygon);
       }

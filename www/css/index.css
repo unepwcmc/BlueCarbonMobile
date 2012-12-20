@@ -327,6 +327,16 @@ ul.fields input{
   color:white;
   padding: 15px;
   font-size: 17px;
+  text-align: center;
+}
+
+#undo-last-marker {
+  margin-top: 10px;
+}
+#undo-last-marker img {
+  height: 16px;
+  width: 16px;
+  margin-right: 8px;
 }
 
 /* progressive form reveal CSS */
