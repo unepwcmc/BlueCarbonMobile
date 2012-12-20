@@ -22,27 +22,15 @@
 
     AreaIndexView.prototype.className = 'area-index';
 
+    AreaIndexView.prototype.events = {
+      "click .sync-areas": "sync"
+    };
+
     AreaIndexView.prototype.initialize = function(options) {
-      var _this = this;
       this.map = options.map;
       this.areaList = new BlueCarbon.Collections.Areas();
       this.areaList.on('reset', this.render);
-      this.areaList.localFetch({
-        success: function() {
-          _this.showUpdating();
-          return _this.areaList.fetch({
-            success: function() {
-              _this.areaList.localSave();
-              return _this.showUpdated();
-            }
-          });
-        },
-        error: function(a, b, c) {
-          console.log("local fetch fail:");
-          console.log(arguments);
-          return console.log(arguments[0].stack);
-        }
-      });
+      this.sync();
       return this.subViews = [];
     };
 
@@ -62,6 +50,26 @@
         return _this.subViews.push(areaView);
       });
       return this;
+    };
+
+    AreaIndexView.prototype.sync = function() {
+      var _this = this;
+      return this.areaList.localFetch({
+        success: function() {
+          _this.showUpdating();
+          return _this.areaList.fetch({
+            success: function() {
+              _this.areaList.localSave();
+              return _this.showUpdated();
+            }
+          });
+        },
+        error: function(a, b, c) {
+          console.log("local fetch fail:");
+          console.log(arguments);
+          return console.log(arguments[0].stack);
+        }
+      });
     };
 
     AreaIndexView.prototype.showUpdating = function() {

@@ -224,6 +224,11 @@ ul.fields input{
     margin: 10px 0 0 20px;
 }
 
+.area-index .sync-areas {
+  float: right;
+  margin-right: 15px;
+}
+
 #area-list {
   list-style-type: none;
   padding: 0;

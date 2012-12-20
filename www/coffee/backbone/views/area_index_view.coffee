@@ -4,10 +4,28 @@ window.BlueCarbon.Views ||= {}
 class BlueCarbon.Views.AreaIndexView extends Backbone.View
   template: JST['area/area_index']
   className: 'area-index'
+
+  events:
+    "click .sync-areas": "sync"
+
   initialize: (options) ->
     @map = options.map
     @areaList = new BlueCarbon.Collections.Areas()
     @areaList.on('reset', @render)
+    @sync()
+
+    @subViews = []
+
+  render: =>
+    @$el.html(@template(models:@areaList.toJSON()))
+    @closeSubViews()
+    @areaList.each (area)=>
+      areaView = new BlueCarbon.Views.AreaView(area:area, map: @map)
+      $('#area-list').append(areaView.render().el)
+      @subViews.push areaView
+    return @
+
+  sync: ->
     @areaList.localFetch(
       success: =>
         @showUpdating()
@@ -21,17 +39,6 @@ class BlueCarbon.Views.AreaIndexView extends Backbone.View
         console.log arguments
         console.log arguments[0].stack
     )
-
-    @subViews = []
-
-  render: =>
-    @$el.html(@template(models:@areaList.toJSON()))
-    @closeSubViews()
-    @areaList.each (area)=>
-      areaView = new BlueCarbon.Views.AreaView(area:area, map: @map)
-      $('#area-list').append(areaView.render().el)
-      @subViews.push areaView
-    return @
 
   showUpdating: ->
     $('#sync-status').text("Syncing area list...")
