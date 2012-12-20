@@ -68,8 +68,8 @@
     App.prototype.start = function() {
       window.BlueCarbon.SQLiteDb = window.sqlitePlugin.openDatabase("BlueCarbon.db", "1.0", "Test", 10000000);
       this.map = new L.Map("map", {
-        center: new L.LatLng(52.220496, 0.09244),
-        zoom: 15
+        center: new L.LatLng(24.2870, 54.3274),
+        zoom: 10
       });
       this.addBaseLayer();
       return this.map.addControl(new L.Control.Gps());
@@ -83,7 +83,7 @@
       });
       tileLayerUrl = 'res/tiles/{z}/{x}/{y}.png';
       tileLayer = new L.TileLayer(tileLayerUrl, {
-        maxZoom: 19
+        maxZoom: 18
       }).addTo(this.map);
       return this.trigger('mapReady');
     };
