@@ -489,3 +489,45 @@ ul.fields input{
   width: 32px;
   height: 32px;
 }
+
+.leaflet-control-layers {
+  margin-top: 0 !important;
+  border: 0 !important;
+  padding: 0 !important;
+  background-color: #1f2229;
+  border-top-right-radius: 0;
+  border-top-left-radius: 0;
+  width: 185px;
+}
+
+.leaflet-control-layers-overlays {
+  background-color: #2f3b4a;
+  padding: 10px;
+  color: white;
+}
+
+.leaflet-control-layers-overlays label {
+  padding: 10px 0 10px 0;
+  font-size: 1.3em;
+  border-bottom: 1px solid #7c838d;
+}
+
+.leaflet-control-layers-overlays label:first-child {
+  padding: 0 0 10px 0;
+}
+
+.leaflet-control-layers-overlays label:last-child {
+  padding: 10px 0 0 0;
+  border: 0;
+}
+
+.leaflet-control-layers-toggle {
+  height: 27px !important;
+  padding-left: 80%;
+  background-image: url(images/layer-control-arrow-down.png) !important;
+}
+
+.leaflet-control-layers-expanded .leaflet-control-layers-toggle {
+  display: block;
+  background-image: url(images/layer-control-arrow-up.png) !important;
+}
