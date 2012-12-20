@@ -6,6 +6,7 @@ class BlueCarbon.Models.Area extends Backbone.SyncableModel
     "id INTEGER, title TEXT, coordinates TEXT, mbtiles TEXT, error TEXT, PRIMARY KEY (id)"
 
   downloadData: ->
+    @pendingDownloads = []
     for layer in @get('mbtiles')
       ft = new FileTransfer()
 
@@ -18,8 +19,10 @@ class BlueCarbon.Models.Area extends Backbone.SyncableModel
         _layer = layer
         return (error) ->
           alert "unable to download #{_layer.habitat}"
+          @pendingDownloads.splice(@pendingDownloads.indexOf(layer.habitat), 1)
           console.log error
       )()
+      @pendingDownloads.push layer.habitat
       ft.download layer.url, @filenameForLayer(layer), boundSuccess, boundError
 
   filenameForLayer: (layer, absolute=true) ->
@@ -29,6 +32,8 @@ class BlueCarbon.Models.Area extends Backbone.SyncableModel
 
   layerDownloaded: (layer, fileEntry) =>
     console.log "downloaded #{layer.habitat}"
+    @pendingDownloads.splice(@pendingDownloads.indexOf(layer.habitat), 1)
+    
     layer.downloadedAt = (new Date()).getTime()
     mbTiles = @get('mbtiles')
     for storedLayer, index in mbTiles
@@ -38,6 +43,7 @@ class BlueCarbon.Models.Area extends Backbone.SyncableModel
     @localSave()
 
   downloadState: () ->
+    return "downloading" if @pendingDownloads? and @pendingDownloads.length > 0
     for layer in @get('mbtiles')
       if layer.status == 'pending' || layer.status == 'generating'
         return 'data generating'

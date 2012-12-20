@@ -25,6 +25,7 @@
     Area.prototype.downloadData = function() {
       var boundError, boundSuccess, ft, layer, _i, _len, _ref, _results,
         _this = this;
+      this.pendingDownloads = [];
       _ref = this.get('mbtiles');
       _results = [];
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
@@ -42,9 +43,11 @@
           _layer = layer;
           return function(error) {
             alert("unable to download " + _layer.habitat);
+            this.pendingDownloads.splice(this.pendingDownloads.indexOf(layer.habitat), 1);
             return console.log(error);
           };
         })();
+        this.pendingDownloads.push(layer.habitat);
         _results.push(ft.download(layer.url, this.filenameForLayer(layer), boundSuccess, boundError));
       }
       return _results;
@@ -65,6 +68,7 @@
     Area.prototype.layerDownloaded = function(layer, fileEntry) {
       var index, mbTiles, storedLayer, _i, _len;
       console.log("downloaded " + layer.habitat);
+      this.pendingDownloads.splice(this.pendingDownloads.indexOf(layer.habitat), 1);
       layer.downloadedAt = (new Date()).getTime();
       mbTiles = this.get('mbtiles');
       for (index = _i = 0, _len = mbTiles.length; _i < _len; index = ++_i) {
@@ -79,6 +83,9 @@
 
     Area.prototype.downloadState = function() {
       var layer, _i, _len, _ref;
+      if ((this.pendingDownloads != null) && this.pendingDownloads.length > 0) {
+        return "downloading";
+      }
       _ref = this.get('mbtiles');
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         layer = _ref[_i];
