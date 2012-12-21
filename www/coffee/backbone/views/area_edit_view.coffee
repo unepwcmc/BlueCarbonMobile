@@ -9,7 +9,6 @@ class BlueCarbon.Views.AreaEditView extends Backbone.View
     "touchend .ios-head .back" : "fireBack"
 
   initialize: (options) ->
-    console.log "Creating an AreaEditView"
     @area = options.area
     @map = options.map
     @validationList = new BlueCarbon.Collections.Validations([], area: @area)
@@ -76,29 +75,26 @@ class BlueCarbon.Views.AreaEditView extends Backbone.View
     @validationList.pushToServer()
 
   render: =>
-    @$el.html(@template(area: @area, validationCount: @validationList.models.length))
-    @drawSubViews()
+    @$el.html(@template(area: @area, validationCount: @validationList.models.length)).promise().done(@drawSubViews)
 
     return @
-  
-  drawSubViews: =>
-    # Sometimes the validation list elenet isn't present yet
-    if $('#validation-list').length > 0
-      $('#validation-list').empty()
-      @validationList.each (validation)=>
-        validationView = new BlueCarbon.Views.ValidationView(validation:validation)
-        $('#validation-list').append(validationView.render().el)
-        @subViews.push validationView
-    else
-      # Validation list DOM element isn't present yet, try again in a bit
-      setTimeout(@drawSubViews, 200)
 
-  onClose: ->
-    console.log "Closing AreaEditView"
-    for view in @subViews
-      view.close()
+  drawSubViews: =>
+    @closeSubViews()
+    @validationList.each (validation)=>
+      validationView = new BlueCarbon.Views.ValidationView(validation:validation)
+      @subViews.push validationView
+      $('#validation-list').append(validationView.render().el)
+
+  onClose: =>
+    @validationList.off('reset', @render)
+    @closeSubViews()
     @removeTileLayers(@map)
     @removeLayerControl(@map)
     @stopLocating()
+
+  closeSubViews: ->
+    while (view = @subViews.pop())?
+      view.close()
 
 _.extend(BlueCarbon.Views.AreaEditView::, BlueCarbon.Mixins.AreaMapLayers)

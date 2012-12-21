@@ -6,7 +6,6 @@ window.BlueCarbon.Mixins ||= {}
 
 BlueCarbon.Mixins.AreaMapLayers = 
   addMapLayers: (area, map)->
-    console.log "Adding tile layers"
     @removeTileLayers()
     @tileLayers ||= {}
     for layer in area.tileLayers()

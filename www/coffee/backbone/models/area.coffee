@@ -17,7 +17,7 @@ class BlueCarbon.Models.Area extends Backbone.SyncableModel
       )()
       boundError = (() =>
         _layer = layer
-        return (error) ->
+        return (error) =>
           alert "unable to download #{_layer.habitat}"
           @pendingDownloads.splice(@pendingDownloads.indexOf(layer.habitat), 1)
           console.log error
