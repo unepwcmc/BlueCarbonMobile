@@ -531,3 +531,8 @@ ul.fields input{
   display: block;
   background-image: url(images/layer-control-arrow-up.png) !important;
 }
+
+#validation-attributes textarea {
+  width: 95%;
+  height: 75px;
+}

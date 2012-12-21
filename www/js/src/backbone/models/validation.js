@@ -19,7 +19,7 @@
     Validation.prototype.url = 'http://bluecarbon.unep-wcmc.org/validations.json';
 
     Validation.prototype.schema = function() {
-      return "coordinates TEXT, action TEXT, area_id INTEGER, user_id INTEGER, knowledge TEXT, density TEXT, age TEXT, habitat TEXT, name TEXT, condition TEXT, species TEXT, recorded_at TEXT, row_id INTEGER PRIMARY KEY";
+      return "coordinates TEXT, action TEXT, area_id INTEGER, user_id INTEGER, density TEXT, age TEXT, habitat TEXT, condition TEXT, species TEXT, recorded_at TEXT, notes TEXT, row_id INTEGER PRIMARY KEY";
     };
 
     Validation.prototype.toJSON = function(forRails) {
