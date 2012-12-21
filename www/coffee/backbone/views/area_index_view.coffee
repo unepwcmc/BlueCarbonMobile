@@ -51,6 +51,7 @@ class BlueCarbon.Views.AreaIndexView extends Backbone.View
       view.close()
 
   onClose: ->
+    @areaList.off('reset', @render)
     @closeSubViews()
 
 class BlueCarbon.Views.AreaView extends Backbone.View

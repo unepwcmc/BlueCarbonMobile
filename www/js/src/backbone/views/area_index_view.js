@@ -92,6 +92,7 @@
     };
 
     AreaIndexView.prototype.onClose = function() {
+      this.areaList.off('reset', this.render);
       return this.closeSubViews();
     };
 
