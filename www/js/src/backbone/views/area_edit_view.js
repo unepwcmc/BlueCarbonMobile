@@ -14,6 +14,8 @@
     __extends(AreaEditView, _super);
 
     function AreaEditView() {
+      this.onClose = __bind(this.onClose, this);
+
       this.drawSubViews = __bind(this.drawSubViews, this);
 
       this.render = __bind(this.render, this);
@@ -33,7 +35,6 @@
     };
 
     AreaEditView.prototype.initialize = function(options) {
-      console.log("Creating an AreaEditView");
       this.area = options.area;
       this.map = options.map;
       this.validationList = new BlueCarbon.Collections.Validations([], {
@@ -109,39 +110,38 @@
       this.$el.html(this.template({
         area: this.area,
         validationCount: this.validationList.models.length
-      }));
-      this.drawSubViews();
+      })).promise().done(this.drawSubViews);
       return this;
     };
 
     AreaEditView.prototype.drawSubViews = function() {
       var _this = this;
-      if ($('#validation-list').length > 0) {
-        $('#validation-list').empty();
-        return this.validationList.each(function(validation) {
-          var validationView;
-          validationView = new BlueCarbon.Views.ValidationView({
-            validation: validation
-          });
-          $('#validation-list').append(validationView.render().el);
-          return _this.subViews.push(validationView);
+      this.closeSubViews();
+      return this.validationList.each(function(validation) {
+        var validationView;
+        validationView = new BlueCarbon.Views.ValidationView({
+          validation: validation
         });
-      } else {
-        return setTimeout(this.drawSubViews, 200);
-      }
+        _this.subViews.push(validationView);
+        return $('#validation-list').append(validationView.render().el);
+      });
     };
 
     AreaEditView.prototype.onClose = function() {
-      var view, _i, _len, _ref;
-      console.log("Closing AreaEditView");
-      _ref = this.subViews;
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        view = _ref[_i];
-        view.close();
-      }
+      this.validationList.off('reset', this.render);
+      this.closeSubViews();
       this.removeTileLayers(this.map);
       this.removeLayerControl(this.map);
       return this.stopLocating();
+    };
+
+    AreaEditView.prototype.closeSubViews = function() {
+      var view, _results;
+      _results = [];
+      while ((view = this.subViews.pop()) != null) {
+        _results.push(view.close());
+      }
+      return _results;
     };
 
     return AreaEditView;

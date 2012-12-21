@@ -9,7 +9,6 @@
   BlueCarbon.Mixins.AreaMapLayers = {
     addMapLayers: function(area, map) {
       var db, layer, tileLayer, _i, _len, _ref, _results;
-      console.log("Adding tile layers");
       this.removeTileLayers();
       this.tileLayers || (this.tileLayers = {});
       _ref = area.tileLayers();

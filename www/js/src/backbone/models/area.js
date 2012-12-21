@@ -43,7 +43,7 @@
           _layer = layer;
           return function(error) {
             alert("unable to download " + _layer.habitat);
-            this.pendingDownloads.splice(this.pendingDownloads.indexOf(layer.habitat), 1);
+            _this.pendingDownloads.splice(_this.pendingDownloads.indexOf(layer.habitat), 1);
             return console.log(error);
           };
         })();
