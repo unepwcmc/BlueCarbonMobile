@@ -90,12 +90,8 @@ window.JST['area/add_polygon'] = _.template(
             </select>
           </li>
           <li>
-            <label>Name</label>
-            <input type='text' name="name">
-          </li>
-          <li>
-            <label>Knowledge</label>
-            <input type='text' name="knowledge">
+            <label>Notes</label>
+            <textarea name="notes"></textarea>
           </li>
         </div>
       </ul>
@@ -181,6 +177,6 @@ window.JST['area/area'] = _.template(
 
 window.JST['area/validation'] = _.template(
   """
-    <%= validation.get('name') %> - <%= validation.get('action') %> (<%= validation.get('recorded_at') %>)<img class='delete-validation' src="css/images/trash_can.png"/>
+    <%= validation.get('recorded_at') %> (<%= validation.get('action') %>) <img class='delete-validation' src="css/images/trash_can.png"/>
   """
 )
