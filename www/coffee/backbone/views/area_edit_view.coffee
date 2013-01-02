@@ -75,20 +75,35 @@ class BlueCarbon.Views.AreaEditView extends Backbone.View
     @validationList.pushToServer()
 
   render: =>
-    @$el.html(@template(area: @area, validationCount: @validationList.models.length)).promise().done(@drawSubViews)
+    @$el.html(@template(area: @area, validationCount: @validationList.models.length))
+    @drawSubViews()
 
     return @
 
   drawSubViews: =>
-    @closeSubViews()
-    @validationList.each (validation)=>
-      validationView = new BlueCarbon.Views.ValidationView(validation:validation)
-      @subViews.push validationView
-      $('#validation-list').append(validationView.render().el)
+    if $('#validation-list').length > 0
+      @closeSubViews()
+      @validationList.each (validation)=>
+        validationView = new BlueCarbon.Views.ValidationView(validation:validation)
+        @subViews.push validationView
+        $('#validation-list').append(validationView.render().el)
+    else
+      # If #validation-list hasn't been inserted yet, listen to DOM changes for when it is
+      @validationListObserver = new WebKitMutationObserver((mutations, observer) =>
+        # fired when a DOM mutation occurs
+        # Try this method again, to see if #validation-list exists yet
+        @drawSubViews()
+        observer.disconnect()
+      )
+      @validationListObserver.observe(document, 
+        subtree: true
+        childList: true
+      )
 
   onClose: =>
     @validationList.off('reset', @render)
     @closeSubViews()
+    @validationListObserver.disconnect() if @validationListObserver
     @removeTileLayers(@map)
     @removeLayerControl(@map)
     @stopLocating()

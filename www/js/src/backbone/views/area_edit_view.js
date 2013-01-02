@@ -110,26 +110,41 @@
       this.$el.html(this.template({
         area: this.area,
         validationCount: this.validationList.models.length
-      })).promise().done(this.drawSubViews);
+      }));
+      this.drawSubViews();
       return this;
     };
 
     AreaEditView.prototype.drawSubViews = function() {
       var _this = this;
-      this.closeSubViews();
-      return this.validationList.each(function(validation) {
-        var validationView;
-        validationView = new BlueCarbon.Views.ValidationView({
-          validation: validation
+      if ($('#validation-list').length > 0) {
+        this.closeSubViews();
+        return this.validationList.each(function(validation) {
+          var validationView;
+          validationView = new BlueCarbon.Views.ValidationView({
+            validation: validation
+          });
+          _this.subViews.push(validationView);
+          return $('#validation-list').append(validationView.render().el);
         });
-        _this.subViews.push(validationView);
-        return $('#validation-list').append(validationView.render().el);
-      });
+      } else {
+        this.validationListObserver = new WebKitMutationObserver(function(mutations, observer) {
+          _this.drawSubViews();
+          return observer.disconnect();
+        });
+        return this.validationListObserver.observe(document, {
+          subtree: true,
+          childList: true
+        });
+      }
     };
 
     AreaEditView.prototype.onClose = function() {
       this.validationList.off('reset', this.render);
       this.closeSubViews();
+      if (this.validationListObserver) {
+        this.validationListObserver.disconnect();
+      }
       this.removeTileLayers(this.map);
       this.removeLayerControl(this.map);
       return this.stopLocating();
