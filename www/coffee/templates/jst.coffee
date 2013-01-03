@@ -42,7 +42,7 @@ window.JST['area/add_polygon'] = _.template(
             <option value="mangrove">Mangrove</option>
             <option value="seagrass">Seagrass</option>
             <option value="sabkha">Sabkha</option>
-            <option value="salt-marsh">Salt Marsh</option>
+            <option value="salt_marsh">Salt Marsh</option>
           </select>
         </li>
         <li>
