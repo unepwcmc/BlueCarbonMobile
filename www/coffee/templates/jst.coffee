@@ -8,7 +8,12 @@ window.JST['area/edit'] = _.template(
     </div>
     <a id="new-validation" class="btn btn-large">New Validation</a>
     <ul id='validation-list'></ul>
-    <% if (validationCount > 0) { %>
+    <% if (uploading) { %>
+      <div id='uploading-validations'>
+        <img src="css/images/timerV2.gif"/>
+        Uploading Validations...
+      </div>
+    <% } else if (validationCount > 0) { %>
       <a id="upload-validations" class="btn">
         <span>Upload Validations</span>
         <img src="css/images/upload.png"/>
@@ -177,6 +182,6 @@ window.JST['area/area'] = _.template(
 
 window.JST['area/validation'] = _.template(
   """
-    <%= validation.get('recorded_at') %> (<%= validation.get('action') %>) <img class='delete-validation' src="css/images/trash_can.png"/>
+    <%= validation.name() %><img class='delete-validation' src="css/images/trash_can.png"/>
   """
 )

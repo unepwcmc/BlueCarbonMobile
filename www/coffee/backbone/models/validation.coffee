@@ -7,6 +7,11 @@ class BlueCarbon.Models.Validation extends Backbone.SyncableModel
   schema: ->
     "coordinates TEXT, action TEXT, area_id INTEGER, user_id INTEGER, density TEXT, age TEXT, habitat TEXT, condition TEXT, species TEXT, recorded_at TEXT, notes TEXT, row_id INTEGER PRIMARY KEY"
 
+
+  name: ->
+    return "#{ @get('action') } - #{@get('recorded_at').replace(/-/g, '/')} "
+    
+
   toJSON: (forRails = true)->
     json = super
     if forRails

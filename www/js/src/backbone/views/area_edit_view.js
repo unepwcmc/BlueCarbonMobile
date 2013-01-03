@@ -20,6 +20,10 @@
 
       this.render = __bind(this.render, this);
 
+      this.showUploadErrors = __bind(this.showUploadErrors, this);
+
+      this.showSuccessfulUploadNotice = __bind(this.showSuccessfulUploadNotice, this);
+
       this.drawLocation = __bind(this.drawLocation, this);
 
       this.getPosition = __bind(this.getPosition, this);
@@ -66,7 +70,9 @@
     };
 
     AreaEditView.prototype.getPosition = function() {
-      return navigator.geolocation.getCurrentPosition(this.drawLocation, {}, {
+      return navigator.geolocation.getCurrentPosition(this.drawLocation, (function() {
+        return console.log("unable to get current location: " + arguments);
+      }), {
         enableHighAccuracy: true
       });
     };
@@ -103,13 +109,33 @@
     };
 
     AreaEditView.prototype.uploadValidations = function() {
-      return this.validationList.pushToServer();
+      this.uploading = true;
+      this.render();
+      return this.validationList.pushToServer(this.showSuccessfulUploadNotice, this.showUploadErrors);
+    };
+
+    AreaEditView.prototype.showSuccessfulUploadNotice = function(validations) {
+      alert("Successfully pushed " + validations.length + " validation(s) to server.\nYou will need to re-download the habitat data for this area before making more edits");
+      return this.trigger('back');
+    };
+
+    AreaEditView.prototype.showUploadErrors = function(errors) {
+      var errorText, validationError, _i, _len;
+      this.uploading = false;
+      this.render();
+      errorText = "";
+      for (_i = 0, _len = errors.length; _i < _len; _i++) {
+        validationError = errors[_i];
+        errorText += "<li>Failed to upload '" + (validationError.validation.name()) + "'</li>";
+      }
+      return this.$el.append("<div class='error-notice'><ul>" + errorText + "</ul></div>");
     };
 
     AreaEditView.prototype.render = function() {
       this.$el.html(this.template({
         area: this.area,
-        validationCount: this.validationList.models.length
+        validationCount: this.validationList.models.length,
+        uploading: this.uploading
       }));
       this.drawSubViews();
       return this;

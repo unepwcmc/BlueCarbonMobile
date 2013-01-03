@@ -42,11 +42,40 @@
       });
     };
 
-    Validations.prototype.pushToServer = function() {
+    Validations.prototype.pushToServer = function(successCallback, errorCallback) {
+      var errors, modelCount, onValidationPushed, successes;
+      successes = [];
+      errors = [];
+      modelCount = this.models.length;
+      onValidationPushed = function(validation, state, validationErrors) {
+        if (!(successCallback != null) && !(errorCallback != null)) {
+          return;
+        }
+        if (state === 'success') {
+          successes.push(validation);
+        } else {
+          errors.push({
+            validation: validation,
+            error: validationErrors
+          });
+        }
+        if (modelCount === (successes.length + errors.length)) {
+          if (errors.length > 0) {
+            if (errorCallback != null) {
+              return errorCallback(errors);
+            }
+          } else {
+            if (successCallback != null) {
+              return successCallback(successes);
+            }
+          }
+        }
+      };
       return this.each(function(validation) {
         return validation.save({}, {
           success: function() {
             console.log("successfully pushed to server");
+            onValidationPushed(validation, 'success');
             return validation.localDestroy({
               success: function() {
                 return alert('destroyed');
@@ -59,7 +88,8 @@
           },
           error: function(a, b, c) {
             console.log("failed to upload area with:");
-            return console.log(arguments);
+            console.log(arguments);
+            return onValidationPushed(validation, 'error', arguments);
           }
         });
       });

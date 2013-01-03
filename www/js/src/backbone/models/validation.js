@@ -22,6 +22,10 @@
       return "coordinates TEXT, action TEXT, area_id INTEGER, user_id INTEGER, density TEXT, age TEXT, habitat TEXT, condition TEXT, species TEXT, recorded_at TEXT, notes TEXT, row_id INTEGER PRIMARY KEY";
     };
 
+    Validation.prototype.name = function() {
+      return "" + (this.get('action')) + " - " + (this.get('recorded_at').replace(/-/g, '/')) + " ";
+    };
+
     Validation.prototype.toJSON = function(forRails) {
       var json;
       if (forRails == null) {

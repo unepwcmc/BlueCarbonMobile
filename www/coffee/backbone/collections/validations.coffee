@@ -27,11 +27,31 @@ class BlueCarbon.Collections.Validations extends Backbone.SyncableCollection
         options.error.apply(@, arguments)
     )
 
-  pushToServer: ->
+  pushToServer: (successCallback, errorCallback)->
+    successes = []
+    errors = []
+    modelCount = @models.length
+
+    # Method to collect validation save states
+    onValidationPushed = (validation, state, validationErrors) ->
+      return if !successCallback? and !errorCallback? # No point recording if there are no callbacks
+
+      if state == 'success'
+        successes.push(validation)
+      else
+        errors.push({validation: validation, error: validationErrors})
+      # Was this the last validation?
+      if modelCount == (successes.length + errors.length)
+        if errors.length > 0
+          errorCallback(errors) if errorCallback?
+        else
+          successCallback(successes) if successCallback?
+      
     @each (validation) ->
       validation.save({},
         success: ->
           console.log "successfully pushed to server"
+          onValidationPushed(validation, 'success')
           validation.localDestroy(
             success: ->
               alert('destroyed')
@@ -42,4 +62,5 @@ class BlueCarbon.Collections.Validations extends Backbone.SyncableCollection
         error: (a,b,c)->
           console.log("failed to upload area with:")
           console.log arguments
+          onValidationPushed(validation, 'error', arguments)
       )

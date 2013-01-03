@@ -33,7 +33,9 @@ class BlueCarbon.Views.AreaEditView extends Backbone.View
       @geoWatchId = setInterval(@getPosition, 30000)
 
   getPosition: () =>
-    navigator.geolocation.getCurrentPosition(@drawLocation, {}, {enableHighAccuracy: true})
+    navigator.geolocation.getCurrentPosition(@drawLocation, (->
+      console.log("unable to get current location: #{arguments}")
+    ), {enableHighAccuracy: true})
 
   stopLocating: () ->
     if @geoWatchId?
@@ -68,14 +70,31 @@ class BlueCarbon.Views.AreaEditView extends Backbone.View
 
     @marker = L.marker(latlng, {icon: gpsIcon}).addTo(@map)
 
-    #radius = position.coords.accuracy / 2
-    #@accuracyMarker = L.circle(latlng, radius).addTo(@map)
-
   uploadValidations: ->
-    @validationList.pushToServer()
+    @uploading = true
+    @render()
+    @validationList.pushToServer(
+      @showSuccessfulUploadNotice,
+      @showUploadErrors
+    )
+
+  showSuccessfulUploadNotice: (validations)=>
+    alert("""
+      Successfully pushed #{validations.length} validation(s) to server.
+      You will need to re-download the habitat data for this area before making more edits
+    """)
+    @trigger('back')
+
+  showUploadErrors: (errors)=>
+    @uploading = false
+    @render()
+    errorText = ""
+    for validationError in errors
+      errorText += "<li>Failed to upload '#{validationError.validation.name()}'</li>"
+    @$el.append("<div class='error-notice'><ul>#{errorText}</ul></div>")
 
   render: =>
-    @$el.html(@template(area: @area, validationCount: @validationList.models.length))
+    @$el.html(@template(area: @area, validationCount: @validationList.models.length, uploading: @uploading))
     @drawSubViews()
 
     return @
