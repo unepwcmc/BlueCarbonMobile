@@ -6998,7 +6998,10 @@ L.Control.Layers = L.Control.extend({
 
     L.DomEvent.on(input, 'click', this._onInputClick, this);
 
-    var name = document.createTextNode(' ' + obj.name);
+    /* MODIFIED FROM STOCK TO ADD LEGENDS */
+    var name = document.createElement('span');
+    name.innerHTML = obj.name;
+    /* END MODIFICATIONS */
 
     label.appendChild(input);
     label.appendChild(name);

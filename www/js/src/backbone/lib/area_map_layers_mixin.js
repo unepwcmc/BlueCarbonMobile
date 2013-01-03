@@ -19,7 +19,7 @@
         tileLayer = new L.TileLayer.MBTiles(db, {
           tms: true
         }).addTo(map);
-        _results.push(this.tileLayers[layer.name] = tileLayer);
+        _results.push(this.tileLayers["<span class='layer-legend " + layer.name + "'>" + layer.name + "</span>"] = tileLayer);
       }
       return _results;
     },

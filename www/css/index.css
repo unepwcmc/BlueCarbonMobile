@@ -590,3 +590,18 @@ ul.fields input{
 .error-notice ul {
   padding-left: 0;
 }
+
+.layer-legend {
+  border-left: 20px solid #6FADED;
+  margin-left: 5px;
+  padding-left: 3px;
+}
+.layer-legend.Mangrove {
+  border-color: #6FB36F;
+}
+.layer-legend.Seagrass {
+  border-color: #981CE8;
+}
+.layer-legend.Sabkha {
+  border-color: #EC9948;
+}

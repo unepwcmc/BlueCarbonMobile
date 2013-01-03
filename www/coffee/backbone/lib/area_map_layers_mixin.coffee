@@ -4,7 +4,7 @@
 window.BlueCarbon ||= {}
 window.BlueCarbon.Mixins ||= {}
 
-BlueCarbon.Mixins.AreaMapLayers = 
+BlueCarbon.Mixins.AreaMapLayers =
   addMapLayers: (area, map)->
     @removeTileLayers()
     @tileLayers ||= {}
@@ -13,7 +13,7 @@ BlueCarbon.Mixins.AreaMapLayers =
       tileLayer = new L.TileLayer.MBTiles(db,
         tms: true
       ).addTo(map)
-      @tileLayers[layer.name] = tileLayer
+      @tileLayers["<span class='layer-legend #{layer.name}'>#{layer.name}</span>"] = tileLayer
 
   addLayerControl: (map) ->
     return unless @tileLayers?
