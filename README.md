@@ -12,22 +12,19 @@ compiled/watched with this script:
 
     ./coffee_compile
 
-## Migrations
-
-The app uses an SQLite database to maintain local state when no internet
-connection is available. A schema for the database is kept as a
-Javascript object in `db/schema.js`. Run:
-
-    node db/schema.js
-
-Which will produce the SQL needed to be executed in your database. Soon
-this will automatically create the database and create the appropriate
-tables.
-
 # Debugging
 
 There's no easy way to say this. Debugging just sucks in phonegap.
 Here's some methods that make it less terrible.
+
+## Remote web inspector with Safari
+
+iOS 6 introduced the ability to connect the Safari web
+inspector. It's not perfect and can be a bit flaky, but it's
+better than most of the other solutions. You can find a guide to setting
+it up [here][1].
+
+[1]: http://moduscreate.com/enable-remote-web-inspector-in-ios-6/
 
 ## Remote web inspector with weinre
 
