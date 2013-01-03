@@ -17,9 +17,22 @@ class BlueCarbon.Views.AreaEditView extends Backbone.View
 
     @subViews = []
 
+    @showAreaExtentPolyline()
     @addMapLayers(@area, @map)
     @addLayerControl(@map)
     @startLocating()
+
+  showAreaExtentPolyline: ->
+    @extentPolyline = new L.Polyline(@area.coordsAsLatLngArray(),
+      opacity: 0.3
+      color: '#E2E2E2'
+      weight: 3
+      dashArray: [5,5]
+    )
+    @extentPolyline.addTo(@map)
+
+  removeAreaExtentPolyline: ->
+    @map.removeLayer(@extentPolyline)
 
   fireAddValidation: ->
     @trigger('addValidation', area: @area)
@@ -125,6 +138,7 @@ class BlueCarbon.Views.AreaEditView extends Backbone.View
     @validationListObserver.disconnect() if @validationListObserver
     @removeTileLayers(@map)
     @removeLayerControl(@map)
+    @removeAreaExtentPolyline()
     @stopLocating()
 
   closeSubViews: ->

@@ -47,9 +47,24 @@
       this.validationList.on('reset', this.render);
       this.validationList.localFetch();
       this.subViews = [];
+      this.showAreaExtentPolyline();
       this.addMapLayers(this.area, this.map);
       this.addLayerControl(this.map);
       return this.startLocating();
+    };
+
+    AreaEditView.prototype.showAreaExtentPolyline = function() {
+      this.extentPolyline = new L.Polyline(this.area.coordsAsLatLngArray(), {
+        opacity: 0.3,
+        color: '#E2E2E2',
+        weight: 3,
+        dashArray: [5, 5]
+      });
+      return this.extentPolyline.addTo(this.map);
+    };
+
+    AreaEditView.prototype.removeAreaExtentPolyline = function() {
+      return this.map.removeLayer(this.extentPolyline);
     };
 
     AreaEditView.prototype.fireAddValidation = function() {
@@ -173,6 +188,7 @@
       }
       this.removeTileLayers(this.map);
       this.removeLayerControl(this.map);
+      this.removeAreaExtentPolyline();
       return this.stopLocating();
     };
 
