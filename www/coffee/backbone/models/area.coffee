@@ -85,7 +85,7 @@ class BlueCarbon.Models.Area extends Backbone.SyncableModel
     latLngs = []
 
     for point in @get('coordinates')
-      latLngs.push(new L.LatLng(point[0], point[1]))
+      latLngs.push(new L.LatLng(point[1], point[0]))
     latLngs.push(latLngs[0])
 
     return latLngs

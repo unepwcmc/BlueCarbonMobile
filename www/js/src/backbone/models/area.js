@@ -149,7 +149,7 @@
       _ref = this.get('coordinates');
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         point = _ref[_i];
-        latLngs.push(new L.LatLng(point[0], point[1]));
+        latLngs.push(new L.LatLng(point[1], point[0]));
       }
       latLngs.push(latLngs[0]);
       return latLngs;

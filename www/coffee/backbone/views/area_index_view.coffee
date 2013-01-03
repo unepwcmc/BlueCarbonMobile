@@ -70,7 +70,7 @@ class BlueCarbon.Views.AreaView extends Backbone.View
   render: =>
     @$el.html(@template(area:@area))
     @map.removeLayer(@mapPolygon) if @mapPolygon?
-    @mapPolygon = new L.rectangle(@area.coordsAsLatLngArray())
+    @mapPolygon = new L.Polygon(@area.coordsAsLatLngArray())
     @mapPolygon.addTo(@map)
 
     return @
