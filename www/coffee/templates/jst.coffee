@@ -132,7 +132,10 @@ window.JST['area/area_index'] = _.template(
     </div>
     <div id="sync-info">
       <span id="sync-status"></span>
-      <span><a class="sync-areas">Sync</a></span>
+      <a class="sync-areas btn">
+        <img src="css/images/sync.png"/>
+        Sync
+      </a>
     </div>
     <ul id="area-list">
     </ul>

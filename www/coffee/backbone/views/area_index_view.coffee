@@ -74,6 +74,7 @@ class BlueCarbon.Views.AreaView extends Backbone.View
       opacity: 0.5
       color: '#E2E2E2'
       weight: 3
+      dashArray: [5,5]
     )
     @mapPolygon.addTo(@map)
 

@@ -141,7 +141,8 @@
       this.mapPolygon = new L.Polygon(this.area.coordsAsLatLngArray(), {
         opacity: 0.5,
         color: '#E2E2E2',
-        weight: 3
+        weight: 3,
+        dashArray: [5, 5]
       });
       this.mapPolygon.addTo(this.map);
       return this;
