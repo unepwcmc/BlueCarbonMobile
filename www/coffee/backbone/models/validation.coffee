@@ -11,7 +11,6 @@ class BlueCarbon.Models.Validation extends Backbone.SyncableModel
   name: ->
     return "#{ @get('action') } - #{@get('recorded_at').replace(/-/g, '/')} "
     
-
   toJSON: (forRails = true)->
     json = super
     if forRails
