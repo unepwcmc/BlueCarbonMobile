@@ -121,7 +121,7 @@ h3 {
   border-bottom-left-radius: 10px;
   background-color: #2A303E;
   padding: 2px 7px;
-  box-shadow: inset 0px -3px 4px -2px #222;
+  box-shadow: inset 3px -4px 12px -2px #333;
   font-size: 13px;
 }
 
