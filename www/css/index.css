@@ -206,23 +206,23 @@ ul.fields input{
   left: 0;
   height: 748px;
   width: 1024px;
-  background-color: rgba(50,50,50, 0.8);
+  background-color: rgba(0,0,0, 0.5);
   z-index: 1000;
 }
 #modal-disabler.active #modal-container {
   display:block;
-  background-color:white;
-  height: 220px;
+  background-color: #2A303E;
+  color: #D4D6D8;
+  height: 205px;
   width: 400px;
   margin: auto;
-  position:absolute;
+  position: absolute;
   top:0;
   bottom:0;
   left:0;
   right:0;
-  background: #141619 url('img/bg_tile~.png');
-  border: 1px solid #22262d;
-  border-radius: 0px;
+  border: 1px solid #4F545E;
+  border-radius: 10px;
   padding: 20px;
 }
 
@@ -232,6 +232,27 @@ ul.fields input{
     height: 1004px;
     width: 768px;
   }
+}
+
+#login-form {
+  position:relative;
+}
+#login-form li {
+  margin-bottom: 20px;
+}
+#login-form label {
+  position: absolute;
+  right: 290px;
+  margin-top: 4px;
+}
+#login-form input {
+  position: absolute;
+  left: 120px;
+  height: 20px;
+}
+#login-form .btn{
+  margin-left: 120px;
+  margin-top: 10px;
 }
 
 .error {

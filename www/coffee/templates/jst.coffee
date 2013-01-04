@@ -107,20 +107,20 @@ window.JST['area/add_polygon'] = _.template(
 
 window.JST['area/login'] = _.template(
   """
-    <h3>Please login</h3>
+    <h3>Please sign in</h3>
     <div class='error'></div>
     <form id="login-form" onSubmit="return false;">
       <ul class="fields">
         <li>
-          <span>Email</span>
+          <label>Email</label>
           <input name="email" value="decio.ferreira@unep-wcmc.org"/>
         </li>
         <li>
-          <span>Password</span>
+          <label>Password</label>
           <input name="password" type="password" value="decioferreira"/>
         </li>
       </ul>
-      <input id="login" type="submit" value="Login">
+      <a id="login" class='btn'>Sign In</a>
     </form>
   """
 )
