@@ -77,9 +77,6 @@
             console.log("successfully pushed to server");
             onValidationPushed(validation, 'success');
             return validation.localDestroy({
-              success: function() {
-                return alert('destroyed');
-              },
               error: function(a, b, c) {
                 console.log("failed to delete area with:");
                 return console.log(arguments);

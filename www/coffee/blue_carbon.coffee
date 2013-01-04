@@ -26,9 +26,30 @@ class BlueCarbon.App
       @controller = new BlueCarbon.Controller(app:@)
     )
 
+    # Show logged in details
+    BlueCarbon.bus.on('user:loggedIn', (user) =>
+      $("#user-area").html("""
+        #{user.get('email')} <a id="logout-user" class="btn">Logout</a>
+      """)
+
+      $('#logout-user').click( =>
+        r=confirm("Are you sure you wish to logout?")
+        if (r==true)
+          user.logout(
+            success: =>
+              $("#user-area").html('')
+              @controller.transitionToAction(@controller.loginUser)
+          )
+      )
+    )
+
     # Setup ajax calls to use auth tokens
     BlueCarbon.bus.on('user:gotAuthToken', (token) ->
-      console.log("logged in, using token #{token}")
+      if token != ''
+        console.log("logged in, using auth token #{token}")
+      else
+        console.log("logged out, unsetting auth token")
+
       # Session persistence
       $.ajaxSetup(
         data:
@@ -39,8 +60,6 @@ class BlueCarbon.App
               settings.data = JSON.parse settings.data
               settings.data.auth_token = token
               settings.data = JSON.stringify settings.data
-            catch err
-              console.log "oh well"
       )
     )
 

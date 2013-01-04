@@ -53,8 +53,6 @@ class BlueCarbon.Collections.Validations extends Backbone.SyncableCollection
           console.log "successfully pushed to server"
           onValidationPushed(validation, 'success')
           validation.localDestroy(
-            success: ->
-              alert('destroyed')
             error: (a,b,c) ->
               console.log("failed to delete area with:")
               console.log arguments

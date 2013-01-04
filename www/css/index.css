@@ -108,6 +108,18 @@ h3 {
   background: -webkit-linear-gradient(top, #2e333c 0%,#3e424b 49%,#2e333c 51%,#2e333c 100%);
 }
 
+#user-area {
+  position: absolute;
+  top: 0;
+  right: 0;
+  border-bottom-left-radius: 10px;
+  background-color: 
+  #2A303E;
+  padding: 4px 9px;
+  box-shadow: inset 0px -3px 4px -2px #222;
+  font-size: 13px;
+}
+
 #main-container {
   background: url('img/mottled.png');
 }

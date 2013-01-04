@@ -62,7 +62,7 @@ class Backbone.SyncableModel extends Backbone.Model
 
     @sqliteSync "read", this, options
   
-  localDestroy: ->
+  localDestroy: (options)->
     # This method copies the default backbone behavior, 
     # but uses our sqliteSync instead of backbone.sync
     options = (if options then _.clone(options) else {})
@@ -134,17 +134,25 @@ class Backbone.SyncableModel extends Backbone.Model
             VALUES ( #{values.join(", ")} );
           """
       when "read"
+        if attrs['id']?
+          idField = 'id'
+        else
+          idField = 'sqlite_id'
         sql =
           """
             SELECT *
             FROM #{model.constructor.name}
-            WHERE id="#{attrs['id']}";
+            WHERE #{idField}="#{attrs[idField]}";
           """
       when "delete"
+        if attrs['id']?
+          idField = 'id'
+        else
+          idField = 'sqlite_id'
         sql =
           """
             DELETE FROM #{model.constructor.name}
-            WHERE row_id="#{attrs['row_id']}";
+            WHERE #{idField}="#{attrs[idField]}";
           """
 
     BlueCarbon.SQLiteDb.transaction(
@@ -156,7 +164,6 @@ class Backbone.SyncableModel extends Backbone.Model
       , (tx, error) =>
         console.log "Unable to save model:"
         console.log @
-        console.log arguments
         console.log arguments[0].stack
         options.error.apply(@, arguments)
     )
@@ -183,7 +190,6 @@ class Backbone.SyncableModel extends Backbone.Model
       try
         value = value.replace(/(\\\")/g, "\"") if (typeof value) == 'string'
         modelAttributes[key] = JSON.parse(value)
-      catch err
 
     modelAttributes
 

@@ -17,7 +17,7 @@
     }
 
     User.prototype.schema = function() {
-      return "id INTEGER, user_id INTEGER, auth_token TEXT";
+      return "sqlite_id INTEGER PRIMARY KEY, id INTEGER, auth_token TEXT, email TEXT";
     };
 
     User.prototype.login = function(form, options) {
@@ -27,6 +27,7 @@
         url: 'http://bluecarbon.unep-wcmc.org/admins/me.json',
         success: options.success,
         error: function(data) {
+          _this.set('email', form.email);
           if (data.error != null) {
             return $.ajax({
               type: 'POST',
@@ -39,18 +40,29 @@
               },
               dataType: "json",
               success: function(data) {
-                _this.set('id', '1');
-                _this.set('user_id', data.id);
                 _this.set('auth_token', data.auth_token);
-                _this.localSave();
-                BlueCarbon.bus.trigger('user:gotAuthToken', data.auth_token);
-                return options.success(_this);
+                return _this.localSave({}, {
+                  success: function(a, b, c) {
+                    options.success(_this);
+                    BlueCarbon.bus.trigger('user:gotAuthToken', data.auth_token);
+                    return BlueCarbon.bus.trigger('user:loggedIn', _this);
+                  }
+                });
               },
               error: options.error
             });
           } else {
             return options.error(data);
           }
+        }
+      });
+    };
+
+    User.prototype.logout = function(options) {
+      return this.localDestroy({
+        success: function() {
+          BlueCarbon.bus.trigger('user:gotAuthToken', '');
+          return options.success();
         }
       });
     };

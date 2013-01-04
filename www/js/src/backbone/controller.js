@@ -33,7 +33,7 @@
       this.user.localFetch({
         success: function() {
           if (_this.user.get('auth_token')) {
-            _this.user.trigger('user:loggedIn', _this.user);
+            BlueCarbon.bus.trigger('user:loggedIn', _this.user);
             return BlueCarbon.bus.trigger('user:gotAuthToken', _this.user.get('auth_token'));
           } else {
             $('#modal-disabler').addClass('active');
@@ -41,7 +41,7 @@
           }
         }
       });
-      return this.transitionToActionOn(this.user, 'user:loggedIn', function() {
+      return this.transitionToActionOn(BlueCarbon.bus, 'user:loggedIn', function() {
         $('#modal-disabler').removeClass('active');
         return _this.areaIndex();
       });

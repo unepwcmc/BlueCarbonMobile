@@ -43,8 +43,27 @@
           app: _this
         });
       });
+      BlueCarbon.bus.on('user:loggedIn', function(user) {
+        $("#user-area").html("" + (user.get('email')) + " <a id=\"logout-user\" class=\"btn\">Logout</a>");
+        return $('#logout-user').click(function() {
+          var r;
+          r = confirm("Are you sure you wish to logout?");
+          if (r === true) {
+            return user.logout({
+              success: function() {
+                $("#user-area").html('');
+                return _this.controller.transitionToAction(_this.controller.loginUser);
+              }
+            });
+          }
+        });
+      });
       BlueCarbon.bus.on('user:gotAuthToken', function(token) {
-        console.log("logged in, using token " + token);
+        if (token !== '') {
+          console.log("logged in, using auth token " + token);
+        } else {
+          console.log("logged out, unsetting auth token");
+        }
         return $.ajaxSetup({
           data: {
             auth_token: token
@@ -55,9 +74,7 @@
                 settings.data = JSON.parse(settings.data);
                 settings.data.auth_token = token;
                 return settings.data = JSON.stringify(settings.data);
-              } catch (err) {
-                return console.log("oh well");
-              }
+              } catch (_error) {}
             }
           }
         });

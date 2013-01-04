@@ -14,14 +14,14 @@ class BlueCarbon.Controller extends Wcmc.Controller
     @user.localFetch(
       success: () =>
         if @user.get('auth_token')
-          @user.trigger('user:loggedIn', @user)
+          BlueCarbon.bus.trigger('user:loggedIn', @user)
           BlueCarbon.bus.trigger('user:gotAuthToken', @user.get('auth_token'))
         else
           $('#modal-disabler').addClass('active')
           @modal.showView(loginView)
     )
 
-    @transitionToActionOn(@user, 'user:loggedIn', =>
+    @transitionToActionOn(BlueCarbon.bus, 'user:loggedIn', =>
       $('#modal-disabler').removeClass('active')
       @areaIndex()
     )

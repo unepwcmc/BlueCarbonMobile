@@ -89,8 +89,8 @@
       return this.sqliteSync("read", this, options);
     };
 
-    SyncableModel.prototype.localDestroy = function() {
-      var destroy, model, options, success, xhr;
+    SyncableModel.prototype.localDestroy = function(options) {
+      var destroy, model, success, xhr;
       options = (options ? _.clone(options) : {});
       model = this;
       success = options.success;
@@ -131,7 +131,7 @@
     };
 
     SyncableModel.prototype.doSqliteSync = function(method, model, options) {
-      var attr, attrs, fields, sql, val, values,
+      var attr, attrs, fields, idField, sql, val, values,
         _this = this;
       attrs = model.toJSON(false);
       sql = "";
@@ -169,10 +169,20 @@
           sql = "INSERT OR REPLACE INTO " + model.constructor.name + "\n( " + (fields.join(", ")) + " )\nVALUES ( " + (values.join(", ")) + " );";
           break;
         case "read":
-          sql = "SELECT *\nFROM " + model.constructor.name + "\nWHERE id=\"" + attrs['id'] + "\";";
+          if (attrs['id'] != null) {
+            idField = 'id';
+          } else {
+            idField = 'sqlite_id';
+          }
+          sql = "SELECT *\nFROM " + model.constructor.name + "\nWHERE " + idField + "=\"" + attrs[idField] + "\";";
           break;
         case "delete":
-          sql = "DELETE FROM " + model.constructor.name + "\nWHERE row_id=\"" + attrs['row_id'] + "\";";
+          if (attrs['id'] != null) {
+            idField = 'id';
+          } else {
+            idField = 'sqlite_id';
+          }
+          sql = "DELETE FROM " + model.constructor.name + "\nWHERE " + idField + "=\"" + attrs[idField] + "\";";
       }
       return BlueCarbon.SQLiteDb.transaction(function(tx) {
         return tx.executeSql(sql, [], function(tx, results) {
@@ -182,7 +192,6 @@
       }, function(tx, error) {
         console.log("Unable to save model:");
         console.log(_this);
-        console.log(arguments);
         console.log(arguments[0].stack);
         return options.error.apply(_this, arguments);
       });
@@ -215,9 +224,7 @@
             value = value.replace(/(\\\")/g, "\"");
           }
           return modelAttributes[key] = JSON.parse(value);
-        } catch (err) {
-
-        }
+        } catch (_error) {}
       });
       return modelAttributes;
     };
