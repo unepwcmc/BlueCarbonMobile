@@ -74,7 +74,6 @@
       return this.each(function(validation) {
         return validation.save({}, {
           success: function() {
-            console.log("successfully pushed to server");
             onValidationPushed(validation, 'success');
             return validation.localDestroy({
               error: function(a, b, c) {

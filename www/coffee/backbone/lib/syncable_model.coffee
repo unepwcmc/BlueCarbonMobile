@@ -134,10 +134,10 @@ class Backbone.SyncableModel extends Backbone.Model
             VALUES ( #{values.join(", ")} );
           """
       when "read"
-        if attrs['id']?
-          idField = 'id'
-        else
+        if attrs['sqlite_id']?
           idField = 'sqlite_id'
+        else
+          idField = 'id'
         sql =
           """
             SELECT *
@@ -145,10 +145,10 @@ class Backbone.SyncableModel extends Backbone.Model
             WHERE #{idField}="#{attrs[idField]}";
           """
       when "delete"
-        if attrs['id']?
-          idField = 'id'
-        else
+        if attrs['sqlite_id']?
           idField = 'sqlite_id'
+        else
+          idField = 'id'
         sql =
           """
             DELETE FROM #{model.constructor.name}

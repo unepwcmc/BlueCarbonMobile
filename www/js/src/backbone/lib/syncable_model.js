@@ -169,18 +169,18 @@
           sql = "INSERT OR REPLACE INTO " + model.constructor.name + "\n( " + (fields.join(", ")) + " )\nVALUES ( " + (values.join(", ")) + " );";
           break;
         case "read":
-          if (attrs['id'] != null) {
-            idField = 'id';
-          } else {
+          if (attrs['sqlite_id'] != null) {
             idField = 'sqlite_id';
+          } else {
+            idField = 'id';
           }
           sql = "SELECT *\nFROM " + model.constructor.name + "\nWHERE " + idField + "=\"" + attrs[idField] + "\";";
           break;
         case "delete":
-          if (attrs['id'] != null) {
-            idField = 'id';
-          } else {
+          if (attrs['sqlite_id'] != null) {
             idField = 'sqlite_id';
+          } else {
+            idField = 'id';
           }
           sql = "DELETE FROM " + model.constructor.name + "\nWHERE " + idField + "=\"" + attrs[idField] + "\";";
       }

@@ -50,7 +50,6 @@ class BlueCarbon.Collections.Validations extends Backbone.SyncableCollection
     @each (validation) ->
       validation.save({},
         success: ->
-          console.log "successfully pushed to server"
           onValidationPushed(validation, 'success')
           validation.localDestroy(
             error: (a,b,c) ->
