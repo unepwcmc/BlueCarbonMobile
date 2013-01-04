@@ -28,6 +28,10 @@
 
     LoginView.prototype.login = function() {
       var _this = this;
+      if (navigator.connection.type === Connection.NONE) {
+        alert("You are currently offline, please connect to the internet to login");
+        return false;
+      }
       return this.model.login($('#login-form').serializeObject(), {
         success: function(data) {
           return _this.model.trigger('user:loggedIn', _this.model);

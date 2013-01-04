@@ -47,6 +47,10 @@
         $("#user-area").html("" + (user.get('email')) + " <a id=\"logout-user\" class=\"btn btn-small\">Logout</a>");
         return $('#logout-user').click(function() {
           var r;
+          if (navigator.connection.type === Connection.NONE) {
+            alert('You cannot logout while offline, please go online before switching user');
+            return false;
+          }
           r = confirm("Are you sure you wish to logout?");
           if (r === true) {
             return user.logout({

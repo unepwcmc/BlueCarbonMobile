@@ -8,6 +8,10 @@ class BlueCarbon.Views.LoginView extends Backbone.View
     "click #login": "login"
 
   login: =>
+    if navigator.connection.type == Connection.NONE
+      alert("You are currently offline, please connect to the internet to login")
+      return false
+
     @model.login(
       $('#login-form').serializeObject(),
       success: (data)=>

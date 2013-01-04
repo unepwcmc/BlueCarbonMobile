@@ -124,6 +124,10 @@
     };
 
     AreaEditView.prototype.uploadValidations = function() {
+      if (navigator.connection.type === Connection.NONE) {
+        alert("You need to connect to the internet before you can upload validations");
+        return false;
+      }
       this.uploading = true;
       this.render();
       return this.validationList.pushToServer(this.showSuccessfulUploadNotice, this.showUploadErrors);

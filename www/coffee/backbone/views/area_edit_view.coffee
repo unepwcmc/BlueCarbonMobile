@@ -84,6 +84,10 @@ class BlueCarbon.Views.AreaEditView extends Backbone.View
     @marker = L.marker(latlng, {icon: gpsIcon}).addTo(@map)
 
   uploadValidations: ->
+    if navigator.connection.type == Connection.NONE
+      alert("You need to connect to the internet before you can upload validations")
+      return false
+    
     @uploading = true
     @render()
     @validationList.pushToServer(

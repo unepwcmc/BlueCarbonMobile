@@ -33,6 +33,10 @@ class BlueCarbon.App
       """)
 
       $('#logout-user').click( =>
+        if navigator.connection.type == Connection.NONE
+          alert('You cannot logout while offline, please go online before switching user')
+          return false
+
         r=confirm("Are you sure you wish to logout?")
         if (r==true)
           user.logout(
