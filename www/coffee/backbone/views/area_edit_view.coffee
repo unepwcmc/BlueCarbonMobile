@@ -20,7 +20,7 @@ class BlueCarbon.Views.AreaEditView extends Backbone.View
     @showAreaExtentPolyline()
     @addMapLayers(@area, @map)
     @addLayerControl(@map)
-    @startLocating()
+    BlueCarbon.bus.trigger('location:startTracking')
 
   showAreaExtentPolyline: ->
     @extentPolyline = new L.Polyline(@area.coordsAsLatLngArray(),
@@ -39,49 +39,6 @@ class BlueCarbon.Views.AreaEditView extends Backbone.View
 
   fireBack: ->
     @trigger('back')
-
-  startLocating: () ->
-    unless @geoWatchId?
-      @getPosition()
-      @geoWatchId = setInterval(@getPosition, 30000)
-
-  getPosition: () =>
-    navigator.geolocation.getCurrentPosition(@drawLocation, (->
-      console.log("unable to get current location: #{arguments}")
-    ), {enableHighAccuracy: true})
-
-  stopLocating: () ->
-    if @geoWatchId?
-      clearInterval(@geoWatchId)
-      @geoWatchId = null
-
-    if @marker?
-      @map.removeLayer(@marker)
-
-    if @accuracyMarker?
-      @map.removeLayer(@accuracyMarker)
-
-  drawLocation: (position) =>
-    if @marker?
-      @map.removeLayer(@marker)
-
-    #if @accuracyMarker?
-      #@map.removeLayer(@accuracyMarker)
-
-    GpsIcon = L.Icon.extend(
-      options:
-        iconUrl: 'css/images/gps-marker.png'
-        iconSize: [16, 16]
-    )
-
-    gpsIcon = new GpsIcon()
-
-    latlng = [
-      position.coords.latitude,
-      position.coords.longitude
-    ]
-
-    @marker = L.marker(latlng, {icon: gpsIcon}).addTo(@map)
 
   uploadValidations: ->
     if navigator.connection.type == Connection.NONE
@@ -131,7 +88,7 @@ class BlueCarbon.Views.AreaEditView extends Backbone.View
         @drawSubViews()
         observer.disconnect()
       )
-      @validationListObserver.observe(document, 
+      @validationListObserver.observe(document,
         subtree: true
         childList: true
       )
@@ -143,7 +100,7 @@ class BlueCarbon.Views.AreaEditView extends Backbone.View
     @removeTileLayers(@map)
     @removeLayerControl(@map)
     @removeAreaExtentPolyline()
-    @stopLocating()
+    BlueCarbon.bus.trigger('location:stopTracking')
 
   closeSubViews: ->
     while (view = @subViews.pop())?

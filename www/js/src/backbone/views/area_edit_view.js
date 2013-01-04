@@ -23,10 +23,6 @@
       this.showUploadErrors = __bind(this.showUploadErrors, this);
 
       this.showSuccessfulUploadNotice = __bind(this.showSuccessfulUploadNotice, this);
-
-      this.drawLocation = __bind(this.drawLocation, this);
-
-      this.getPosition = __bind(this.getPosition, this);
       return AreaEditView.__super__.constructor.apply(this, arguments);
     }
 
@@ -50,7 +46,7 @@
       this.showAreaExtentPolyline();
       this.addMapLayers(this.area, this.map);
       this.addLayerControl(this.map);
-      return this.startLocating();
+      return BlueCarbon.bus.trigger('location:startTracking');
     };
 
     AreaEditView.prototype.showAreaExtentPolyline = function() {
@@ -75,52 +71,6 @@
 
     AreaEditView.prototype.fireBack = function() {
       return this.trigger('back');
-    };
-
-    AreaEditView.prototype.startLocating = function() {
-      if (this.geoWatchId == null) {
-        this.getPosition();
-        return this.geoWatchId = setInterval(this.getPosition, 30000);
-      }
-    };
-
-    AreaEditView.prototype.getPosition = function() {
-      return navigator.geolocation.getCurrentPosition(this.drawLocation, (function() {
-        return console.log("unable to get current location: " + arguments);
-      }), {
-        enableHighAccuracy: true
-      });
-    };
-
-    AreaEditView.prototype.stopLocating = function() {
-      if (this.geoWatchId != null) {
-        clearInterval(this.geoWatchId);
-        this.geoWatchId = null;
-      }
-      if (this.marker != null) {
-        this.map.removeLayer(this.marker);
-      }
-      if (this.accuracyMarker != null) {
-        return this.map.removeLayer(this.accuracyMarker);
-      }
-    };
-
-    AreaEditView.prototype.drawLocation = function(position) {
-      var GpsIcon, gpsIcon, latlng;
-      if (this.marker != null) {
-        this.map.removeLayer(this.marker);
-      }
-      GpsIcon = L.Icon.extend({
-        options: {
-          iconUrl: 'css/images/gps-marker.png',
-          iconSize: [16, 16]
-        }
-      });
-      gpsIcon = new GpsIcon();
-      latlng = [position.coords.latitude, position.coords.longitude];
-      return this.marker = L.marker(latlng, {
-        icon: gpsIcon
-      }).addTo(this.map);
     };
 
     AreaEditView.prototype.uploadValidations = function() {
@@ -193,7 +143,7 @@
       this.removeTileLayers(this.map);
       this.removeLayerControl(this.map);
       this.removeAreaExtentPolyline();
-      return this.stopLocating();
+      return BlueCarbon.bus.trigger('location:stopTracking');
     };
 
     AreaEditView.prototype.closeSubViews = function() {

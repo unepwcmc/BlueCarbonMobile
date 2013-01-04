@@ -7,13 +7,16 @@ L.Control.Gps = L.Control.extend(
   onAdd: (map) ->
     @container = L.DomUtil.create('div', 'my-custom-control')
     @render()
+    BlueCarbon.bus.on('location:startTracking', => @startTracking())
+    BlueCarbon.bus.on('location:stopTracking', => @stopTracking())
 
     @map = map
 
     return @container
 
   onClick: (e) ->
-    navigator.geolocation.getCurrentPosition( (position)=>
+    navigator.geolocation.getCurrentPosition((position)=>
+      @drawLocation(position)
       @moveCenter(position)
     , {}, {enableHighAccuracy: true})
 
@@ -24,6 +27,41 @@ L.Control.Gps = L.Control.extend(
     ]
 
     @map.panTo(latlng)
+
+  drawLocation: (position) ->
+    if @marker?
+      @map.removeLayer(@marker)
+
+    GpsIcon = L.Icon.extend(
+      options:
+        iconUrl: 'css/images/gps-marker.png'
+        iconSize: [16, 16]
+    )
+
+    gpsIcon = new GpsIcon()
+
+    latlng = [
+      position.coords.latitude,
+      position.coords.longitude
+    ]
+
+    @marker = L.marker(latlng, {icon: gpsIcon}).addTo(@map)
+
+  updateMarker: ->
+    navigator.geolocation.getCurrentPosition(((position)=> @drawLocation(position)), (->
+      console.log("unable to get current location: ")
+      console.log arguments
+    ), {enableHighAccuracy: true})
+
+  startTracking: () ->
+    unless @geoWatchId?
+      @updateMarker()
+      @geoWatchId = setInterval((=> @updateMarker()), 30000)
+
+  stopTracking: () ->
+    if @geoWatchId?
+      clearInterval(@geoWatchId)
+      @geoWatchId = null
 
   render: () ->
     button = L.DomUtil.create('div', 'leaflet-buttons-control-button', @container)

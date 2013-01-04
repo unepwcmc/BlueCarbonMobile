@@ -8,14 +8,22 @@
       iconUrl: 'css/images/location_finder.png'
     },
     onAdd: function(map) {
+      var _this = this;
       this.container = L.DomUtil.create('div', 'my-custom-control');
       this.render();
+      BlueCarbon.bus.on('location:startTracking', function() {
+        return _this.startTracking();
+      });
+      BlueCarbon.bus.on('location:stopTracking', function() {
+        return _this.stopTracking();
+      });
       this.map = map;
       return this.container;
     },
     onClick: function(e) {
       var _this = this;
       return navigator.geolocation.getCurrentPosition(function(position) {
+        _this.drawLocation(position);
         return _this.moveCenter(position);
       }, {}, {
         enableHighAccuracy: true
@@ -25,6 +33,49 @@
       var latlng;
       latlng = [position.coords.latitude, position.coords.longitude];
       return this.map.panTo(latlng);
+    },
+    drawLocation: function(position) {
+      var GpsIcon, gpsIcon, latlng;
+      if (this.marker != null) {
+        this.map.removeLayer(this.marker);
+      }
+      GpsIcon = L.Icon.extend({
+        options: {
+          iconUrl: 'css/images/gps-marker.png',
+          iconSize: [16, 16]
+        }
+      });
+      gpsIcon = new GpsIcon();
+      latlng = [position.coords.latitude, position.coords.longitude];
+      return this.marker = L.marker(latlng, {
+        icon: gpsIcon
+      }).addTo(this.map);
+    },
+    updateMarker: function() {
+      var _this = this;
+      return navigator.geolocation.getCurrentPosition((function(position) {
+        return _this.drawLocation(position);
+      }), (function() {
+        console.log("unable to get current location: ");
+        return console.log(arguments);
+      }), {
+        enableHighAccuracy: true
+      });
+    },
+    startTracking: function() {
+      var _this = this;
+      if (this.geoWatchId == null) {
+        this.updateMarker();
+        return this.geoWatchId = setInterval((function() {
+          return _this.updateMarker();
+        }), 30000);
+      }
+    },
+    stopTracking: function() {
+      if (this.geoWatchId != null) {
+        clearInterval(this.geoWatchId);
+        return this.geoWatchId = null;
+      }
     },
     render: function() {
       var button, image, span, text;
