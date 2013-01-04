@@ -29,7 +29,7 @@ class BlueCarbon.App
     # Show logged in details
     BlueCarbon.bus.on('user:loggedIn', (user) =>
       $("#user-area").html("""
-        #{user.get('email')} <a id="logout-user" class="btn">Logout</a>
+        #{user.get('email')} <a id="logout-user" class="btn btn-small">Logout</a>
       """)
 
       $('#logout-user').click( =>

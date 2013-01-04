@@ -44,7 +44,7 @@
         });
       });
       BlueCarbon.bus.on('user:loggedIn', function(user) {
-        $("#user-area").html("" + (user.get('email')) + " <a id=\"logout-user\" class=\"btn\">Logout</a>");
+        $("#user-area").html("" + (user.get('email')) + " <a id=\"logout-user\" class=\"btn btn-small\">Logout</a>");
         return $('#logout-user').click(function() {
           var r;
           r = confirm("Are you sure you wish to logout?");
