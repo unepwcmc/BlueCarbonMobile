@@ -8,7 +8,7 @@ class BlueCarbon.Models.Validation extends Backbone.SyncableModel
     "sqlite_id INTEGER PRIMARY KEY, id INTEGER, coordinates TEXT, action TEXT, area_id INTEGER, user_id INTEGER, density TEXT, age TEXT, habitat TEXT, condition TEXT, species TEXT, recorded_at TEXT, notes TEXT"
 
   name: ->
-    return "#{ @get('action') } - #{@get('recorded_at').replace(/-/g, '/')} "
+    return "#{ @get('habitat') } - #{@get('action') } ( #{@get('recorded_at').replace(/-/g, '/')})"
     
   toJSON: (forRails = true)->
     json = super

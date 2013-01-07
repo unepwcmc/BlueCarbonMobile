@@ -23,7 +23,7 @@
     };
 
     Validation.prototype.name = function() {
-      return "" + (this.get('action')) + " - " + (this.get('recorded_at').replace(/-/g, '/')) + " ";
+      return "" + (this.get('habitat')) + " - " + (this.get('action')) + " ( " + (this.get('recorded_at').replace(/-/g, '/')) + ")";
     };
 
     Validation.prototype.toJSON = function(forRails) {

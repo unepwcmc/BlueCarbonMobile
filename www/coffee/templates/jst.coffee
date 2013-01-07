@@ -185,6 +185,49 @@ window.JST['area/area'] = _.template(
 
 window.JST['area/validation'] = _.template(
   """
-    <%= validation.name() %><img class='delete-validation' src="css/images/trash_can.png"/>
+    <span class="validation-title">
+      <%= validation.name() %>
+    </span>
+    <img class='delete-validation' src="css/images/trash_can.png"/>
+    <table class="validation-details">
+      <tr>
+        <th>Habitat</th>
+        <td><%= validation.get('habitat') %></td>
+      </tr>
+      <tr>
+        <th>Action</th>
+        <td><%= validation.get('action') %></td>
+      </tr>
+      <% if (typeof validation.get('density') !== 'undefined') {%>
+        <tr>
+          <th>Density</th>
+          <td><%= validation.get('density') %></td>
+        </tr>
+      <% } %>
+      <% if (typeof validation.get('condition') !== 'undefined') {%>
+        <tr>
+          <th>Condition</th>
+          <td><%= validation.get('condition') %></td>
+        </tr>
+      <% } %>
+      <% if (typeof validation.get('age') !== 'undefined') {%>
+        <tr>
+          <th>Age</th>
+          <td><%= validation.get('age') %></td>
+        </tr>
+      <% } %>
+      <% if (typeof validation.get('species') !== 'undefined') {%>
+        <tr>
+          <th>Species</th>
+          <td><%= validation.get('species') %></td>
+        </tr>
+      <% } %>
+      <% if (typeof validation.get('notes') !== 'undefined') {%>
+        <tr>
+          <th>Notes</th>
+          <td><%= validation.get('notes') %></td>
+        </tr>
+      <% } %>
+    </table>
   """
 )

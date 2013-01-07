@@ -16,6 +16,10 @@
     function ValidationView() {
       this["delete"] = __bind(this["delete"], this);
 
+      this.hideDetails = __bind(this.hideDetails, this);
+
+      this.toggleDetails = __bind(this.toggleDetails, this);
+
       this.render = __bind(this.render, this);
       return ValidationView.__super__.constructor.apply(this, arguments);
     }
@@ -25,16 +29,19 @@
     ValidationView.prototype.tagName = 'li';
 
     ValidationView.prototype.events = {
-      "click .delete-validation": "delete"
+      "click .delete-validation": "delete",
+      "touchstart .validation-title": "toggleDetails"
     };
 
     ValidationView.prototype.initialize = function(options) {
       var polyOptions,
         _this = this;
+      this.detailsVisible = false;
       this.validation = options.validation;
       this.validation.on('destroy', function() {
         return _this.close();
       });
+      BlueCarbon.bus.on('validation-views:hideDetails', this.hideDetails);
       this.map = window.blueCarbonApp.map;
       polyOptions = {};
       if (this.validation.get('action') === 'delete') {
@@ -54,12 +61,28 @@
       return this;
     };
 
+    ValidationView.prototype.toggleDetails = function() {
+      if (this.detailsVisible) {
+        return this.hideDetails();
+      } else {
+        BlueCarbon.bus.trigger('validation-views:hideDetails');
+        this.$el.find('.validation-details').slideDown();
+        return this.detailsVisible = true;
+      }
+    };
+
+    ValidationView.prototype.hideDetails = function() {
+      this.$el.find('.validation-details').slideUp();
+      return this.detailsVisible = false;
+    };
+
     ValidationView.prototype["delete"] = function() {
       return this.validation.localDestroy();
     };
 
     ValidationView.prototype.onClose = function() {
-      return this.map.removeLayer(this.mapPolygon);
+      this.map.removeLayer(this.mapPolygon);
+      return BlueCarbon.bus.off('validation-views:hideDetails', this.hideDetails);
     };
 
     return ValidationView;

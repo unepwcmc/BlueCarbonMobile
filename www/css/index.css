@@ -644,3 +644,7 @@ ul.fields input{
 .layer-legend.Sabkha {
   border-color: #EC9948;
 }
+
+.validation-details {
+  display:none;
+}
