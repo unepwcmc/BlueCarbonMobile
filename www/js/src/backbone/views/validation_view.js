@@ -73,9 +73,11 @@
     };
 
     ValidationView.prototype.hideDetails = function() {
-      this.$el.find('.validation-details').slideUp();
-      this.removeHighlightPolygon();
-      return this.detailsVisible = false;
+      if (this.detailsVisible) {
+        this.$el.find('.validation-details').slideUp();
+        this.removeHighlightPolygon();
+        return this.detailsVisible = false;
+      }
     };
 
     ValidationView.prototype.showHighlightPolygon = function() {
@@ -97,7 +99,9 @@
     };
 
     ValidationView.prototype["delete"] = function() {
-      return this.validation.localDestroy();
+      if (confirm('are you sure you want to delete this validation?')) {
+        return this.validation.localDestroy();
+      }
     };
 
     ValidationView.prototype.onClose = function() {
