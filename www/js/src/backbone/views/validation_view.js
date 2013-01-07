@@ -67,13 +67,33 @@
       } else {
         BlueCarbon.bus.trigger('validation-views:hideDetails');
         this.$el.find('.validation-details').slideDown();
+        this.showHighlightPolygon();
         return this.detailsVisible = true;
       }
     };
 
     ValidationView.prototype.hideDetails = function() {
       this.$el.find('.validation-details').slideUp();
+      this.removeHighlightPolygon();
       return this.detailsVisible = false;
+    };
+
+    ValidationView.prototype.showHighlightPolygon = function() {
+      if (this.highlightPolygon == null) {
+        this.highlightPolygon = new L.Polygon(this.validation.geomAsLatLngArray(), {
+          opacity: 0.9,
+          color: '#00FFFF',
+          fillColor: '#00FFFF'
+        });
+        return this.highlightPolygon.addTo(this.map);
+      }
+    };
+
+    ValidationView.prototype.removeHighlightPolygon = function() {
+      if (this.highlightPolygon != null) {
+        this.map.removeLayer(this.highlightPolygon);
+        return delete this.highlightPolygon;
+      }
     };
 
     ValidationView.prototype["delete"] = function() {
@@ -82,6 +102,7 @@
 
     ValidationView.prototype.onClose = function() {
       this.map.removeLayer(this.mapPolygon);
+      this.removeHighlightPolygon();
       return BlueCarbon.bus.off('validation-views:hideDetails', this.hideDetails);
     };
 

@@ -35,16 +35,33 @@ class BlueCarbon.Views.ValidationView extends Backbone.View
     else
       BlueCarbon.bus.trigger('validation-views:hideDetails')
       @$el.find('.validation-details').slideDown()
+      @showHighlightPolygon()
       @detailsVisible = true
   
   hideDetails: =>
     @$el.find('.validation-details').slideUp()
+    @removeHighlightPolygon()
     @detailsVisible = false
+
+  showHighlightPolygon: ->
+    unless @highlightPolygon?
+      @highlightPolygon = new L.Polygon(@validation.geomAsLatLngArray(),
+        opacity: 0.9
+        color: '#00FFFF'
+        fillColor: '#00FFFF'
+      )
+      @highlightPolygon.addTo(@map)
+
+  removeHighlightPolygon: ->
+    if @highlightPolygon?
+      @map.removeLayer(@highlightPolygon)
+      delete @highlightPolygon
 
   delete: =>
     @validation.localDestroy()
 
   onClose: ->
     @map.removeLayer(@mapPolygon)
+    @removeHighlightPolygon()
     BlueCarbon.bus.off('validation-views:hideDetails', @hideDetails)
 
