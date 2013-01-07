@@ -94,7 +94,8 @@
         doubleClickZoom: false
       });
       this.addBaseLayer();
-      return this.map.addControl(new L.Control.Gps());
+      this.map.addControl(new L.Control.ShowLocation());
+      return this.map.addControl(new L.Control.JumpToLocation());
     };
 
     App.prototype.addBaseLayer = function() {

@@ -20,7 +20,6 @@ class BlueCarbon.Views.AreaEditView extends Backbone.View
     @showAreaExtentPolyline()
     @addMapLayers(@area, @map)
     @addLayerControl(@map)
-    BlueCarbon.bus.trigger('location:startTracking')
 
   showAreaExtentPolyline: ->
     @extentPolyline = new L.Polyline(@area.coordsAsLatLngArray(),
@@ -100,7 +99,6 @@ class BlueCarbon.Views.AreaEditView extends Backbone.View
     @removeTileLayers(@map)
     @removeLayerControl(@map)
     @removeAreaExtentPolyline()
-    BlueCarbon.bus.trigger('location:stopTracking')
 
   closeSubViews: ->
     while (view = @subViews.pop())?

@@ -45,8 +45,7 @@
       this.subViews = [];
       this.showAreaExtentPolyline();
       this.addMapLayers(this.area, this.map);
-      this.addLayerControl(this.map);
-      return BlueCarbon.bus.trigger('location:startTracking');
+      return this.addLayerControl(this.map);
     };
 
     AreaEditView.prototype.showAreaExtentPolyline = function() {
@@ -142,8 +141,7 @@
       }
       this.removeTileLayers(this.map);
       this.removeLayerControl(this.map);
-      this.removeAreaExtentPolyline();
-      return BlueCarbon.bus.trigger('location:stopTracking');
+      return this.removeAreaExtentPolyline();
     };
 
     AreaEditView.prototype.closeSubViews = function() {
