@@ -170,6 +170,14 @@ h3 {
     margin: 0;
 }
 
+#login-form .loading-spinner {
+  height: 21px;
+  width: 21px;
+  position: relative;
+  top: 6px;
+  display: none;
+}
+
 ul.fields {
   padding: 10px;
 }

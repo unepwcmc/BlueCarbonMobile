@@ -120,7 +120,7 @@ window.JST['area/login'] = _.template(
           <input name="password" type="password" value="decioferreira"/>
         </li>
       </ul>
-      <a id="login" class='btn'>Sign In</a>
+      <a id="login" class='btn'>Sign In</a> <img src="css/images/timer.gif" class="loading-spinner" />
     </form>
   """
 )
