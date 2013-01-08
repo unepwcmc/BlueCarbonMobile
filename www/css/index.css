@@ -10,7 +10,6 @@ ul li{
     margin: 0;
 }
 
-
 body {
   padding: 0;
   margin: 0;
@@ -554,9 +553,26 @@ ul.fields input{
   outline: none;
 }
 
-.leaflet-buttons-control-img {
+.leaflet-gps-controls {
+  width: 115px;
+  background-color: #3D4459;
+  border-radius: 3px;
+  border: 1px solid #3C4B5B;
+  padding: 3px;
+}
+
+.leaflet-buttons-jump-to-location-img {
   width: 32px;
   height: 32px;
+  float:left;
+}
+
+.leaflet-buttons-gps-show-hide {
+  width: 75px;
+  height: 27px;
+  float:left;
+  margin-top: 2px;
+  margin-left: 5px;
 }
 
 .leaflet-control-layers {

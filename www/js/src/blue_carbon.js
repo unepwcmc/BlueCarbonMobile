@@ -94,8 +94,7 @@
         doubleClickZoom: false
       });
       this.addBaseLayer();
-      this.map.addControl(new L.Control.ShowLocation());
-      return this.map.addControl(new L.Control.JumpToLocation());
+      return this.map.addControl(new L.Control.ShowLocation());
     };
 
     App.prototype.addBaseLayer = function() {

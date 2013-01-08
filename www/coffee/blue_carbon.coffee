@@ -80,7 +80,6 @@ class BlueCarbon.App
     @addBaseLayer()
 
     @map.addControl(new L.Control.ShowLocation())
-    @map.addControl(new L.Control.JumpToLocation())
 
   addBaseLayer: ->
     window.requestFileSystem LocalFileSystem.PERSISTENT, 0, (fileSystem) =>

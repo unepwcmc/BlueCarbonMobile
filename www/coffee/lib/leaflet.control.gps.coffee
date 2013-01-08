@@ -6,18 +6,33 @@ L.Control.ShowLocation = L.Control.extend(
 
   onAdd: (map) ->
     @showLocation = false
-    @container = L.DomUtil.create('div', 'my-custom-control')
+    @container = L.DomUtil.create('div', 'leaflet-gps-controls')
     @render()
 
     @map = map
 
     return @container
 
-  onClick: (e) ->
+  jumpToCurrentLocation: (e) ->
+    navigator.geolocation.getCurrentPosition((position)=>
+      @moveCenter(position)
+      @drawLocation(position) if @showLocation
+    , {}, {enableHighAccuracy: true})
+
+  moveCenter: (position) ->
+    latlng = [
+      position.coords.latitude,
+      position.coords.longitude
+    ]
+    @map.panTo(latlng)
+
+  toggleLocationTracking: (e) ->
     @showLocation = !@showLocation
     if @showLocation
+      @trackingToggler.setAttribute('src', 'css/images/show.png')
       @startTracking()
     else
+      @trackingToggler.setAttribute('src', 'css/images/hide.png')
       @stopTracking()
 
   drawLocation: (position) ->
@@ -39,7 +54,7 @@ L.Control.ShowLocation = L.Control.extend(
 
     @marker = L.marker(latlng, {icon: gpsIcon}).addTo(@map)
 
-    @marker.on('click', (=> @onClick()))
+    @marker.on('click', (=> @toggleLocationTracking()))
 
   updateMarker: ->
     navigator.geolocation.getCurrentPosition(((position)=> @drawLocation(position)), (->
@@ -63,8 +78,11 @@ L.Control.ShowLocation = L.Control.extend(
   render: () ->
     button = L.DomUtil.create('div', 'leaflet-buttons-control-button', @container)
 
-    image = L.DomUtil.create('img', 'leaflet-buttons-control-img', button)
+    image = L.DomUtil.create('img', 'leaflet-buttons-jump-to-location-img', button)
     image.setAttribute('src', @options.iconUrl)
+
+    @trackingToggler = L.DomUtil.create('img', 'leaflet-buttons-gps-show-hide', @container)
+    @trackingToggler.setAttribute('src', 'css/images/hide.png')
 
     if @options.text != ''
       span = L.DomUtil.create('span', 'leaflet-buttons-control-text', button)
@@ -73,52 +91,9 @@ L.Control.ShowLocation = L.Control.extend(
 
     L.DomEvent
       .addListener(button, 'click', L.DomEvent.stop)
-      .addListener(button, 'touchstart', @onClick, this)
-
-    L.DomEvent.disableClickPropagation(button)
-)
-
-L.Control.JumpToLocation = L.Control.extend(
-  options:
-    position: 'topright'
-    text: ''
-    iconUrl: 'css/images/location_finder.png'
-
-  onAdd: (map) ->
-    @container = L.DomUtil.create('div', 'my-custom-control')
-    @render()
-
-    @map = map
-
-    return @container
-
-  onClick: (e) ->
-    navigator.geolocation.getCurrentPosition((position)=>
-      @moveCenter(position)
-    , {}, {enableHighAccuracy: true})
-
-
-  moveCenter: (position) ->
-    latlng = [
-      position.coords.latitude,
-      position.coords.longitude
-    ]
-    @map.panTo(latlng)
-
-  render: () ->
-    button = L.DomUtil.create('div', 'leaflet-buttons-control-button', @container)
-
-    image = L.DomUtil.create('img', 'leaflet-buttons-control-img', button)
-    image.setAttribute('src', @options.iconUrl)
-
-    if @options.text != ''
-      span = L.DomUtil.create('span', 'leaflet-buttons-control-text', button)
-      text = document.createTextNode(@options.text)
-      span.appendChild(text)
-
-    L.DomEvent
-      .addListener(button, 'click', L.DomEvent.stop)
-      .addListener(button, 'touchstart', @onClick, this)
+      .addListener(button, 'touchstart', @jumpToCurrentLocation, this)
+      .addListener(@trackingToggler, 'click', L.DomEvent.stop)
+      .addListener(@trackingToggler, 'touchstart', @toggleLocationTracking, this)
 
     L.DomEvent.disableClickPropagation(button)
 )

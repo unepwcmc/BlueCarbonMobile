@@ -9,16 +9,34 @@
     },
     onAdd: function(map) {
       this.showLocation = false;
-      this.container = L.DomUtil.create('div', 'my-custom-control');
+      this.container = L.DomUtil.create('div', 'leaflet-gps-controls');
       this.render();
       this.map = map;
       return this.container;
     },
-    onClick: function(e) {
+    jumpToCurrentLocation: function(e) {
+      var _this = this;
+      return navigator.geolocation.getCurrentPosition(function(position) {
+        _this.moveCenter(position);
+        if (_this.showLocation) {
+          return _this.drawLocation(position);
+        }
+      }, {}, {
+        enableHighAccuracy: true
+      });
+    },
+    moveCenter: function(position) {
+      var latlng;
+      latlng = [position.coords.latitude, position.coords.longitude];
+      return this.map.panTo(latlng);
+    },
+    toggleLocationTracking: function(e) {
       this.showLocation = !this.showLocation;
       if (this.showLocation) {
+        this.trackingToggler.setAttribute('src', 'css/images/show.png');
         return this.startTracking();
       } else {
+        this.trackingToggler.setAttribute('src', 'css/images/hide.png');
         return this.stopTracking();
       }
     },
@@ -40,7 +58,7 @@
         icon: gpsIcon
       }).addTo(this.map);
       return this.marker.on('click', (function() {
-        return _this.onClick();
+        return _this.toggleLocationTracking();
       }));
     },
     updateMarker: function() {
@@ -75,54 +93,16 @@
     render: function() {
       var button, image, span, text;
       button = L.DomUtil.create('div', 'leaflet-buttons-control-button', this.container);
-      image = L.DomUtil.create('img', 'leaflet-buttons-control-img', button);
+      image = L.DomUtil.create('img', 'leaflet-buttons-jump-to-location-img', button);
       image.setAttribute('src', this.options.iconUrl);
+      this.trackingToggler = L.DomUtil.create('img', 'leaflet-buttons-gps-show-hide', this.container);
+      this.trackingToggler.setAttribute('src', 'css/images/hide.png');
       if (this.options.text !== '') {
         span = L.DomUtil.create('span', 'leaflet-buttons-control-text', button);
         text = document.createTextNode(this.options.text);
         span.appendChild(text);
       }
-      L.DomEvent.addListener(button, 'click', L.DomEvent.stop).addListener(button, 'touchstart', this.onClick, this);
-      return L.DomEvent.disableClickPropagation(button);
-    }
-  });
-
-  L.Control.JumpToLocation = L.Control.extend({
-    options: {
-      position: 'topright',
-      text: '',
-      iconUrl: 'css/images/location_finder.png'
-    },
-    onAdd: function(map) {
-      this.container = L.DomUtil.create('div', 'my-custom-control');
-      this.render();
-      this.map = map;
-      return this.container;
-    },
-    onClick: function(e) {
-      var _this = this;
-      return navigator.geolocation.getCurrentPosition(function(position) {
-        return _this.moveCenter(position);
-      }, {}, {
-        enableHighAccuracy: true
-      });
-    },
-    moveCenter: function(position) {
-      var latlng;
-      latlng = [position.coords.latitude, position.coords.longitude];
-      return this.map.panTo(latlng);
-    },
-    render: function() {
-      var button, image, span, text;
-      button = L.DomUtil.create('div', 'leaflet-buttons-control-button', this.container);
-      image = L.DomUtil.create('img', 'leaflet-buttons-control-img', button);
-      image.setAttribute('src', this.options.iconUrl);
-      if (this.options.text !== '') {
-        span = L.DomUtil.create('span', 'leaflet-buttons-control-text', button);
-        text = document.createTextNode(this.options.text);
-        span.appendChild(text);
-      }
-      L.DomEvent.addListener(button, 'click', L.DomEvent.stop).addListener(button, 'touchstart', this.onClick, this);
+      L.DomEvent.addListener(button, 'click', L.DomEvent.stop).addListener(button, 'touchstart', this.jumpToCurrentLocation, this).addListener(this.trackingToggler, 'click', L.DomEvent.stop).addListener(this.trackingToggler, 'touchstart', this.toggleLocationTracking, this);
       return L.DomEvent.disableClickPropagation(button);
     }
   });
