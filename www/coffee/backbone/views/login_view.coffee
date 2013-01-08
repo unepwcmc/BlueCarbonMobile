@@ -12,11 +12,15 @@ class BlueCarbon.Views.LoginView extends Backbone.View
       alert("You are currently offline, please connect to the internet to login")
       return false
 
+    $('#login-form .loading-spinner').show()
+
     @model.login(
       $('#login-form').serializeObject(),
       success: (data)=>
+        $('#login-form .loading-spinner').hide()
         @model.trigger('user:loggedIn', @model)
       error: (data)=>
+        $('#login-form .loading-spinner').hide()
         @showError('Unable to login')
     )
 

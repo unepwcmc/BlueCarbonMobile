@@ -32,11 +32,14 @@
         alert("You are currently offline, please connect to the internet to login");
         return false;
       }
+      $('#login-form .loading-spinner').show();
       return this.model.login($('#login-form').serializeObject(), {
         success: function(data) {
+          $('#login-form .loading-spinner').hide();
           return _this.model.trigger('user:loggedIn', _this.model);
         },
         error: function(data) {
+          $('#login-form .loading-spinner').hide();
           return _this.showError('Unable to login');
         }
       });
