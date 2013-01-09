@@ -128,7 +128,7 @@ window.JST['area/login'] = _.template(
 window.JST['area/area_index'] = _.template(
   """
     <div class='ios-head'>
-      <h2>Areas</h2>
+      <h2>Field Sites</h2>
     </div>
     <div id="sync-info">
       <span id="sync-status"></span>
