@@ -23,6 +23,8 @@
       this.removeLastMarker = __bind(this.removeLastMarker, this);
 
       this.updatePolygonDrawHelpText = __bind(this.updatePolygonDrawHelpText, this);
+
+      this.drawExistingValidations = __bind(this.drawExistingValidations, this);
       return AddValidationView.__super__.constructor.apply(this, arguments);
     }
 
@@ -40,6 +42,11 @@
       var _this = this;
       this.area = options.area;
       this.map = options.map;
+      this.validationList = new BlueCarbon.Collections.Validations([], {
+        area: this.area
+      });
+      this.validationList.on('reset', this.drawExistingValidations);
+      this.validationList.localFetch();
       this.validation = new BlueCarbon.Models.Validation();
       this.map.on('draw:polygon:add-vertex', this.updatePolygonDrawHelpText);
       return this.map.on('draw:poly-created', function(e) {
@@ -60,6 +67,41 @@
       this.addMapLayers(this.area, this.map);
       this.addLayerControl(this.map);
       return this;
+    };
+
+    AddValidationView.prototype.drawExistingValidations = function() {
+      var _this = this;
+      this.mapPolygons = [];
+      return this.validationList.each(function(validation) {
+        var polyOptions, polygon;
+        polyOptions = {
+          clickable: false,
+          opacity: 0.25,
+          fillOpacity: 0.2
+        };
+        if (validation.get('action') === 'delete') {
+          polyOptions = _.extend(polyOptions, {
+            color: "#FF0000",
+            strokeColor: "#FF0000"
+          });
+        }
+        polygon = new L.Polygon(validation.geomAsLatLngArray(), polyOptions);
+        polygon.addTo(_this.map);
+        return _this.mapPolygons.push(polygon);
+      });
+    };
+
+    AddValidationView.prototype.removeExistingValidationPolys = function() {
+      var poly, _i, _len, _ref, _results;
+      if (this.mapPolygons != null) {
+        _ref = this.mapPolygons;
+        _results = [];
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          poly = _ref[_i];
+          _results.push(this.map.removeLayer(poly));
+        }
+        return _results;
+      }
     };
 
     AddValidationView.prototype.getDate = function() {
@@ -158,7 +200,7 @@
       return $('.conditional:hidden select').val([]);
     };
 
-    AddValidationView.prototype.close = function() {
+    AddValidationView.prototype.onClose = function() {
       this.polygonDraw.disable();
       this.map.off('draw:poly-created');
       this.map.off('draw:polygon:add-vertex');
@@ -166,7 +208,8 @@
         this.map.removeLayer(this.mapPolygon);
       }
       this.removeLayerControl(this.map);
-      return this.removeTileLayers(this.map);
+      this.removeTileLayers(this.map);
+      return this.removeExistingValidationPolys();
     };
 
     return AddValidationView;

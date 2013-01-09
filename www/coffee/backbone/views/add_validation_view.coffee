@@ -14,6 +14,10 @@ class BlueCarbon.Views.AddValidationView extends Backbone.View
     @area = options.area
     @map = options.map
 
+    @validationList = new BlueCarbon.Collections.Validations([], area: @area)
+    @validationList.on('reset', @drawExistingValidations)
+    @validationList.localFetch()
+
     @validation = new BlueCarbon.Models.Validation()
 
     @map.on 'draw:polygon:add-vertex', @updatePolygonDrawHelpText
@@ -33,6 +37,27 @@ class BlueCarbon.Views.AddValidationView extends Backbone.View
     @addMapLayers(@area, @map)
     @addLayerControl(@map)
     return @
+  
+  drawExistingValidations: =>
+    @mapPolygons = []
+    @validationList.each (validation) =>
+      polyOptions =
+        clickable: false
+        opacity: 0.25
+        fillOpacity: 0.2
+      if validation.get('action') == 'delete'
+        polyOptions = _.extend(polyOptions,
+          color: "#FF0000"
+          strokeColor: "#FF0000"
+        )
+      polygon = new L.Polygon(validation.geomAsLatLngArray(), polyOptions)
+      polygon.addTo(@map)
+      @mapPolygons.push polygon
+
+  removeExistingValidationPolys: ->
+    if @mapPolygons?
+      for poly in @mapPolygons
+        @map.removeLayer(poly)
   
   getDate: ->
     date = new Date()
@@ -106,12 +131,13 @@ class BlueCarbon.Views.AddValidationView extends Backbone.View
     $('.conditional:hidden input').val('')
     $('.conditional:hidden select').val([])
 
-  close: () ->
+  onClose: () ->
     @polygonDraw.disable()
     @map.off('draw:poly-created')
     @map.off('draw:polygon:add-vertex')
     @map.removeLayer(@mapPolygon) if @mapPolygon?
     @removeLayerControl(@map)
     @removeTileLayers(@map)
+    @removeExistingValidationPolys()
 
 _.extend(BlueCarbon.Views.AddValidationView::, BlueCarbon.Mixins.AreaMapLayers)
