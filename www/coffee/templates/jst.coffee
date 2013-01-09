@@ -113,11 +113,11 @@ window.JST['area/login'] = _.template(
       <ul class="fields">
         <li>
           <label>Email</label>
-          <input name="email" value="decio.ferreira@unep-wcmc.org"/>
+          <input name="email"/>
         </li>
         <li>
           <label>Password</label>
-          <input name="password" type="password" value="decioferreira"/>
+          <input name="password" type="password"/>
         </li>
       </ul>
       <a id="login" class='btn'>Sign In</a> <img src="css/images/timer.gif" class="loading-spinner" />
