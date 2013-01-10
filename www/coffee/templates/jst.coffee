@@ -192,40 +192,40 @@ window.JST['area/validation'] = _.template(
     <table class="validation-details">
       <tr>
         <th>Habitat</th>
-        <td><%= validation.get('habitat') %></td>
+        <td><%= humanAttributes.habitat %></td>
       </tr>
       <tr>
         <th>Action</th>
-        <td><%= validation.get('action') %></td>
+        <td><%= humanAttributes.action %></td>
       </tr>
-      <% if (typeof validation.get('density') !== 'undefined') {%>
+      <% if (typeof humanAttributes.density !== 'undefined') {%>
         <tr>
           <th>Density</th>
-          <td><%= validation.get('density') %></td>
+          <td><%= humanAttributes.density %></td>
         </tr>
       <% } %>
-      <% if (typeof validation.get('condition') !== 'undefined') {%>
+      <% if (typeof humanAttributes.condition !== 'undefined') {%>
         <tr>
           <th>Condition</th>
-          <td><%= validation.get('condition') %></td>
+          <td><%= humanAttributes.condition %></td>
         </tr>
       <% } %>
-      <% if (typeof validation.get('age') !== 'undefined') {%>
+      <% if (typeof humanAttributes.age !== 'undefined') {%>
         <tr>
           <th>Age</th>
-          <td><%= validation.get('age') %></td>
+          <td><%= humanAttributes.age %></td>
         </tr>
       <% } %>
-      <% if (typeof validation.get('species') !== 'undefined') {%>
+      <% if (typeof humanAttributes.species !== 'undefined') {%>
         <tr>
           <th>Species</th>
-          <td><%= validation.get('species') %></td>
+          <td><%= humanAttributes.species %></td>
         </tr>
       <% } %>
-      <% if (typeof validation.get('notes') !== 'undefined') {%>
+      <% if (typeof humanAttributes.notes !== 'undefined') {%>
         <tr>
           <th>Notes</th>
-          <td><%= validation.get('notes') %></td>
+          <td><%= humanAttributes.notes %></td>
         </tr>
       <% } %>
     </table>

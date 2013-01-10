@@ -55,7 +55,8 @@
 
     ValidationView.prototype.render = function() {
       this.$el.html(this.template({
-        validation: this.validation
+        validation: this.validation,
+        humanAttributes: this.validation.getHumanAttributes()
       }));
       this.mapPolygon.addTo(this.map);
       return this;

@@ -25,7 +25,7 @@ class BlueCarbon.Views.ValidationView extends Backbone.View
     @mapPolygon = new L.Polygon(@validation.geomAsLatLngArray(), polyOptions)
 
   render: =>
-    @$el.html(@template(validation:@validation))
+    @$el.html(@template(validation:@validation, humanAttributes: @validation.getHumanAttributes()))
     @mapPolygon.addTo(@map)
     return @
 

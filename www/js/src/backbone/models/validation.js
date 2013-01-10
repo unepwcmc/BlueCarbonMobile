@@ -67,6 +67,49 @@
       return latLngs;
     };
 
+    Validation.prototype.getHumanAttributes = function() {
+      var humanAttributes, key, keysToRemove, value, _i, _len;
+      humanAttributes = _.clone(this.attributes);
+      keysToRemove = ["coordinates", "sqlite_id", "area_id", "recorded_at"];
+      for (key in humanAttributes) {
+        value = humanAttributes[key];
+        debugger;
+        if (value == null) {
+          keysToRemove.push(key);
+        }
+        if (this.humanEnumMap[key] != null) {
+          humanAttributes[key] = this.humanEnumMap[key][value];
+        }
+      }
+      for (_i = 0, _len = keysToRemove.length; _i < _len; _i++) {
+        key = keysToRemove[_i];
+        delete humanAttributes[key];
+      }
+      return humanAttributes;
+    };
+
+    Validation.prototype.humanEnumMap = {
+      density: {
+        1: "Sparse (<20% cover)",
+        2: "Moderate (20-50% cover)",
+        3: "Dense (50-80% cover)",
+        4: "Very dense (>80% cover)"
+      },
+      condition: {
+        1: "Undisturbed / Intact",
+        2: "Degraded",
+        3: "Restored / Rehabilitating",
+        4: "Afforested/ Created",
+        5: "Cleared"
+      },
+      age: {
+        1: "Natural Mangrove",
+        2: "2-10 yrs old",
+        3: "10-25 yrs old",
+        4: "25-50 yrs old"
+      }
+    };
+
     return Validation;
 
   })(Backbone.SyncableModel);
