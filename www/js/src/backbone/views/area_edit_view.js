@@ -88,13 +88,25 @@
     };
 
     AreaEditView.prototype.showUploadErrors = function(errors) {
-      var errorText, validationError, _i, _len;
+      var errorText, key, validationError, value, _i, _len, _ref;
       this.uploading = false;
       this.render();
       errorText = "";
       for (_i = 0, _len = errors.length; _i < _len; _i++) {
         validationError = errors[_i];
-        errorText += "<li>Failed to upload '" + (validationError.validation.name()) + "'</li>";
+        errorText += "<li>\n  Failed to upload '" + (validationError.validation.name()) + "':";
+        if (typeof validationError.error === 'object') {
+          errorText += "<ul>";
+          _ref = validationError.error;
+          for (key in _ref) {
+            value = _ref[key];
+            errorText += "<li><b>" + key + "</b>: " + value + "</li>";
+          }
+          errorText += "</ul>";
+        } else {
+          errorText += "<br/>" + validationError.error;
+        }
+        errorText += "</li>";
       }
       return this.$el.append("<div class='error-notice'><ul>" + errorText + "</ul></div>");
     };

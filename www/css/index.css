@@ -650,8 +650,13 @@ ul.fields input{
   background-color: #F2DEDE;
   border: 1px solid #EED3D7;
 }
-.error-notice ul {
+.error-notice > ul {
   padding-left: 0;
+}
+
+.error-notice > ul ul li {
+  padding-left: 5px;
+  list-style-type: disc;
 }
 
 .layer-legend {

@@ -56,8 +56,11 @@ class BlueCarbon.Collections.Validations extends Backbone.SyncableCollection
               console.log("failed to delete area with:")
               console.log arguments
           )
-        error: (a,b,c)->
+        error: (errorModel, response)->
           console.log("failed to upload area with:")
           console.log arguments
-          onValidationPushed(validation, 'error', arguments)
+          error = response.responseText
+          try
+            error = JSON.parse(error)
+          onValidationPushed(validation, 'error', error)
       )

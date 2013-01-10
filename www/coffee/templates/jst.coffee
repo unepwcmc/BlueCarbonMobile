@@ -41,7 +41,7 @@ window.JST['area/add_polygon'] = _.template(
             <option value="">Select a habitat layer</option>
             <option value="mangrove">Mangrove</option>
             <option value="seagrass">Seagrass</option>
-            <option value="salt_marsh">Salt Marsh</option>
+            <option value="saltmarsh">Salt Marsh</option>
             <option value="sabkha">Sabkha</option>
             <option value="algal_mat">Algal Mat</option>
             <option value="other">Other</option>
@@ -56,7 +56,7 @@ window.JST['area/add_polygon'] = _.template(
           </select>
         </li>
         <div id='validation-details'>
-          <li class="conditional seagrass mangrove salt-marsh">
+          <li class="conditional seagrass mangrove saltmarsh">
             <label>Density</label>
             <select name="density">
               <option value="">Unknown</option>

@@ -63,7 +63,17 @@ class BlueCarbon.Views.AreaEditView extends Backbone.View
     @render()
     errorText = ""
     for validationError in errors
-      errorText += "<li>Failed to upload '#{validationError.validation.name()}'</li>"
+      errorText += """
+        <li>
+          Failed to upload '#{validationError.validation.name()}':"""
+      if typeof validationError.error == 'object'
+        errorText += "<ul>"
+        for key, value of validationError.error
+          errorText += "<li><b>#{key}</b>: #{value}</li>"
+        errorText += "</ul>"
+      else
+        errorText += "<br/>#{validationError.error}"
+      errorText += "</li>"
     @$el.append("<div class='error-notice'><ul>#{errorText}</ul></div>")
 
   render: =>

@@ -82,10 +82,15 @@
               }
             });
           },
-          error: function(a, b, c) {
+          error: function(errorModel, response) {
+            var error;
             console.log("failed to upload area with:");
             console.log(arguments);
-            return onValidationPushed(validation, 'error', arguments);
+            error = response.responseText;
+            try {
+              error = JSON.parse(error);
+            } catch (_error) {}
+            return onValidationPushed(validation, 'error', error);
           }
         });
       });
