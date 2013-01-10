@@ -73,7 +73,6 @@
       keysToRemove = ["coordinates", "sqlite_id", "area_id", "recorded_at"];
       for (key in humanAttributes) {
         value = humanAttributes[key];
-        debugger;
         if (value == null) {
           keysToRemove.push(key);
         }

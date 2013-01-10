@@ -40,7 +40,6 @@ class BlueCarbon.Models.Validation extends Backbone.SyncableModel
     keysToRemove = ["coordinates", "sqlite_id", "area_id", "recorded_at"]
 
     for key, value of humanAttributes
-      debugger
       unless value?
         keysToRemove.push key
       if @humanEnumMap[key]?

@@ -668,6 +668,9 @@ ul.fields input{
 .layer-legend.Sabkha {
   border-color: #EC9948;
 }
+.layer-legend.Algal {
+  border-color: #A5B75E;
+}
 
 .validation-details {
   display:none;
