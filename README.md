@@ -1,5 +1,8 @@
 # Blue Carbon Mobile
 
+# THIS REPOSITORY IS RETIRED. [Blue Carbon Mobile is now in a new repository](https://github.com/unepwcmc/BlueCarbonMobileNext).
+
+
 A phone gap application to allow iPad validation of a blue carbon data
 layer, offline.
 
